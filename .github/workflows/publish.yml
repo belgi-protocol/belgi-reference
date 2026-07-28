@@ -1,0 +1,511 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Annotated release tag to publish
+        required: true
+        type: string
+      confirmation:
+        description: Type the exact release confirmation shown in the runbook
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: publish-${{ inputs.release_tag }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build and admit exact candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    outputs:
+      checksums_sha256: ${{ steps.candidate.outputs.checksums_sha256 }}
+      commit: ${{ steps.identity.outputs.commit }}
+      evidence_sha256: ${{ steps.candidate.outputs.evidence_sha256 }}
+      release_tag_sha256: ${{ steps.release-support.outputs.sha256 }}
+      tag: ${{ steps.identity.outputs.tag }}
+      tag_object: ${{ steps.identity.outputs.tag_object }}
+      tree: ${{ steps.identity.outputs.tree }}
+      version: ${{ steps.identity.outputs.version }}
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PYTHONHASHSEED: "0"
+      PYTHONUTF8: "1"
+      RELEASE_CONFIRMATION: ${{ inputs.confirmation }}
+      RELEASE_TAG: ${{ inputs.release_tag }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.sha }}
+
+      - name: Bind main dispatch, annotated tag, and confirmation
+        id: identity
+        run: |
+          test "${GITHUB_REF}" = "refs/heads/main"
+          tag_ref="refs/tags/${RELEASE_TAG}"
+          git rev-parse --verify --end-of-options "${tag_ref}^{tag}" >/dev/null
+          tag_object="$(git rev-parse --verify --end-of-options "${tag_ref}^{tag}")"
+          commit="$(git rev-parse --verify --end-of-options "${tag_ref}^{commit}")"
+          tree="$(git rev-parse --verify --end-of-options "${tag_ref}^{tree}")"
+          main_commit="$(git rev-parse refs/remotes/origin/main)"
+          test "${GITHUB_SHA}" = "${main_commit}"
+          test "${commit}" = "${main_commit}"
+          test "$(git rev-parse HEAD)" = "${commit}"
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+          version="$(
+            python3 -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])'
+          )"
+          test "${RELEASE_TAG}" = "v${version}"
+          test "${RELEASE_CONFIRMATION}" = "publish belgi==${version} from ${RELEASE_TAG}"
+          source_date_epoch="$(git show -s --format=%ct "${commit}")"
+          printf 'commit=%s\n' "${commit}" >> "${GITHUB_OUTPUT}"
+          printf 'tag=%s\n' "${RELEASE_TAG}" >> "${GITHUB_OUTPUT}"
+          printf 'tag_object=%s\n' "${tag_object}" >> "${GITHUB_OUTPUT}"
+          printf 'tree=%s\n' "${tree}" >> "${GITHUB_OUTPUT}"
+          printf 'version=%s\n' "${version}" >> "${GITHUB_OUTPUT}"
+          printf 'SOURCE_DATE_EPOCH=%s\n' "${source_date_epoch}" >> "${GITHUB_ENV}"
+
+      - name: Materialize and compare the exact tagged archive
+        env:
+          COMMIT: ${{ steps.identity.outputs.commit }}
+        run: |
+          python3 .github/scripts/release_artifacts.py materialize-source \
+            --repository . \
+            --commit "${COMMIT}" \
+            --archive "${RUNNER_TEMP}/tag-source.tar" \
+            --destination "${RUNNER_TEMP}/tag-source"
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: .github/release-requirements.txt
+
+      - name: Install release tools
+        run: |
+          python -m pip install \
+            --only-binary=:all: \
+            -r .github/release-requirements.txt
+
+      - name: Verify retained source
+        run: |
+          python -m ruff format --check belgi tests/public_reference .github/scripts
+          python -m ruff check belgi tests/public_reference .github/scripts
+          python -m pyright
+          python -m pyright .github/scripts
+
+      - name: Build one source distribution
+        run: |
+          mkdir -p "${RUNNER_TEMP}/source"
+          (
+            cd "${RUNNER_TEMP}/tag-source"
+            python -m build \
+              --sdist \
+              --no-isolation \
+              --outdir "${RUNNER_TEMP}/source"
+          )
+          python .github/scripts/release_artifacts.py validate-sdist \
+            --repository "${RUNNER_TEMP}/tag-source" \
+            --sdist-directory "${RUNNER_TEMP}/source"
+
+      - name: Build two wheels independently from the same source distribution
+        env:
+          VERSION: ${{ steps.identity.outputs.version }}
+        run: |
+          sdist="${RUNNER_TEMP}/source/belgi-${VERSION}.tar.gz"
+          for build_name in first second; do
+            source_root="${RUNNER_TEMP}/wheel-${build_name}-source"
+            wheel_root="${RUNNER_TEMP}/wheel-${build_name}"
+            mkdir -p "${source_root}" "${wheel_root}"
+            python - "${sdist}" "${source_root}" <<'PY'
+          import sys
+          import tarfile
+          from pathlib import Path
+
+          with tarfile.open(sys.argv[1], mode="r:gz") as archive:
+              archive.extractall(Path(sys.argv[2]), filter="data")
+          PY
+            python -m build \
+              --wheel \
+              --no-isolation \
+              --outdir "${wheel_root}" \
+              "${source_root}/belgi-${VERSION}"
+          done
+
+      - name: Admit exact artifacts and write release evidence
+        id: candidate
+        env:
+          COMMIT: ${{ steps.identity.outputs.commit }}
+          TAG_OBJECT: ${{ steps.identity.outputs.tag_object }}
+          TREE: ${{ steps.identity.outputs.tree }}
+        run: |
+          python .github/scripts/release_artifacts.py prepare \
+            --repository "${RUNNER_TEMP}/tag-source" \
+            --sdist-directory "${RUNNER_TEMP}/source" \
+            --first-wheel-directory "${RUNNER_TEMP}/wheel-first" \
+            --second-wheel-directory "${RUNNER_TEMP}/wheel-second" \
+            --candidate-directory candidate \
+            --tag "${RELEASE_TAG}" \
+            --tag-object "${TAG_OBJECT}" \
+            --commit "${COMMIT}" \
+            --tree "${TREE}"
+          python -m twine check candidate/dist/*
+          checksums_sha256="$(sha256sum candidate/evidence/SHA256SUMS)"
+          checksums_sha256="${checksums_sha256%% *}"
+          evidence_sha256="$(
+            sha256sum candidate/evidence/release-evidence.json
+          )"
+          evidence_sha256="${evidence_sha256%% *}"
+          printf 'checksums_sha256=%s\n' "${checksums_sha256}" >> "${GITHUB_OUTPUT}"
+          printf 'evidence_sha256=%s\n' "${evidence_sha256}" >> "${GITHUB_OUTPUT}"
+
+      - name: Bind the release boundary helper
+        id: release-support
+        run: |
+          mkdir workflow-support
+          cp .github/scripts/release_tag.py workflow-support/release_tag.py
+          sha256="$(sha256sum workflow-support/release_tag.py)"
+          sha256="${sha256%% *}"
+          printf 'sha256=%s\n' "${sha256}" >> "${GITHUB_OUTPUT}"
+
+      - name: Verify source behavior and exact wheel inventory
+        env:
+          BELGI_WHEEL_PATH: ${{ github.workspace }}/candidate/dist/belgi-${{ steps.identity.outputs.version }}-py3-none-any.whl
+        run: python -m pytest -q tests/public_reference
+
+      - name: Verify the installed release journey and typing marker
+        env:
+          VERSION: ${{ steps.identity.outputs.version }}
+        run: |
+          environment="${RUNNER_TEMP}/installed"
+          typing_root="${RUNNER_TEMP}/typing-check"
+          python -m venv "${environment}"
+          "${environment}/bin/python" -m pip install \
+            "candidate/dist/belgi-${VERSION}-py3-none-any.whl"
+          python .github/scripts/release_artifacts.py installed \
+            --environment "${environment}" \
+            --expected-version "${VERSION}"
+          mkdir -p "${typing_root}"
+          printf '%s\n' \
+            'from belgi import __version__' \
+            'installed_version: str = __version__' \
+            > "${typing_root}/typing_consumer.py"
+          (
+            cd "${typing_root}"
+            python -m pyright \
+              --pythonpath "${environment}/bin/python" \
+              typing_consumer.py
+          )
+
+      - name: Upload the admitted candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: release-candidate
+          path: candidate/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Upload the bound release helper
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: release-workflow-support
+          path: workflow-support/
+          if-no-files-found: error
+          retention-days: 90
+
+  testpypi:
+    name: Publish exact bytes to TestPyPI
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/belgi/${{ needs.build.outputs.version }}
+    permissions:
+      id-token: write
+    env:
+      CHECKSUMS_SHA256: ${{ needs.build.outputs.checksums_sha256 }}
+      EVIDENCE_SHA256: ${{ needs.build.outputs.evidence_sha256 }}
+      RELEASE_COMMIT: ${{ needs.build.outputs.commit }}
+      RELEASE_TAG: ${{ needs.build.outputs.tag }}
+      RELEASE_TAG_OBJECT: ${{ needs.build.outputs.tag_object }}
+      RELEASE_TAG_SHA256: ${{ needs.build.outputs.release_tag_sha256 }}
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: release-candidate
+          path: candidate
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: release-workflow-support
+          path: workflow-support
+
+      - name: Verify downloaded candidate digests
+        working-directory: candidate
+        run: |
+          test "$(
+            sha256sum evidence/SHA256SUMS
+          )" = "${CHECKSUMS_SHA256}  evidence/SHA256SUMS"
+          test "$(
+            sha256sum evidence/release-evidence.json
+          )" = "${EVIDENCE_SHA256}  evidence/release-evidence.json"
+          sha256sum --check evidence/SHA256SUMS
+
+      - name: Rebind the remote annotated tag
+        run: |
+          test "$(
+            sha256sum workflow-support/release_tag.py
+          )" = "${RELEASE_TAG_SHA256}  workflow-support/release_tag.py"
+          python3 workflow-support/release_tag.py \
+            --repository "https://github.com/${GITHUB_REPOSITORY}.git" \
+            --tag "${RELEASE_TAG}" \
+            --tag-object "${RELEASE_TAG_OBJECT}" \
+            --commit "${RELEASE_COMMIT}"
+
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
+        with:
+          packages-dir: candidate/dist
+          repository-url: https://test.pypi.org/legacy/
+
+  testpypi-readback:
+    name: Read back exact TestPyPI bytes
+    needs:
+      - build
+      - testpypi
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      RELEASE_COMMIT: ${{ needs.build.outputs.commit }}
+      RELEASE_TAG: ${{ needs.build.outputs.tag }}
+      RELEASE_TAG_OBJECT: ${{ needs.build.outputs.tag_object }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          ref: ${{ needs.build.outputs.commit }}
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: release-candidate
+          path: candidate
+
+      - name: Verify candidate and TestPyPI readback
+        env:
+          TREE: ${{ needs.build.outputs.tree }}
+        run: |
+          python .github/scripts/release_artifacts.py verify \
+            --repository . \
+            --candidate-directory candidate \
+            --tag "${RELEASE_TAG}" \
+            --tag-object "${RELEASE_TAG_OBJECT}" \
+            --commit "${RELEASE_COMMIT}" \
+            --tree "${TREE}"
+          python .github/scripts/release_artifacts.py readback \
+            --candidate-directory candidate \
+            --index-base-url https://test.pypi.org \
+            --file-host test-files.pythonhosted.org \
+            --output testpypi-readback.json
+
+      - name: Preserve TestPyPI readback proof
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: testpypi-readback
+          path: testpypi-readback.json
+          if-no-files-found: error
+          retention-days: 90
+
+  pypi:
+    name: Publish the same bytes to PyPI
+    needs:
+      - build
+      - testpypi-readback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: pypi
+      url: https://pypi.org/p/belgi/${{ needs.build.outputs.version }}
+    permissions:
+      id-token: write
+    env:
+      CHECKSUMS_SHA256: ${{ needs.build.outputs.checksums_sha256 }}
+      EVIDENCE_SHA256: ${{ needs.build.outputs.evidence_sha256 }}
+      RELEASE_COMMIT: ${{ needs.build.outputs.commit }}
+      RELEASE_TAG: ${{ needs.build.outputs.tag }}
+      RELEASE_TAG_OBJECT: ${{ needs.build.outputs.tag_object }}
+      RELEASE_TAG_SHA256: ${{ needs.build.outputs.release_tag_sha256 }}
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: release-candidate
+          path: candidate
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: release-workflow-support
+          path: workflow-support
+
+      - name: Verify downloaded candidate digests
+        working-directory: candidate
+        run: |
+          test "$(
+            sha256sum evidence/SHA256SUMS
+          )" = "${CHECKSUMS_SHA256}  evidence/SHA256SUMS"
+          test "$(
+            sha256sum evidence/release-evidence.json
+          )" = "${EVIDENCE_SHA256}  evidence/release-evidence.json"
+          sha256sum --check evidence/SHA256SUMS
+
+      - name: Rebind the remote annotated tag
+        run: |
+          test "$(
+            sha256sum workflow-support/release_tag.py
+          )" = "${RELEASE_TAG_SHA256}  workflow-support/release_tag.py"
+          python3 workflow-support/release_tag.py \
+            --repository "https://github.com/${GITHUB_REPOSITORY}.git" \
+            --tag "${RELEASE_TAG}" \
+            --tag-object "${RELEASE_TAG_OBJECT}" \
+            --commit "${RELEASE_COMMIT}"
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
+        with:
+          packages-dir: candidate/dist
+
+  pypi-readback:
+    name: Read back exact PyPI bytes
+    needs:
+      - build
+      - pypi
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      RELEASE_COMMIT: ${{ needs.build.outputs.commit }}
+      RELEASE_TAG: ${{ needs.build.outputs.tag }}
+      RELEASE_TAG_OBJECT: ${{ needs.build.outputs.tag_object }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          ref: ${{ needs.build.outputs.commit }}
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: release-candidate
+          path: candidate
+
+      - name: Verify candidate and PyPI readback
+        env:
+          TREE: ${{ needs.build.outputs.tree }}
+        run: |
+          python .github/scripts/release_artifacts.py verify \
+            --repository . \
+            --candidate-directory candidate \
+            --tag "${RELEASE_TAG}" \
+            --tag-object "${RELEASE_TAG_OBJECT}" \
+            --commit "${RELEASE_COMMIT}" \
+            --tree "${TREE}"
+          python .github/scripts/release_artifacts.py readback \
+            --candidate-directory candidate \
+            --index-base-url https://pypi.org \
+            --file-host files.pythonhosted.org \
+            --output pypi-readback.json
+
+      - name: Preserve PyPI readback proof
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pypi-readback
+          path: pypi-readback.json
+          if-no-files-found: error
+          retention-days: 90
+
+  github-release:
+    name: Create GitHub prerelease last
+    needs:
+      - build
+      - pypi-readback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      CHECKSUMS_SHA256: ${{ needs.build.outputs.checksums_sha256 }}
+      EVIDENCE_SHA256: ${{ needs.build.outputs.evidence_sha256 }}
+      GH_REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_COMMIT: ${{ needs.build.outputs.commit }}
+      RELEASE_TAG: ${{ needs.build.outputs.tag }}
+      RELEASE_TAG_OBJECT: ${{ needs.build.outputs.tag_object }}
+      RELEASE_TAG_SHA256: ${{ needs.build.outputs.release_tag_sha256 }}
+      VERSION: ${{ needs.build.outputs.version }}
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: release-candidate
+          path: candidate
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: release-workflow-support
+          path: workflow-support
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: testpypi-readback
+          path: readback
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: pypi-readback
+          path: readback
+
+      - name: Verify downloaded candidate digests
+        working-directory: candidate
+        run: |
+          test "$(
+            sha256sum evidence/SHA256SUMS
+          )" = "${CHECKSUMS_SHA256}  evidence/SHA256SUMS"
+          test "$(
+            sha256sum evidence/release-evidence.json
+          )" = "${EVIDENCE_SHA256}  evidence/release-evidence.json"
+          sha256sum --check evidence/SHA256SUMS
+
+      - name: Rebind the remote annotated tag
+        run: |
+          test "$(
+            sha256sum workflow-support/release_tag.py
+          )" = "${RELEASE_TAG_SHA256}  workflow-support/release_tag.py"
+          python3 workflow-support/release_tag.py \
+            --repository "https://github.com/${GITHUB_REPOSITORY}.git" \
+            --tag "${RELEASE_TAG}" \
+            --tag-object "${RELEASE_TAG_OBJECT}" \
+            --commit "${RELEASE_COMMIT}"
+
+      - name: Create the prerelease from admitted and read-back bytes
+        run: |
+          gh release create "${RELEASE_TAG}" \
+            "candidate/dist/belgi-${VERSION}.tar.gz" \
+            "candidate/dist/belgi-${VERSION}-py3-none-any.whl" \
+            "candidate/evidence/SHA256SUMS" \
+            "candidate/evidence/release-evidence.json" \
+            "readback/testpypi-readback.json" \
+            "readback/pypi-readback.json" \
+            --verify-tag \
+            --prerelease \
+            --title "belgi ${RELEASE_TAG}" \
+            --notes "Alpha research reference release. The attached evidence binds the exact source and distribution bytes; the readback records confirm those same bytes at TestPyPI and PyPI."

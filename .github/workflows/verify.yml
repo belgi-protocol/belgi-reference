@@ -35,33 +35,36 @@ jobs:
           cache: pip
           cache-dependency-path: |
             pyproject.toml
-            .github/workflows/verify.yml
+            .github/release-requirements.txt
 
       - name: Install verification tools
         run: |
           python -m pip install \
-            build==1.5.0 \
-            cryptography==46.0.4 \
-            "jsonschema[format-nongpl]==4.26.0" \
-            pyright==1.1.410 \
-            pytest==9.0.3 \
-            rfc8785==0.1.4 \
-            ruff==0.15.17
+            --only-binary=:all: \
+            -r .github/release-requirements.txt
 
       - name: Verify retained source
         run: |
-          python -m ruff format --check belgi tests/public_reference
-          python -m ruff check belgi tests/public_reference
+          python -m ruff format --check belgi tests/public_reference .github/scripts
+          python -m ruff check belgi tests/public_reference .github/scripts
           python -m pyright
+          python -m pyright .github/scripts
 
       - name: Build the wheel once
-        run: python -m build --wheel --outdir dist
+        run: python -m build --wheel --no-isolation --outdir dist
 
       - name: Select the exact wheel
         id: wheel
         run: |
           wheel="$(
-            python -c 'from pathlib import Path; wheels = list(Path("dist").glob("belgi-*.whl")); assert len(wheels) == 1; print(wheels[0].resolve())'
+            python - <<'PY'
+          from pathlib import Path
+
+          wheels = list(Path("dist").glob("belgi-*.whl"))
+          if len(wheels) != 1:
+              raise SystemExit(f"expected one wheel, found {len(wheels)}")
+          print(wheels[0].resolve())
+          PY
           )"
           printf 'path=%s\n' "${wheel}" >> "${GITHUB_OUTPUT}"
 
@@ -91,88 +94,14 @@ jobs:
           python -m venv "${environment}"
           "${environment}/bin/python" -m pip install "${BELGI_WHEEL_PATH}"
 
-      - name: Run installed replay and conformance journeys
+      - name: Run the installed reference contract
         run: |
+          version="$(
+            python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])'
+          )"
           for suffix in py311 py314; do
             environment="${RUNNER_TEMP}/belgi-reference-${suffix}"
-            python="${environment}/bin/python"
-            cli="${environment}/bin/belgi"
-            examples="${environment}/share/belgi/examples"
-            (
-              cd "${RUNNER_TEMP}"
-              "${python}" -c 'import belgi, pathlib, sys; assert pathlib.Path(belgi.__file__).is_relative_to(pathlib.Path(sys.prefix))'
-              "${cli}" --help
-
-              positive="$("${cli}" --json replay "${examples}/finite-review-record")"
-              POSITIVE_JSON="${positive}" "${python}" -c \
-                'import json, os; value = json.loads(os.environ["POSITIVE_JSON"]); assert (value["status"], value["outcomeClass"], value["derivedVerdict"]) == ("replayable", "successful-replay", 1)'
-
-              set +e
-              tampered="$("${cli}" --json replay "${examples}/finite-review-record-tampered")"
-              tampered_status=$?
-              set -e
-              test "${tampered_status}" -eq 1
-              TAMPERED_JSON="${tampered}" "${python}" -c \
-                'import json, os; value = json.loads(os.environ["TAMPERED_JSON"]); assert value["outcomeClass"] == "integrity-failure"; assert [item["type"] for item in value["problems"]] == ["integrity-binding-mismatch"]'
-
-              conformance="$("${cli}" --json conformance)"
-              CONFORMANCE_JSON="${conformance}" "${python}" -c \
-                'import json, os; assert json.loads(os.environ["CONFORMANCE_JSON"])["status"] == "passed"'
-            )
+            python .github/scripts/release_artifacts.py installed \
+              --environment "${environment}" \
+              --expected-version "${version}"
           done
-
-      - name: Verify installed import closure on Python 3.14
-        run: |
-          environment="${RUNNER_TEMP}/belgi-reference-py314"
-          cd "${RUNNER_TEMP}"
-          "${environment}/bin/python" - "${environment}" <<'PY'
-          from pathlib import Path
-          import sys
-
-          from belgi.cli import main
-
-          prefix = Path(sys.argv[1])
-          examples = prefix / "share" / "belgi" / "examples"
-          assert main(["--json", "replay", str(examples / "finite-review-record")]) == 0
-          assert main(["--json", "conformance"]) == 0
-
-          forbidden_prefixes = (
-              "belgi.product",
-              "belgi.carrier.integrity.signing",
-              "belgi.carrier.package.assembly",
-              "belgi.carrier.package.emission",
-              "belgi.replay.reference_profile.finite_evaluator.conformance.signed_witness",
-              "belgi.substrate.git",
-              "belgi.substrate.subprocess",
-              "belgi.substrate.yaml",
-          )
-          forbidden_fragments = (
-              ".operational_action",
-              ".console",
-              ".mcp",
-              ".gateway",
-              ".terraform",
-              ".aws",
-              ".opa",
-          )
-          allowed_modules = {
-              "belgi.substrate.git",
-              "belgi.substrate.git.identity",
-          }
-
-          def is_forbidden_module(name: str) -> bool:
-              return name not in allowed_modules and (
-                  any(
-                      name == prefix or name.startswith(prefix + ".")
-                      for prefix in forbidden_prefixes
-                  )
-                  or any(fragment in name for fragment in forbidden_fragments)
-              )
-
-          forbidden = sorted(
-              name
-              for name in sys.modules
-              if is_forbidden_module(name)
-          )
-          assert forbidden == [], forbidden
-          PY

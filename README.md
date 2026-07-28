@@ -18,8 +18,21 @@ python -c "import belgi; print(belgi.__version__)"
 belgi --help
 ```
 
-For a built candidate, replace `.` with the exact local wheel path. The initial
-research publication does not claim package-index availability.
+To inspect exact candidate bytes, install the local wheel by its full path:
+
+```bash
+python -m pip install ./dist/belgi-0.1.0a0-py3-none-any.whl
+```
+
+Package-index availability is established by the exact version page and the
+release readback, not by this README. If version `0.1.0a0` is present on PyPI
+and its published bytes have passed that readback, install it with:
+
+```bash
+python -m pip install "belgi==0.1.0a0"
+```
+
+Otherwise, use the source or admitted local-wheel commands above.
 
 The only promised Python import is `belgi.__version__`. All other Python
 modules are implementation detail.

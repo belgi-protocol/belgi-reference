@@ -18,15 +18,34 @@ create competing normative meaning.
 Run the candidate checks from the repository root:
 
 ```sh
-python -m ruff format --check belgi tests/public_reference
-python -m ruff check belgi tests/public_reference
+python -m ruff format --check belgi tests/public_reference .github/scripts
+python -m ruff check belgi tests/public_reference .github/scripts
 python -m pyright
-python -m build --wheel --outdir dist
+python -m pyright .github/scripts
+python -m build --wheel --no-isolation --outdir dist
 export BELGI_WHEEL_PATH="$(
-  python -c 'from pathlib import Path; wheels = list(Path("dist").glob("belgi-*.whl")); assert len(wheels) == 1; print(wheels[0].resolve())'
+  python - <<'PY'
+from pathlib import Path
+
+wheels = list(Path("dist").glob("belgi-*.whl"))
+if len(wheels) != 1:
+    raise SystemExit(f"expected one wheel, found {len(wheels)}")
+print(wheels[0].resolve())
+PY
 )"
 python -m pytest -q tests/public_reference
 ```
+
+`README.md` owns the shared repository and package introduction.
+`PACKAGE_README.md` is its byte-identical packaging projection; the public
+reference tests reject drift between them.
+
+Release artifacts follow a stricter path than an ordinary contribution. The
+tag workflow builds one source distribution from the exact tag, builds two
+independent wheels from that same source distribution, admits their exact
+inventories and metadata, and publishes the admitted bytes without rebuilding.
+The operator sequence and one-time index setup are in
+[`RELEASING.md`](RELEASING.md).
 
 Do not add product orchestration, signing authority, network fallback,
 production policy, or mutable edition aliases to the reference distribution.
