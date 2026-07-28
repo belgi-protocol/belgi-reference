@@ -1,0 +1,3551 @@
+{
+  "schemaVersion": "belgi-software-change-finite-evaluator-reference-validation-v1",
+  "corpusRole": "finite-reference-validation",
+  "part": {
+    "familyIdentifier": "https://belgi.dev/ids/profile/software-change-admission",
+    "versionDesignator": "0.5",
+    "publicationTrack": "spec-0.5",
+    "status": "working-draft"
+  },
+  "interoperabilityStatus": {
+    "classification": "not-verdict-interoperability-corpus",
+    "part3Clause": "9.8",
+    "establishesCrossImplementationAgreement": false,
+    "establishesImplementationConformance": false
+  },
+  "exactPart4Source": {
+    "sourcePath": "spec/BELGI-Part-4-Software-Change-Admission-Profile.md",
+    "immutableDesignator": {
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+      "digest": {
+        "algorithmId": "sha256",
+        "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+      }
+    }
+  },
+  "requirementLinks": [
+    {
+      "requirementId": "P4-FE-001",
+      "document": "spec/BELGI-Part-4-Software-Change-Admission-Profile.md",
+      "clauseLocator": "Clause 12.6",
+      "heading": "Finite evaluator selection and exact source authority"
+    },
+    {
+      "requirementId": "P4-FE-002",
+      "document": "spec/BELGI-Part-4-Software-Change-Admission-Profile.md",
+      "clauseLocator": "Clauses 7.5 and 8.5",
+      "heading": "Closed finite judged-object and review records"
+    },
+    {
+      "requirementId": "P4-FE-003",
+      "document": "spec/BELGI-Part-4-Software-Change-Admission-Profile.md",
+      "clauseLocator": "Clauses 9.5 and 10.8",
+      "heading": "Finite parameters and trust declaration"
+    },
+    {
+      "requirementId": "P4-FE-004",
+      "document": "spec/BELGI-Part-4-Software-Change-Admission-Profile.md",
+      "clauseLocator": "Clauses 11.5 and 12.7",
+      "heading": "Decisive bindings and total evaluator"
+    },
+    {
+      "requirementId": "P4-FE-005",
+      "document": "spec/BELGI-Part-4-Software-Change-Admission-Profile.md",
+      "clauseLocator": "Clause 12.8",
+      "heading": "Failure, priority, and ambient-context boundary"
+    },
+    {
+      "requirementId": "P4-FE-006",
+      "document": "spec/BELGI-Part-4-Software-Change-Admission-Profile.md",
+      "clauseLocator": "Clauses 6.7, 6.8, and 12.9",
+      "heading": "Reference-validation and non-interoperability status"
+    }
+  ],
+  "baseInput": {
+    "priorReplay": {
+      "status": "succeeded"
+    },
+    "exactPart4Designator": {
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+      "digest": {
+        "algorithmId": "sha256",
+        "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+      }
+    },
+    "judgedCarrier": {
+      "kind": "judged-object-carrier",
+      "proposal": {
+        "kind": "inline-json",
+        "mediaType": "application/json",
+        "content": {
+          "proposalIdentifier": "proposal:finite-control",
+          "proposedSourceStateIdentifier": "source-state:proposed"
+        }
+      },
+      "baseline": {
+        "kind": "inline-json",
+        "mediaType": "application/json",
+        "content": {
+          "baselineRevisionIdentifier": "revision:baseline",
+          "baselineSourceStateIdentifier": "source-state:baseline"
+        }
+      }
+    },
+    "evidenceCarrier": {
+      "kind": "evidence-state-carrier",
+      "evidenceItems": {
+        "review:finite-control": {
+          "evidenceKindIdentifier": "belgi.software-change.evidence.review-record",
+          "source": {
+            "kind": "inline-json",
+            "mediaType": "application/json",
+            "content": {
+              "reviewIdentifier": "review:accepted",
+              "proposalIdentifier": "proposal:finite-control",
+              "proposedSourceStateIdentifier": "source-state:proposed",
+              "baselineRevisionIdentifier": "revision:baseline",
+              "baselineSourceStateIdentifier": "source-state:baseline",
+              "decision": "accepted"
+            }
+          },
+          "parameters": [
+            {
+              "parameterIdentifier": "belgi.software-change.parameter.evidence-source-class",
+              "value": "belgi.software-change.source.review-system"
+            }
+          ]
+        }
+      }
+    },
+    "evaluatorCarrier": {
+      "kind": "evaluator-carrier",
+      "replayPolicy": "belgi.software-change.replay.record-check",
+      "declaredConditions": {
+        "belgi.software-change.condition.change-basis-resolved": {
+          "parameters": [],
+          "determiningSourceDesignator": {
+            "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+            "digest": {
+              "algorithmId": "sha256",
+              "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+            }
+          }
+        },
+        "belgi.software-change.condition.required-evidence-present": {
+          "parameters": [],
+          "determiningSourceDesignator": {
+            "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+            "digest": {
+              "algorithmId": "sha256",
+              "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+            }
+          }
+        },
+        "belgi.software-change.condition.review-policy-satisfied": {
+          "parameters": [],
+          "determiningSourceDesignator": {
+            "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+            "digest": {
+              "algorithmId": "sha256",
+              "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+            }
+          }
+        }
+      },
+      "trustBoundaries": {
+        "belgi.software-change.source.review-system": {
+          "parameters": [
+            {
+              "parameterIdentifier": "belgi.software-change.parameter.boundary-participation",
+              "value": "belgi.software-change.boundary-participation.included"
+            },
+            {
+              "parameterIdentifier": "belgi.software-change.parameter.authority-level",
+              "value": "belgi.software-change.authority.authoritative"
+            }
+          ]
+        }
+      },
+      "governingSpecificationDesignators": [],
+      "exactEditionDesignators": [
+        {
+          "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+          "digest": {
+            "algorithmId": "sha256",
+            "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+          }
+        }
+      ],
+      "evidenceConditionBindings": {
+        "belgi.software-change.condition.change-basis-resolved": [
+          {
+            "bindingKindIdentifier": "belgi.software-change.binding.satisfies",
+            "evidenceIdentifiers": [
+              "review:finite-control"
+            ],
+            "parameters": []
+          }
+        ],
+        "belgi.software-change.condition.required-evidence-present": [
+          {
+            "bindingKindIdentifier": "belgi.software-change.binding.satisfies",
+            "evidenceIdentifiers": [
+              "review:finite-control"
+            ],
+            "parameters": []
+          }
+        ],
+        "belgi.software-change.condition.review-policy-satisfied": [
+          {
+            "bindingKindIdentifier": "belgi.software-change.binding.satisfies",
+            "evidenceIdentifiers": [
+              "review:finite-control"
+            ],
+            "parameters": []
+          }
+        ]
+      }
+    }
+  },
+  "cases": [
+    {
+      "caseId": "accepted.included-authoritative",
+      "family": "positive",
+      "operation": "finite-logical-evaluate",
+      "mutations": [],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 1,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-002",
+        "P4-FE-003",
+        "P4-FE-004",
+        "P4-FE-006"
+      ]
+    },
+    {
+      "caseId": "review.rejected",
+      "family": "derived-zero",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "decision"
+          ],
+          "value": "rejected"
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "evidence.bound-item-absent",
+      "family": "derived-zero",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "identity.proposal-identifier.mismatch",
+      "family": "identity-mismatch",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "proposalIdentifier"
+          ],
+          "value": "mismatch:proposal-identifier"
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "identity.proposed-source-state.mismatch",
+      "family": "identity-mismatch",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "proposedSourceStateIdentifier"
+          ],
+          "value": "mismatch:proposed-source-state"
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "identity.baseline-revision.mismatch",
+      "family": "identity-mismatch",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "baselineRevisionIdentifier"
+          ],
+          "value": "mismatch:baseline-revision"
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "identity.baseline-source-state.mismatch",
+      "family": "identity-mismatch",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "baselineSourceStateIdentifier"
+          ],
+          "value": "mismatch:baseline-source-state"
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "identity.unicode-normalization-not-applied",
+      "family": "identity-mismatch",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "proposal",
+            "content",
+            "proposalIdentifier"
+          ],
+          "value": "proposal:café"
+        },
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "proposalIdentifier"
+          ],
+          "value": "proposal:café"
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "identity.whitespace-not-trimmed",
+      "family": "identity-mismatch",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "proposalIdentifier"
+          ],
+          "value": "proposal:finite-control "
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "trust.included-non-authoritative",
+      "family": "trust-derived-zero",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system",
+            "parameters",
+            1,
+            "value"
+          ],
+          "value": "belgi.software-change.authority.non-authoritative"
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "trust.excluded-no-authority",
+      "family": "trust-derived-zero",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system",
+            "parameters"
+          ],
+          "value": [
+            {
+              "parameterIdentifier": "belgi.software-change.parameter.boundary-participation",
+              "value": "belgi.software-change.boundary-participation.excluded"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "trust.applicable-entry-absent",
+      "family": "trust-derived-zero",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "binding.none",
+      "family": "binding-derived-zero",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings"
+          ],
+          "value": {}
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "binding.only-supports",
+      "family": "binding-derived-zero",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.change-basis-resolved",
+            0,
+            "bindingKindIdentifier"
+          ],
+          "value": "belgi.software-change.binding.supports"
+        },
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.required-evidence-present",
+            0,
+            "bindingKindIdentifier"
+          ],
+          "value": "belgi.software-change.binding.supports"
+        },
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.review-policy-satisfied",
+            0,
+            "bindingKindIdentifier"
+          ],
+          "value": "belgi.software-change.binding.supports"
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "binding.only-refutes",
+      "family": "binding-derived-zero",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.change-basis-resolved",
+            0,
+            "bindingKindIdentifier"
+          ],
+          "value": "belgi.software-change.binding.refutes"
+        },
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.required-evidence-present",
+            0,
+            "bindingKindIdentifier"
+          ],
+          "value": "belgi.software-change.binding.refutes"
+        },
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.review-policy-satisfied",
+            0,
+            "bindingKindIdentifier"
+          ],
+          "value": "belgi.software-change.binding.refutes"
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "evidence.unbound-accepted-cannot-substitute",
+      "family": "auxiliary-isolation",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control"
+          ]
+        },
+        {
+          "op": "add",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:auxiliary"
+          ],
+          "value": {
+            "evidenceKindIdentifier": "belgi.software-change.evidence.review-record",
+            "source": {
+              "kind": "inline-json",
+              "mediaType": "application/json",
+              "content": {
+                "reviewIdentifier": "review:auxiliary",
+                "proposalIdentifier": "proposal:finite-control",
+                "proposedSourceStateIdentifier": "source-state:proposed",
+                "baselineRevisionIdentifier": "revision:baseline",
+                "baselineSourceStateIdentifier": "source-state:baseline",
+                "decision": "accepted"
+              }
+            },
+            "parameters": [
+              {
+                "parameterIdentifier": "belgi.software-change.parameter.evidence-source-class",
+                "value": "belgi.software-change.source.review-system"
+              }
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "evidence.unbound-rejected-cannot-change-go",
+      "family": "auxiliary-isolation",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "add",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:auxiliary"
+          ],
+          "value": {
+            "evidenceKindIdentifier": "belgi.software-change.evidence.review-record",
+            "source": {
+              "kind": "inline-json",
+              "mediaType": "application/json",
+              "content": {
+                "reviewIdentifier": "review:auxiliary",
+                "proposalIdentifier": "proposal:finite-control",
+                "proposedSourceStateIdentifier": "source-state:proposed",
+                "baselineRevisionIdentifier": "revision:baseline",
+                "baselineSourceStateIdentifier": "source-state:baseline",
+                "decision": "rejected"
+              }
+            },
+            "parameters": [
+              {
+                "parameterIdentifier": "belgi.software-change.parameter.evidence-source-class",
+                "value": "belgi.software-change.source.review-system"
+              }
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 1,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "judged.valid-outside-finite-subset",
+      "family": "outside-finite-subset",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "judgedCarrier"
+          ]
+        },
+        {
+          "op": "add",
+          "path": [
+            "preInducedOutsideFiniteSubsetPart1JudgedObject"
+          ],
+          "value": {
+            "admissionSubject": "part1:admission-subject:outside-finite-subset",
+            "referenceContext": "part1:reference-context:outside-finite-subset"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "priority.outside-j-does-not-mask-lambda-e",
+      "family": "lift-independence",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "judgedCarrier"
+          ]
+        },
+        {
+          "op": "add",
+          "path": [
+            "preInducedOutsideFiniteSubsetPart1JudgedObject"
+          ],
+          "value": {
+            "admissionSubject": "part1:admission-subject:outside-finite-subset",
+            "referenceContext": "part1:reference-context:outside-finite-subset"
+          }
+        },
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "decision"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "priority.outside-j-does-not-mask-lambda-f",
+      "family": "lift-independence",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "judgedCarrier"
+          ]
+        },
+        {
+          "op": "add",
+          "path": [
+            "preInducedOutsideFiniteSubsetPart1JudgedObject"
+          ],
+          "value": {
+            "admissionSubject": "part1:admission-subject:outside-finite-subset",
+            "referenceContext": "part1:reference-context:outside-finite-subset"
+          }
+        },
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "replayPolicy"
+          ],
+          "value": "belgi.software-change.replay.other"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.foreign-carrier-shape",
+      "family": "judged-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "proposal",
+            "content"
+          ],
+          "value": {
+            "patchSetIdentifier": "patch:foreign-carrier-shape"
+          }
+        },
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "baseline",
+            "content"
+          ],
+          "value": {
+            "revisionObjectIdentifier": "revision:foreign-carrier-shape"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.proposal.missing-proposalIdentifier",
+      "family": "judged-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "judgedCarrier",
+            "proposal",
+            "content",
+            "proposalIdentifier"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.proposal.wrong-type-proposalIdentifier",
+      "family": "judged-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "proposal",
+            "content",
+            "proposalIdentifier"
+          ],
+          "value": 7
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.proposal.empty-proposalIdentifier",
+      "family": "judged-record-empty",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "proposal",
+            "content",
+            "proposalIdentifier"
+          ],
+          "value": ""
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.proposal.missing-proposedSourceStateIdentifier",
+      "family": "judged-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "judgedCarrier",
+            "proposal",
+            "content",
+            "proposedSourceStateIdentifier"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.proposal.wrong-type-proposedSourceStateIdentifier",
+      "family": "judged-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "proposal",
+            "content",
+            "proposedSourceStateIdentifier"
+          ],
+          "value": 7
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.proposal.empty-proposedSourceStateIdentifier",
+      "family": "judged-record-empty",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "proposal",
+            "content",
+            "proposedSourceStateIdentifier"
+          ],
+          "value": ""
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.proposal.extra-member",
+      "family": "judged-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "add",
+          "path": [
+            "judgedCarrier",
+            "proposal",
+            "content",
+            "unexpected"
+          ],
+          "value": "x"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.baseline.missing-baselineRevisionIdentifier",
+      "family": "judged-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "judgedCarrier",
+            "baseline",
+            "content",
+            "baselineRevisionIdentifier"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.baseline.wrong-type-baselineRevisionIdentifier",
+      "family": "judged-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "baseline",
+            "content",
+            "baselineRevisionIdentifier"
+          ],
+          "value": 7
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.baseline.empty-baselineRevisionIdentifier",
+      "family": "judged-record-empty",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "baseline",
+            "content",
+            "baselineRevisionIdentifier"
+          ],
+          "value": ""
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.baseline.missing-baselineSourceStateIdentifier",
+      "family": "judged-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "judgedCarrier",
+            "baseline",
+            "content",
+            "baselineSourceStateIdentifier"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.baseline.wrong-type-baselineSourceStateIdentifier",
+      "family": "judged-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "baseline",
+            "content",
+            "baselineSourceStateIdentifier"
+          ],
+          "value": 7
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.baseline.empty-baselineSourceStateIdentifier",
+      "family": "judged-record-empty",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "baseline",
+            "content",
+            "baselineSourceStateIdentifier"
+          ],
+          "value": ""
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.baseline.extra-member",
+      "family": "judged-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "add",
+          "path": [
+            "judgedCarrier",
+            "baseline",
+            "content",
+            "unexpected"
+          ],
+          "value": "x"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.proposal.null-record",
+      "family": "judged-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "proposal",
+            "content"
+          ],
+          "value": null
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "judged.baseline.boolean-record",
+      "family": "judged-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "judgedCarrier",
+            "baseline",
+            "content"
+          ],
+          "value": true
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_J",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.missing-reviewIdentifier",
+      "family": "review-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "reviewIdentifier"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.wrong-type-reviewIdentifier",
+      "family": "review-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "reviewIdentifier"
+          ],
+          "value": 9
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.missing-proposalIdentifier",
+      "family": "review-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "proposalIdentifier"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.wrong-type-proposalIdentifier",
+      "family": "review-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "proposalIdentifier"
+          ],
+          "value": 9
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.missing-proposedSourceStateIdentifier",
+      "family": "review-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "proposedSourceStateIdentifier"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.wrong-type-proposedSourceStateIdentifier",
+      "family": "review-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "proposedSourceStateIdentifier"
+          ],
+          "value": 9
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.missing-baselineRevisionIdentifier",
+      "family": "review-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "baselineRevisionIdentifier"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.wrong-type-baselineRevisionIdentifier",
+      "family": "review-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "baselineRevisionIdentifier"
+          ],
+          "value": 9
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.missing-baselineSourceStateIdentifier",
+      "family": "review-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "baselineSourceStateIdentifier"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.wrong-type-baselineSourceStateIdentifier",
+      "family": "review-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "baselineSourceStateIdentifier"
+          ],
+          "value": 9
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.missing-decision",
+      "family": "review-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "decision"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.wrong-type-decision",
+      "family": "review-record-types",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "decision"
+          ],
+          "value": false
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.empty-reviewIdentifier",
+      "family": "review-record-empty",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "reviewIdentifier"
+          ],
+          "value": ""
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.empty-proposalIdentifier",
+      "family": "review-record-empty",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "proposalIdentifier"
+          ],
+          "value": ""
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.empty-proposedSourceStateIdentifier",
+      "family": "review-record-empty",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "proposedSourceStateIdentifier"
+          ],
+          "value": ""
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.empty-baselineRevisionIdentifier",
+      "family": "review-record-empty",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "baselineRevisionIdentifier"
+          ],
+          "value": ""
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.empty-baselineSourceStateIdentifier",
+      "family": "review-record-empty",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "baselineSourceStateIdentifier"
+          ],
+          "value": ""
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.extra-member",
+      "family": "review-record-closure",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "add",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "timestamp"
+          ],
+          "value": "2026-07-20T00:00:00Z"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "review.unknown-decision",
+      "family": "review-record-decision",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "source",
+            "content",
+            "decision"
+          ],
+          "value": "approved"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evidence.parameter-missing",
+      "family": "evidence-parameter-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "parameters"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evidence.parameter-duplicate",
+      "family": "evidence-parameter-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "parameters"
+          ],
+          "value": {
+            "parameterIdentifier": "belgi.software-change.parameter.evidence-source-class",
+            "value": "belgi.software-change.source.review-system"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evidence.parameter-unknown",
+      "family": "evidence-parameter-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "parameters",
+            0,
+            "parameterIdentifier"
+          ],
+          "value": "belgi.software-change.parameter.unknown"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evidence.parameter-wrong-container-type",
+      "family": "evidence-parameter-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "parameters"
+          ],
+          "value": {}
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evidence.parameter-value-wrong-type",
+      "family": "evidence-parameter-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "parameters",
+            0,
+            "value"
+          ],
+          "value": 1
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evidence.source-class-unknown",
+      "family": "evidence-parameter-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "parameters",
+            0,
+            "value"
+          ],
+          "value": "belgi.software-change.source.unknown"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evidence.parameter-runtime-alias",
+      "family": "evidence-parameter-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "parameters",
+            0,
+            "parameterIdentifier"
+          ],
+          "value": "belgi.reference-profile.parameter.evidence-source-class"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evidence.kind-unknown-unowned",
+      "family": "evidence-kind",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "evidenceKindIdentifier"
+          ],
+          "value": "belgi.software-change.evidence.unknown"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evidence.kind-recognized-non-review",
+      "family": "evidence-kind",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "evidenceKindIdentifier"
+          ],
+          "value": "belgi.software-change.evidence.build-result"
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "evidence.source-class-recognized-non-review-system",
+      "family": "evidence-source-class",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "parameters",
+            0,
+            "value"
+          ],
+          "value": "belgi.software-change.source.repository-system"
+        },
+        {
+          "op": "remove",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system"
+          ]
+        },
+        {
+          "op": "add",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.repository-system"
+          ],
+          "value": {
+            "parameters": [
+              {
+                "parameterIdentifier": "belgi.software-change.parameter.boundary-participation",
+                "value": "belgi.software-change.boundary-participation.excluded"
+              }
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "evidence.identifier-changed-bound-reference-absent",
+      "family": "evidence-identifier",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control"
+          ]
+        },
+        {
+          "op": "add",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:renamed"
+          ],
+          "value": {
+            "evidenceKindIdentifier": "belgi.software-change.evidence.review-record",
+            "source": {
+              "kind": "inline-json",
+              "mediaType": "application/json",
+              "content": {
+                "reviewIdentifier": "review:auxiliary",
+                "proposalIdentifier": "proposal:finite-control",
+                "proposedSourceStateIdentifier": "source-state:proposed",
+                "baselineRevisionIdentifier": "revision:baseline",
+                "baselineSourceStateIdentifier": "source-state:baseline",
+                "decision": "accepted"
+              }
+            },
+            "parameters": [
+              {
+                "parameterIdentifier": "belgi.software-change.parameter.evidence-source-class",
+                "value": "belgi.software-change.source.review-system"
+              }
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 0,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-004"
+      ]
+    },
+    {
+      "caseId": "evidence.unbound-malformed-review-fails-independent-lift",
+      "family": "lift-independence",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "add",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:malformed-auxiliary"
+          ],
+          "value": {
+            "evidenceKindIdentifier": "belgi.software-change.evidence.review-record",
+            "source": {
+              "kind": "inline-json",
+              "mediaType": "application/json",
+              "content": {
+                "reviewIdentifier": "review:malformed-auxiliary",
+                "proposalIdentifier": "proposal:finite-control",
+                "proposedSourceStateIdentifier": "source-state:proposed",
+                "baselineRevisionIdentifier": "revision:baseline",
+                "baselineSourceStateIdentifier": "source-state:baseline"
+              }
+            },
+            "parameters": [
+              {
+                "parameterIdentifier": "belgi.software-change.parameter.evidence-source-class",
+                "value": "belgi.software-change.source.review-system"
+              }
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-002",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.condition-extra",
+      "family": "evaluator-selection",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "add",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.build-policy-satisfied"
+          ],
+          "value": {
+            "parameters": [],
+            "determiningSourceDesignator": {
+              "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+              "digest": {
+                "algorithmId": "sha256",
+                "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+              }
+            }
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.condition-substituted-change-basis-resolved",
+      "family": "condition-token",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.change-basis-resolved"
+          ]
+        },
+        {
+          "op": "add",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.build-policy-satisfied"
+          ],
+          "value": {
+            "parameters": [],
+            "determiningSourceDesignator": {
+              "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+              "digest": {
+                "algorithmId": "sha256",
+                "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+              }
+            }
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.condition-parameter-nonempty-change-basis-resolved",
+      "family": "condition-parameter",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.change-basis-resolved",
+            "parameters"
+          ],
+          "value": {
+            "parameterIdentifier": "belgi.software-change.parameter.freshness",
+            "value": "now"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.condition-substituted-required-evidence-present",
+      "family": "condition-token",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.required-evidence-present"
+          ]
+        },
+        {
+          "op": "add",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.build-policy-satisfied"
+          ],
+          "value": {
+            "parameters": [],
+            "determiningSourceDesignator": {
+              "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+              "digest": {
+                "algorithmId": "sha256",
+                "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+              }
+            }
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.condition-parameter-nonempty-required-evidence-present",
+      "family": "condition-parameter",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.required-evidence-present",
+            "parameters"
+          ],
+          "value": {
+            "parameterIdentifier": "belgi.software-change.parameter.freshness",
+            "value": "now"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.condition-substituted-review-policy-satisfied",
+      "family": "condition-token",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.review-policy-satisfied"
+          ]
+        },
+        {
+          "op": "add",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.build-policy-satisfied"
+          ],
+          "value": {
+            "parameters": [],
+            "determiningSourceDesignator": {
+              "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+              "digest": {
+                "algorithmId": "sha256",
+                "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+              }
+            }
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.condition-parameter-nonempty-review-policy-satisfied",
+      "family": "condition-parameter",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.review-policy-satisfied",
+            "parameters"
+          ],
+          "value": {
+            "parameterIdentifier": "belgi.software-change.parameter.freshness",
+            "value": "now"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.conditions-all-substituted-current-source",
+      "family": "condition-token",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions"
+          ],
+          "value": {
+            "belgi.software-change.condition.build-policy-satisfied": {
+              "parameters": [],
+              "determiningSourceDesignator": {
+                "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+                "digest": {
+                  "algorithmId": "sha256",
+                  "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+                }
+              }
+            },
+            "belgi.software-change.condition.test-policy-satisfied": {
+              "parameters": [],
+              "determiningSourceDesignator": {
+                "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+                "digest": {
+                  "algorithmId": "sha256",
+                  "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+                }
+              }
+            },
+            "belgi.software-change.condition.coverage-policy-satisfied": {
+              "parameters": [],
+              "determiningSourceDesignator": {
+                "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+                "digest": {
+                  "algorithmId": "sha256",
+                  "digestValue": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.determining-source-uri-mismatch",
+      "family": "determining-source",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.change-basis-resolved",
+            "determiningSourceDesignator",
+            "uri"
+          ],
+          "value": "https://example.invalid/wrong-part4-source"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.determining-source-algorithm-mismatch",
+      "family": "determining-source",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.required-evidence-present",
+            "determiningSourceDesignator",
+            "digest",
+            "algorithmId"
+          ],
+          "value": "sha512"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.determining-source-digest-mismatch",
+      "family": "determining-source",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.review-policy-satisfied",
+            "determiningSourceDesignator",
+            "digest",
+            "digestValue"
+          ],
+          "value": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.determining-source-missing",
+      "family": "determining-source",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "remove",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.change-basis-resolved",
+            "determiningSourceDesignator"
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "evaluator.replay-policy-wrong",
+      "family": "replay-policy",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "replayPolicy"
+          ],
+          "value": "belgi.software-change.replay.live-review"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-001",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "binding.extra-decisive",
+      "family": "binding-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.change-basis-resolved"
+          ],
+          "value": {
+            "bindingKindIdentifier": "belgi.software-change.binding.satisfies",
+            "evidenceIdentifiers": [
+              "review:finite-control"
+            ],
+            "parameters": []
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "binding.inconsistent-target",
+      "family": "binding-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.review-policy-satisfied",
+            0,
+            "evidenceIdentifiers",
+            0
+          ],
+          "value": "review:other"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "binding.multiple-targets",
+      "family": "binding-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.change-basis-resolved",
+            0,
+            "evidenceIdentifiers"
+          ],
+          "value": "review:other"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "binding.duplicate-target",
+      "family": "binding-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.change-basis-resolved",
+            0,
+            "evidenceIdentifiers"
+          ],
+          "value": "review:finite-control"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "binding.nonempty-parameter",
+      "family": "binding-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.change-basis-resolved",
+            0,
+            "parameters"
+          ],
+          "value": {
+            "parameterIdentifier": "belgi.software-change.parameter.clock",
+            "value": "now"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-004",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "binding.unknown-kind",
+      "family": "binding-kind",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.change-basis-resolved",
+            0,
+            "bindingKindIdentifier"
+          ],
+          "value": "belgi.software-change.binding.unknown"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "binding.decisive-under-extra-condition",
+      "family": "binding-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "add",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.build-policy-satisfied"
+          ],
+          "value": [
+            {
+              "bindingKindIdentifier": "belgi.software-change.binding.satisfies",
+              "evidenceIdentifiers": [
+                "review:finite-control"
+              ],
+              "parameters": []
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "binding.empty-target",
+      "family": "binding-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.change-basis-resolved",
+            0,
+            "evidenceIdentifiers",
+            0
+          ],
+          "value": ""
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-004",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "trust.included-missing-authority",
+      "family": "trust-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system",
+            "parameters"
+          ],
+          "value": [
+            {
+              "parameterIdentifier": "belgi.software-change.parameter.boundary-participation",
+              "value": "belgi.software-change.boundary-participation.included"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "trust.excluded-with-authority",
+      "family": "trust-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system",
+            "parameters"
+          ],
+          "value": [
+            {
+              "parameterIdentifier": "belgi.software-change.parameter.boundary-participation",
+              "value": "belgi.software-change.boundary-participation.excluded"
+            },
+            {
+              "parameterIdentifier": "belgi.software-change.parameter.authority-level",
+              "value": "belgi.software-change.authority.authoritative"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "trust.duplicate-boundary",
+      "family": "trust-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system",
+            "parameters"
+          ],
+          "value": {
+            "parameterIdentifier": "belgi.software-change.parameter.boundary-participation",
+            "value": "belgi.software-change.boundary-participation.included"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "trust.unknown-parameter",
+      "family": "trust-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system",
+            "parameters"
+          ],
+          "value": {
+            "parameterIdentifier": "belgi.software-change.parameter.clock",
+            "value": "now"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "trust.parameter-wrong-type",
+      "family": "trust-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system",
+            "parameters",
+            0
+          ],
+          "value": "not-a-parameter"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "trust.unknown-source-class-key",
+      "family": "trust-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "add",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.unknown"
+          ],
+          "value": {
+            "parameters": [
+              {
+                "parameterIdentifier": "belgi.software-change.parameter.boundary-participation",
+                "value": "belgi.software-change.boundary-participation.excluded"
+              }
+            ]
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "trust.parameter-order-reversed",
+      "family": "trust-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system",
+            "parameters"
+          ],
+          "value": [
+            {
+              "parameterIdentifier": "belgi.software-change.parameter.authority-level",
+              "value": "belgi.software-change.authority.authoritative"
+            },
+            {
+              "parameterIdentifier": "belgi.software-change.parameter.boundary-participation",
+              "value": "belgi.software-change.boundary-participation.included"
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "trust.parameters-empty",
+      "family": "trust-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system",
+            "parameters"
+          ],
+          "value": []
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "trust.authority-value-unknown",
+      "family": "trust-grammar",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "evaluatorCarrier",
+            "trustBoundaries",
+            "belgi.software-change.source.review-system",
+            "parameters",
+            1,
+            "value"
+          ],
+          "value": "belgi.software-change.authority.unknown"
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "cached-verdict.disagreement",
+      "family": "cached-verdict",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "add",
+          "path": [
+            "cachedVerdict"
+          ],
+          "value": 0
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 1,
+        "failureStage": null,
+        "warnings": [
+          "cached-verdict-mismatch"
+        ],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "cached-verdict.agreement",
+      "family": "cached-verdict",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "add",
+          "path": [
+            "cachedVerdict"
+          ],
+          "value": 1
+        }
+      ],
+      "expected": {
+        "resultKind": "success",
+        "verdict": 1,
+        "failureStage": null,
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "ambient.clock-evidence-parameter",
+      "family": "ambient-context",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evidenceCarrier",
+            "evidenceItems",
+            "review:finite-control",
+            "parameters"
+          ],
+          "value": {
+            "parameterIdentifier": "belgi.software-change.parameter.clock",
+            "value": "2026-07-20T00:00:00Z"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_E",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "ambient.freshness-condition-parameter",
+      "family": "ambient-context",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "declaredConditions",
+            "belgi.software-change.condition.change-basis-resolved",
+            "parameters"
+          ],
+          "value": {
+            "parameterIdentifier": "belgi.software-change.parameter.freshness",
+            "value": "PT1H"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "ambient.timestamp-binding-parameter",
+      "family": "ambient-context",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "evaluatorCarrier",
+            "evidenceConditionBindings",
+            "belgi.software-change.condition.required-evidence-present",
+            0,
+            "parameters"
+          ],
+          "value": {
+            "parameterIdentifier": "belgi.software-change.parameter.timestamp",
+            "value": "now"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "lift-failure",
+        "verdict": null,
+        "failureStage": "lambda_F",
+        "warnings": [],
+        "finiteEvaluationPerformed": true
+      },
+      "requirementIds": [
+        "P4-FE-003",
+        "P4-FE-005"
+      ]
+    },
+    {
+      "caseId": "priority.malformed-authenticated-claim-record",
+      "family": "earlier-owner-priority",
+      "operation": "finite-logical-evaluate",
+      "mutations": [
+        {
+          "op": "replace",
+          "path": [
+            "priorReplay"
+          ],
+          "value": {
+            "status": "failed",
+            "owner": "authenticated-claim-record-validation",
+            "failureStage": "authenticated-claim-record-validation",
+            "resultCode": "claim-record-malformed"
+          }
+        }
+      ],
+      "expected": {
+        "resultKind": "earlier-failure",
+        "verdict": null,
+        "failureStage": "authenticated-claim-record-validation",
+        "warnings": [],
+        "finiteEvaluationPerformed": false
+      },
+      "requirementIds": [
+        "P4-FE-005"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,583 @@
+{
+  "$schema": "https://belgi.dev/schemas/carrier/rc.v2/BELGI-JSON-Schema-Dialect.schema.json",
+  "$id": "https://belgi.dev/schemas/carrier/rc.v2/Common.schema.json",
+  "title": "BELGI carrier common definitions",
+  "description": "Shared definitions for BELGI carrier-layer preserved representations and replay-package structures.",
+  "type": "object",
+  "$defs": {
+    "jsonValue": {
+      "title": "JSON value",
+      "description": "Recursive JSON value used for inline carrier content and declaration parameters.",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "Common.schema.json#/$defs/jsonValue"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "Common.schema.json#/$defs/jsonValue"
+          }
+        }
+      ]
+    },
+    "digest": {
+      "title": "Digest",
+      "description": "Digest identifier and value bound to one immutable designator.",
+      "type": "object",
+      "properties": {
+        "algorithmId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "digestValue": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-f]{2})+(?![\\s\\S])",
+          "minLength": 2
+        }
+      },
+      "required": [
+        "algorithmId",
+        "digestValue"
+      ],
+      "additionalProperties": false
+    },
+    "immutableDesignator": {
+      "title": "Immutable designator",
+      "description": "Structured exact-edition designator consisting of an absolute URI and a digest.",
+      "type": "object",
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "digest": {
+          "$ref": "Common.schema.json#/$defs/digest"
+        }
+      },
+      "required": [
+        "uri",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "stableIdentifier": {
+      "title": "Stable identifier",
+      "description": "Opaque non-empty absolute URI naming replay-relevant meaning independently of an exact defining-source designator.",
+      "type": "string",
+      "format": "uri",
+      "minLength": 1
+    },
+    "packageIdentifier": {
+      "title": "Package identifier",
+      "description": "Package identifier preserved by one BELGI claim record.",
+      "type": "string",
+      "minLength": 1
+    },
+    "memberName": {
+      "title": "Member name",
+      "description": "Package-local member name used during package assembly and claim-record inventory.",
+      "type": "string",
+      "minLength": 1
+    },
+    "canonicalReference": {
+      "title": "Canonical reference",
+      "description": "Stable package-local canonical reference assigned to one replay-relevant package member.",
+      "type": "string",
+      "minLength": 1
+    },
+    "memberClassification": {
+      "title": "Member classification",
+      "description": "Claim-record classification of a package member.",
+      "type": "string",
+      "enum": [
+        "replay-relevant",
+        "claim-record-integrity-recovery",
+        "auxiliary"
+      ]
+    },
+    "memberRole": {
+      "title": "Member role",
+      "description": "Carrier-layer role of one package member.",
+      "type": "string",
+      "enum": [
+        "claim-record",
+        "package-integrity-manifest",
+        "package-integrity-anchor",
+        "judged-object-carrier-root",
+        "evidence-state-carrier-root",
+        "evaluator-carrier-root",
+        "replay-dependency",
+        "auxiliary"
+      ]
+    },
+    "dependencyKind": {
+      "title": "Dependency kind",
+      "description": "Replay-relevant dependency category preserved by the claim record.",
+      "type": "string",
+      "enum": [
+        "judged-object-input",
+        "evidence-input",
+        "evaluator-input",
+        "profile-material",
+        "companion-material",
+        "governing-specification",
+        "determining-semantics",
+        "other"
+      ]
+    },
+    "referencedSourceKind": {
+      "title": "Referenced source kind",
+      "description": "Replay-relevant external source category preserved by the claim record.",
+      "type": "string",
+      "enum": [
+        "profile",
+        "companion",
+        "governing-specification",
+        "determining-semantics",
+        "other"
+      ]
+    },
+    "boundObjectKind": {
+      "title": "Bound object kind",
+      "description": "Whether integrity binds exact preserved octets or a canonicalized replay-relevant projection.",
+      "type": "string",
+      "enum": [
+        "exact-preserved-octets",
+        "canonical-projection"
+      ]
+    },
+    "cachedVerdict": {
+      "title": "Cached verdict",
+      "description": "Auxiliary cached verdict preserved by a claim record or replay report.",
+      "type": "integer",
+      "enum": [
+        0,
+        1
+      ]
+    },
+    "representationBinding": {
+      "title": "Representation binding",
+      "description": "Media type and optional schema designator for one preserved package member.",
+      "type": "object",
+      "properties": {
+        "mediaType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schemaDesignator": {
+          "$ref": "Common.schema.json#/$defs/immutableDesignator"
+        }
+      },
+      "required": [
+        "mediaType"
+      ],
+      "additionalProperties": false
+    },
+    "inlineJsonLocator": {
+      "title": "Inline JSON locator",
+      "description": "Replay-relevant content preserved inline in a carrier document.",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "inline-json"
+        },
+        "mediaType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content": {
+          "$ref": "Common.schema.json#/$defs/jsonValue"
+        }
+      },
+      "required": [
+        "kind",
+        "mediaType",
+        "content"
+      ],
+      "additionalProperties": false
+    },
+    "packageMemberLocator": {
+      "title": "Package-member locator",
+      "description": "Replay-relevant content designated by canonical reference to another package member.",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "package-member"
+        },
+        "mediaType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "memberReference": {
+          "$ref": "Common.schema.json#/$defs/canonicalReference"
+        }
+      },
+      "required": [
+        "kind",
+        "mediaType",
+        "memberReference"
+      ],
+      "additionalProperties": false
+    },
+    "contentLocator": {
+      "title": "Content locator",
+      "description": "Replay-relevant content designated inline or by canonical reference.",
+      "oneOf": [
+        {
+          "$ref": "Common.schema.json#/$defs/inlineJsonLocator"
+        },
+        {
+          "$ref": "Common.schema.json#/$defs/packageMemberLocator"
+        }
+      ]
+    },
+    "declarationParameter": {
+      "title": "Declaration parameter",
+      "description": "One preserved declaration parameter bound to a stable machine identifier.",
+      "type": "object",
+      "properties": {
+        "parameterIdentifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "$ref": "Common.schema.json#/$defs/jsonValue"
+        }
+      },
+      "required": [
+        "parameterIdentifier",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "rootDesignators": {
+      "title": "Root designators",
+      "description": "Canonical references designating the three required carrier roots.",
+      "type": "object",
+      "properties": {
+        "judgedObjectCarrier": {
+          "$ref": "Common.schema.json#/$defs/canonicalReference"
+        },
+        "evidenceStateCarrier": {
+          "$ref": "Common.schema.json#/$defs/canonicalReference"
+        },
+        "evaluatorCarrier": {
+          "$ref": "Common.schema.json#/$defs/canonicalReference"
+        }
+      },
+      "required": [
+        "judgedObjectCarrier",
+        "evidenceStateCarrier",
+        "evaluatorCarrier"
+      ],
+      "additionalProperties": false
+    },
+    "memberInventoryEntry": {
+      "title": "Member inventory entry",
+      "description": "One claim-record inventory value designating a package member and any classification-governed metadata.",
+      "type": "object",
+      "properties": {
+        "memberRole": {
+          "$ref": "Common.schema.json#/$defs/memberRole"
+        },
+        "classification": {
+          "$ref": "Common.schema.json#/$defs/memberClassification"
+        },
+        "representation": {
+          "$ref": "Common.schema.json#/$defs/representationBinding"
+        },
+        "canonicalReference": {
+          "$ref": "Common.schema.json#/$defs/canonicalReference"
+        },
+        "projectionRuleIdentifier": {
+          "title": "Projection rule identifier",
+          "description": "Stable identifier of the replay-relevant projection rule, paired with projectionRuleDesignator.",
+          "$ref": "Common.schema.json#/$defs/stableIdentifier"
+        },
+        "projectionRuleDesignator": {
+          "title": "Projection rule designator",
+          "description": "Immutable designator of the replay-relevant projection rule recorded on this member inventory entry. This inventory-side projection metadata is distinct from any integrity-binding canonicalization rule.",
+          "$ref": "Common.schema.json#/$defs/immutableDesignator"
+        }
+      },
+      "required": [
+        "memberRole",
+        "classification",
+        "representation"
+      ],
+      "dependentRequired": {
+        "projectionRuleIdentifier": [
+          "projectionRuleDesignator"
+        ],
+        "projectionRuleDesignator": [
+          "projectionRuleIdentifier"
+        ]
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "memberRole": {
+                "const": "package-integrity-manifest"
+              }
+            },
+            "required": [
+              "memberRole"
+            ]
+          },
+          "then": {
+            "properties": {
+              "classification": {
+                "const": "claim-record-integrity-recovery"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "memberRole": {
+                "const": "package-integrity-anchor"
+              }
+            },
+            "required": [
+              "memberRole"
+            ]
+          },
+          "then": {
+            "properties": {
+              "classification": {
+                "const": "claim-record-integrity-recovery"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "claim-record-integrity-recovery"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "canonicalReference"
+                  ]
+                },
+                {
+                  "required": [
+                    "projectionRuleIdentifier"
+                  ]
+                },
+                {
+                  "required": [
+                    "projectionRuleDesignator"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "replay-relevant"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "required": [
+              "canonicalReference"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "memberRole": {
+                "enum": [
+                  "judged-object-carrier-root",
+                  "evidence-state-carrier-root",
+                  "evaluator-carrier-root"
+                ]
+              }
+            },
+            "required": [
+              "memberRole"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "projectionRuleIdentifier"
+                  ]
+                },
+                {
+                  "required": [
+                    "projectionRuleDesignator"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "auxiliary"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "canonicalReference"
+                  ]
+                },
+                {
+                  "required": [
+                    "projectionRuleIdentifier"
+                  ]
+                },
+                {
+                  "required": [
+                    "projectionRuleDesignator"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "dependencyTarget": {
+      "title": "Dependency target",
+      "description": "Replay-relevant dependency value keyed by a dependency target reference.",
+      "type": "object",
+      "properties": {
+        "dependencyKinds": {
+          "type": "array",
+          "items": {
+            "$ref": "Common.schema.json#/$defs/dependencyKind"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "dependencyKinds"
+      ],
+      "additionalProperties": false
+    },
+    "referencedSourceBinding": {
+      "title": "Referenced source binding",
+      "description": "Referenced-source binding value keyed by the replay-relevant member reference that preserves it.",
+      "type": "object",
+      "properties": {
+        "sourceKind": {
+          "$ref": "Common.schema.json#/$defs/referencedSourceKind"
+        },
+        "designator": {
+          "$ref": "Common.schema.json#/$defs/immutableDesignator"
+        }
+      },
+      "required": [
+        "sourceKind",
+        "designator"
+      ],
+      "additionalProperties": false
+    },
+    "replayProblem": {
+      "title": "Replay problem",
+      "description": "Structured replay problem record with stable problem type and optional related canonical reference.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "FailureTaxonomy.schema.json#/$defs/problemType"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relatedReference": {
+          "$ref": "Common.schema.json#/$defs/canonicalReference"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "detail"
+      ],
+      "additionalProperties": false
+    },
+    "replayWarning": {
+      "title": "Replay warning",
+      "description": "Structured replay warning record with stable warning type and optional related canonical reference.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "FailureTaxonomy.schema.json#/$defs/warningType"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relatedReference": {
+          "$ref": "Common.schema.json#/$defs/canonicalReference"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "detail"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "examples": [
+    {}
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "belgi-python-reference-adoption-v1",
+  "status": "admitted",
+  "admittedPublicCandidate": true,
+  "specificationRepository": "https://github.com/belgi-protocol/belgi-spec",
+  "requiredPublicSpecificationBinding": {
+    "commit": "2e3ee3fe77ade1b0f6d26fac5a39fc663d2e4397",
+    "repositoryTree": "b61650d8f8a0df49200be8efdcba2e3565b6c613",
+    "specificationTree": "389c070c960c7f9b082e3950cbef133de6a772e9",
+    "publicationRegisterSHA256": "ae2698e12006bb41f9f3e8dbde63f36f0d0dc4bfe55d5cb56885398dca6620d2"
+  },
+  "packagedEdition": {
+    "edition": "spec-0.5",
+    "catalogPath": "belgi/profile/edition_catalog.json",
+    "catalogSHA256": "11cbcb93630e2646f9b42ee5a0d18a07257a93bf437c6c599f089b9e8104d3bb"
+  },
+  "distribution": {
+    "name": "belgi",
+    "version": "0.1.0a0"
+  },
+  "supportedCommands": [
+    "conformance",
+    "replay"
+  ],
+  "nonClaims": [
+    "general_conformance",
+    "independently_authored_implementation",
+    "part_5_support",
+    "policy_enforcement",
+    "production_readiness",
+    "stable_python_library_api"
+  ]
+}

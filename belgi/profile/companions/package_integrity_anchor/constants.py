@@ -1,0 +1,34 @@
+from __future__ import annotations
+
+__all__ = [
+    "DESIGNATOR_DIGEST_ALGORITHM_TOKEN",
+    "ED25519_SIGNATURE_ALGORITHM_IDENTIFIER",
+    "PACKAGE_INTEGRITY_ALGORITHM_SOURCE_SHA256",
+    "PACKAGE_INTEGRITY_ALGORITHM_SOURCE_URI",
+    "PACKAGE_INTEGRITY_VERIFICATION_METHOD_IDENTIFIER",
+    "PREDECESSOR_PACKAGE_INTEGRITY_VERIFICATION_METHOD_IDENTIFIER",
+    "SHA256_DIGEST_ALGORITHM_IDENTIFIER",
+]
+
+
+PACKAGE_INTEGRITY_VERIFICATION_METHOD_IDENTIFIER = (
+    "https://belgi.dev/ids/verification-method/package-integrity/"
+    "ed25519-detached-manifest-v2"
+)
+PREDECESSOR_PACKAGE_INTEGRITY_VERIFICATION_METHOD_IDENTIFIER = (
+    "https://belgi.dev/ids/verification-method/package-integrity/"
+    "ed25519-detached-manifest"
+)
+SHA256_DIGEST_ALGORITHM_IDENTIFIER = "https://belgi.dev/ids/algorithm/digest/sha-256"
+ED25519_SIGNATURE_ALGORITHM_IDENTIFIER = (
+    "https://belgi.dev/ids/algorithm/signature/ed25519"
+)
+DESIGNATOR_DIGEST_ALGORITHM_TOKEN = "sha256"
+PACKAGE_INTEGRITY_ALGORITHM_SOURCE_SHA256 = (
+    "e3fc0568fe6fec523e11a916978bca80b4b54b5a19f5a1b125c1093515ab9958"
+)
+PACKAGE_INTEGRITY_ALGORITHM_SOURCE_URI = (
+    "https://belgi.dev/specs/spec-0.3/"
+    f"sha256-{PACKAGE_INTEGRITY_ALGORITHM_SOURCE_SHA256}/"
+    "BELGI-Companion-Package-Integrity-Anchor-Verification.md"
+)

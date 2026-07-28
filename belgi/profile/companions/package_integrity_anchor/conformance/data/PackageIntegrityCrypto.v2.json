@@ -1,0 +1,999 @@
+{
+  "schemaVersion": "belgi-package-integrity-crypto-corpus-v2",
+  "companion": {
+    "familyIdentifier": "https://belgi.dev/ids/companion/package-integrity-anchor-verification",
+    "versionDesignator": "0.4",
+    "publicationTrack": "spec-0.4",
+    "status": "working-draft"
+  },
+  "predecessorCorpus": {
+    "role": "package-integrity-cryptographic-conformance",
+    "sourcePath": "conformance/PackageIntegrityCrypto.v1.json",
+    "immutableDesignator": {
+      "uri": "https://belgi.dev/specs/spec-0.3/sha256-65b205dc0fc92bc8bf4c6463e607ce25492069dfaf6b52d1a7e0f14826f12836/PackageIntegrityCrypto.v1.json",
+      "digest": {
+        "algorithmId": "sha256",
+        "digestValue": "65b205dc0fc92bc8bf4c6463e607ce25492069dfaf6b52d1a7e0f14826f12836"
+      }
+    }
+  },
+  "predecessorCaseMigrations": [
+    {
+      "caseId": "crypto.source-binding.exact-source-bytes",
+      "classification": "successor-method-identity",
+      "changedPointers": [
+        "/input/requestedIdentifier",
+        "/input/designatedIdentifier",
+        "/input/sourceUri",
+        "/input/sourceBytesHex",
+        "/input/digestHex"
+      ]
+    },
+    {
+      "caseId": "crypto.source-binding.uri-text-hash",
+      "classification": "successor-method-identity",
+      "changedPointers": [
+        "/input/requestedIdentifier",
+        "/input/designatedIdentifier",
+        "/input/sourceUri",
+        "/input/sourceBytesHex",
+        "/input/digestHex"
+      ]
+    },
+    {
+      "caseId": "crypto.source-binding.wrong-source-bytes",
+      "classification": "successor-method-identity",
+      "changedPointers": [
+        "/input/requestedIdentifier",
+        "/input/designatedIdentifier",
+        "/input/sourceUri",
+        "/input/sourceBytesHex",
+        "/input/digestSourceBytesHex",
+        "/input/digestHex"
+      ]
+    },
+    {
+      "caseId": "crypto.source-binding.identifier-designator-mismatch",
+      "classification": "successor-method-identity",
+      "changedPointers": [
+        "/input/requestedIdentifier",
+        "/input/sourceUri",
+        "/input/sourceBytesHex",
+        "/input/digestHex"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "sourceId": "fips-180-4",
+      "title": "Secure Hash Standard (SHS), FIPS PUB 180-4",
+      "uri": "https://doi.org/10.6028/NIST.FIPS.180-4",
+      "locator": "Sections 5 and 6.2",
+      "role": "algorithm-definition"
+    },
+    {
+      "sourceId": "nist-sha-256-examples",
+      "title": "NIST Secure Hash Algorithm SHA-256 Examples with Intermediate Values",
+      "uri": "https://csrc.nist.gov/csrc/media/projects/cryptographic-standards-and-guidelines/documents/examples/sha256.pdf",
+      "locator": "One Block Message Sample and Two Block Message Sample",
+      "role": "official-test-vectors"
+    },
+    {
+      "sourceId": "rfc-8032",
+      "title": "RFC 8032: Edwards-Curve Digital Signature Algorithm (EdDSA)",
+      "uri": "https://www.rfc-editor.org/rfc/rfc8032",
+      "locator": "Sections 5.1, 7.1, and 8.8",
+      "role": "algorithm-definition-and-official-test-vectors"
+    },
+    {
+      "sourceId": "rfc-4648",
+      "title": "RFC 4648: The Base16, Base32, and Base64 Data Encodings",
+      "uri": "https://www.rfc-editor.org/rfc/rfc4648",
+      "locator": "Sections 3.2, 3.3, 3.5, and 4",
+      "role": "encoding-definition"
+    }
+  ],
+  "requirementLinks": [
+    {
+      "requirementId": "PIA-METHOD-001",
+      "clauseLocator": "Clause 8.1",
+      "heading": "Verification method and identifiers"
+    },
+    {
+      "requirementId": "PIA-SOURCE-001",
+      "clauseLocator": "Clause 8.2",
+      "heading": "Exact defining-source-byte bindings"
+    },
+    {
+      "requirementId": "PIA-DIGEST-001",
+      "clauseLocator": "Clause 8.3",
+      "heading": "SHA-256"
+    },
+    {
+      "requirementId": "PIA-KEY-001",
+      "clauseLocator": "Clause 8.4",
+      "heading": "Verification key"
+    },
+    {
+      "requirementId": "PIA-BASE64-001",
+      "clauseLocator": "Clause 8.5",
+      "heading": "Signature encoding"
+    },
+    {
+      "requirementId": "PIA-ED25519-001",
+      "clauseLocator": "Clause 8.6",
+      "heading": "Pure Ed25519 verification"
+    },
+    {
+      "requirementId": "PIA-FAIL-001",
+      "clauseLocator": "Clause 8.7",
+      "heading": "Fail-closed verification and no fallback"
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "crypto.sha256.nist-abc",
+      "family": "sha256-official",
+      "operation": "sha256-compute",
+      "sourceIds": [
+        "fips-180-4",
+        "nist-sha-256-examples"
+      ],
+      "input": {
+        "messageHex": "616263"
+      },
+      "expected": {
+        "result": "accepted",
+        "digestHex": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+      },
+      "requirementIds": [
+        "PIA-DIGEST-001"
+      ]
+    },
+    {
+      "caseId": "crypto.sha256.nist-two-block",
+      "family": "sha256-official",
+      "operation": "sha256-compute",
+      "sourceIds": [
+        "fips-180-4",
+        "nist-sha-256-examples"
+      ],
+      "input": {
+        "messageHex": "6162636462636465636465666465666765666768666768696768696a68696a6b696a6b6c6a6b6c6d6b6c6d6e6c6d6e6f6d6e6f706e6f7071"
+      },
+      "expected": {
+        "result": "accepted",
+        "digestHex": "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1"
+      },
+      "requirementIds": [
+        "PIA-DIGEST-001"
+      ]
+    },
+    {
+      "caseId": "crypto.sha256.digest-mismatch",
+      "family": "sha256-negative",
+      "operation": "sha256-compare",
+      "sourceIds": [
+        "fips-180-4"
+      ],
+      "input": {
+        "messageHex": "616263",
+        "digestHex": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ac"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "digest-mismatch"
+      },
+      "requirementIds": [
+        "PIA-DIGEST-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.sha256.digest-uppercase",
+      "family": "sha256-encoding-negative",
+      "operation": "sha256-text-validate",
+      "sourceIds": [
+        "fips-180-4"
+      ],
+      "input": {
+        "digestHex": "BA7816BF8F01CFEA414140DE5DAE2223B00361A396177A9CB410FF61F20015AD"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "digest-text-malformed"
+      },
+      "requirementIds": [
+        "PIA-DIGEST-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.sha256.digest-short",
+      "family": "sha256-encoding-negative",
+      "operation": "sha256-text-validate",
+      "sourceIds": [
+        "fips-180-4"
+      ],
+      "input": {
+        "digestHex": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "digest-text-malformed"
+      },
+      "requirementIds": [
+        "PIA-DIGEST-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.source-binding.exact-source-bytes",
+      "family": "source-binding-positive",
+      "operation": "source-binding-validate",
+      "sourceIds": [
+        "fips-180-4"
+      ],
+      "input": {
+        "requestedIdentifier": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2",
+        "designatedIdentifier": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2",
+        "sourceUri": "https://example.test/spec/package-integrity-method-v2.txt",
+        "sourceBytesHex": "42454c4749207061636b6167652d696e7465677269747920766572696669636174696f6e206d6574686f6420736f757263652076320a",
+        "digestAlgorithmId": "sha256",
+        "digestHex": "972fe2e022a4185c58db14ad91249a834c6af07d05b6f4ffda4eb4a3fe27a3f1"
+      },
+      "expected": {
+        "result": "accepted"
+      },
+      "requirementIds": [
+        "PIA-SOURCE-001",
+        "PIA-DIGEST-001"
+      ]
+    },
+    {
+      "caseId": "crypto.source-binding.uri-text-hash",
+      "family": "source-binding-negative",
+      "operation": "source-binding-validate",
+      "sourceIds": [
+        "fips-180-4"
+      ],
+      "derivation": "The digest is SHA-256 over the source URI text instead of the exact sourceBytesHex octets.",
+      "input": {
+        "requestedIdentifier": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2",
+        "designatedIdentifier": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2",
+        "sourceUri": "https://example.test/spec/package-integrity-method-v2.txt",
+        "sourceBytesHex": "42454c4749207061636b6167652d696e7465677269747920766572696669636174696f6e206d6574686f6420736f757263652076320a",
+        "digestAlgorithmId": "sha256",
+        "digestHex": "a7cfd9802101f67ad287a3cbc7872d67afac76392d788579c793a49f04581d4a"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "source-binding-uri-text-hash"
+      },
+      "requirementIds": [
+        "PIA-SOURCE-001",
+        "PIA-DIGEST-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.source-binding.wrong-source-bytes",
+      "family": "source-binding-negative",
+      "operation": "source-binding-validate",
+      "sourceIds": [
+        "fips-180-4"
+      ],
+      "derivation": "The digest is SHA-256 over digestSourceBytesHex rather than the designated sourceBytesHex octets.",
+      "input": {
+        "requestedIdentifier": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2",
+        "designatedIdentifier": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2",
+        "sourceUri": "https://example.test/spec/package-integrity-method-v2.txt",
+        "sourceBytesHex": "42454c4749207061636b6167652d696e7465677269747920766572696669636174696f6e206d6574686f6420736f757263652076320a",
+        "digestSourceBytesHex": "42454c4749207061636b6167652d696e7465677269747920766572696669636174696f6e206d6574686f6420736f757263652076330a",
+        "digestAlgorithmId": "sha256",
+        "digestHex": "232d28a5bf6032a593f6ab61a036da13ce38fcc46d80003244b167503165348b"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "source-binding-wrong-bytes"
+      },
+      "requirementIds": [
+        "PIA-SOURCE-001",
+        "PIA-DIGEST-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.source-binding.identifier-designator-mismatch",
+      "family": "source-binding-negative",
+      "operation": "source-binding-validate",
+      "sourceIds": [
+        "fips-180-4"
+      ],
+      "input": {
+        "requestedIdentifier": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2",
+        "designatedIdentifier": "https://belgi.dev/ids/algorithm/signature/ed25519",
+        "sourceUri": "https://example.test/spec/package-integrity-method-v2.txt",
+        "sourceBytesHex": "42454c4749207061636b6167652d696e7465677269747920766572696669636174696f6e206d6574686f6420736f757263652076320a",
+        "digestAlgorithmId": "sha256",
+        "digestHex": "972fe2e022a4185c58db14ad91249a834c6af07d05b6f4ffda4eb4a3fe27a3f1"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "identifier-designator-mismatch"
+      },
+      "requirementIds": [
+        "PIA-METHOD-001",
+        "PIA-SOURCE-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.rfc8032-test-1",
+      "family": "ed25519-official",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "messageHex": "",
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCw=="
+      },
+      "expected": {
+        "result": "accepted"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001",
+        "PIA-ED25519-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.rfc8032-test-2",
+      "family": "ed25519-official",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+        "messageHex": "72",
+        "signatureBase64": "kqAJqfDUyrhyDoILX2QlQKKye1QWUD+Ps3YiI+vbadoIWsHkPhWZbkWPNhPQ8R2MOHsurrQwKu6wDSkWErsMAA=="
+      },
+      "expected": {
+        "result": "accepted"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001",
+        "PIA-ED25519-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.belgi-manifest",
+      "family": "ed25519-belgi-derived",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "Pure Ed25519 signature over the exact UTF-8 octets represented by messageHex, using the public key from RFC 8032 Section 7.1 Test 1.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "messageHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374227d",
+        "signatureBase64": "i9qLOAjBWv05NBStGUzR6bKGrqQKalRXsrwK4vGwXEE5muZgPmKby4U+RkbRrFmkFq7UNG2YQE7qieVfIsrjAw=="
+      },
+      "expected": {
+        "result": "accepted"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001",
+        "PIA-ED25519-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.wrong-message",
+      "family": "ed25519-verification-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "RFC 8032 Section 7.1 Test 1 with the empty message replaced by one zero octet.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "messageHex": "00",
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCw=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-invalid"
+      },
+      "requirementIds": [
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.wrong-key",
+      "family": "ed25519-verification-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "RFC 8032 Section 7.1 Test 1 with the public key from Test 2.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+        "messageHex": "",
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCw=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-invalid"
+      },
+      "requirementIds": [
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.modified-signature",
+      "family": "ed25519-verification-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "RFC 8032 Section 7.1 Test 1 with the final signature octet changed from 0b to 0a.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "messageHex": "",
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCg=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-invalid"
+      },
+      "requirementIds": [
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.noncanonical-s",
+      "family": "ed25519-encoding-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "RFC 8032 Section 7.1 Test 1 with S replaced by the little-endian encoding of the group order L.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "messageHex": "",
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVXt0/VcGmMSWNac96Le+d4UAAAAAAAAAAAAAAAAAAAAEA=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-scalar-noncanonical"
+      },
+      "requirementIds": [
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.invalid-point-encoding",
+      "family": "ed25519-encoding-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "RFC 8032 Section 7.1 Test 1 with the public-key encoding replaced by 32 ff octets.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "messageHex": "",
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCw=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "point-encoding-invalid"
+      },
+      "requirementIds": [
+        "PIA-KEY-001",
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.variant-ctx",
+      "family": "ed25519-variant-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "variant": "Ed25519ctx",
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "messageHex": "",
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCw=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "variant-unsupported"
+      },
+      "requirementIds": [
+        "PIA-METHOD-001",
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.variant-ph",
+      "family": "ed25519-variant-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "variant": "Ed25519ph",
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "messageHex": "",
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCw=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "variant-unsupported"
+      },
+      "requirementIds": [
+        "PIA-METHOD-001",
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.key.short",
+      "family": "public-key-negative",
+      "operation": "public-key-validate",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f70751"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "public-key-length"
+      },
+      "requirementIds": [
+        "PIA-KEY-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.key.long",
+      "family": "public-key-negative",
+      "operation": "public-key-validate",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a00"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "public-key-length"
+      },
+      "requirementIds": [
+        "PIA-KEY-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.key.uppercase",
+      "family": "public-key-negative",
+      "operation": "public-key-validate",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "publicKeyHex": "D75A980182B10AB7D54BFED3C964073A0EE172F3DAA62325AF021A68F707511A"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "public-key-encoding"
+      },
+      "requirementIds": [
+        "PIA-KEY-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.base64.valid-signature",
+      "family": "base64-positive",
+      "operation": "signature-base64-validate",
+      "sourceIds": [
+        "rfc-4648",
+        "rfc-8032"
+      ],
+      "input": {
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCw=="
+      },
+      "expected": {
+        "result": "accepted",
+        "decodedHex": "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001"
+      ]
+    },
+    {
+      "caseId": "crypto.base64.short-signature",
+      "family": "base64-length-negative",
+      "operation": "signature-base64-validate",
+      "sourceIds": [
+        "rfc-4648",
+        "rfc-8032"
+      ],
+      "input": {
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQ"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-length"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.base64.long-signature",
+      "family": "base64-length-negative",
+      "operation": "signature-base64-validate",
+      "sourceIds": [
+        "rfc-4648",
+        "rfc-8032"
+      ],
+      "input": {
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCwA="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-length"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.base64.base64url-alphabet",
+      "family": "base64-lexical-negative",
+      "operation": "signature-base64-validate",
+      "sourceIds": [
+        "rfc-4648"
+      ],
+      "input": {
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc-bRr0lv18FlbviRlUUFDjnoQCw=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-encoding"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.base64.missing-padding",
+      "family": "base64-lexical-negative",
+      "operation": "signature-base64-validate",
+      "sourceIds": [
+        "rfc-4648"
+      ],
+      "input": {
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCw"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-encoding"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.base64.extra-padding",
+      "family": "base64-lexical-negative",
+      "operation": "signature-base64-validate",
+      "sourceIds": [
+        "rfc-4648"
+      ],
+      "input": {
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCw==="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-encoding"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.base64.nonzero-pad-bits",
+      "family": "base64-canonical-negative",
+      "operation": "signature-base64-validate",
+      "sourceIds": [
+        "rfc-4648"
+      ],
+      "derivation": "The final Base64 symbol has non-zero pad bits while decoding to the same 64 octets as the canonical positive case.",
+      "input": {
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCx=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-encoding-noncanonical"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.base64.whitespace",
+      "family": "base64-lexical-negative",
+      "operation": "signature-base64-validate",
+      "sourceIds": [
+        "rfc-4648"
+      ],
+      "input": {
+        "signatureBase64": "5VZDAMNgrHKQhuLMgG6CioSHfx645dl02HPgZSJJAVVfuIIVkKM7rMYeOXAc+bRr0lv18FlbviRlUUFDjnoQCw==\n"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-encoding"
+      },
+      "requirementIds": [
+        "PIA-BASE64-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.selection.successor-method",
+      "family": "method-edition-selection",
+      "operation": "verification-method-select",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "governingEdition": "spec-0.4",
+        "requestedVerificationMethod": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2",
+        "verificationMethodSourceUri": "https://belgi.dev/specs/spec-0.4/sha256-490fab5cb1f83dd6ae849b44a2805703e9b5f334ca6dc4dd855b706cd069583f/BELGI-Companion-Package-Integrity-Anchor-Verification.md",
+        "requestedSignatureAlgorithm": "https://belgi.dev/ids/algorithm/signature/ed25519",
+        "signatureAlgorithmSourceUri": "https://belgi.dev/specs/spec-0.3/sha256-e3fc0568fe6fec523e11a916978bca80b4b54b5a19f5a1b125c1093515ab9958/BELGI-Companion-Package-Integrity-Anchor-Verification.md"
+      },
+      "expected": {
+        "result": "accepted"
+      },
+      "requirementIds": [
+        "PIA-METHOD-001",
+        "PIA-SOURCE-001"
+      ]
+    },
+    {
+      "caseId": "crypto.selection.predecessor-method-disallowed",
+      "family": "method-edition-selection",
+      "operation": "verification-method-select",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "governingEdition": "spec-0.4",
+        "requestedVerificationMethod": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest",
+        "verificationMethodSourceUri": "https://belgi.dev/specs/spec-0.3/sha256-e3fc0568fe6fec523e11a916978bca80b4b54b5a19f5a1b125c1093515ab9958/BELGI-Companion-Package-Integrity-Anchor-Verification.md",
+        "requestedSignatureAlgorithm": "https://belgi.dev/ids/algorithm/signature/ed25519",
+        "signatureAlgorithmSourceUri": "https://belgi.dev/specs/spec-0.3/sha256-e3fc0568fe6fec523e11a916978bca80b4b54b5a19f5a1b125c1093515ab9958/BELGI-Companion-Package-Integrity-Anchor-Verification.md"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "verification-method-deprecated-for-new-use"
+      },
+      "requirementIds": [
+        "PIA-METHOD-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.selection.successor-method-predecessor-source",
+      "family": "method-edition-selection",
+      "operation": "verification-method-select",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "governingEdition": "spec-0.4",
+        "requestedVerificationMethod": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2",
+        "verificationMethodSourceUri": "https://belgi.dev/specs/spec-0.3/sha256-e3fc0568fe6fec523e11a916978bca80b4b54b5a19f5a1b125c1093515ab9958/BELGI-Companion-Package-Integrity-Anchor-Verification.md",
+        "requestedSignatureAlgorithm": "https://belgi.dev/ids/algorithm/signature/ed25519",
+        "signatureAlgorithmSourceUri": "https://belgi.dev/specs/spec-0.3/sha256-e3fc0568fe6fec523e11a916978bca80b4b54b5a19f5a1b125c1093515ab9958/BELGI-Companion-Package-Integrity-Anchor-Verification.md"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "verification-method-source-mismatch"
+      },
+      "requirementIds": [
+        "PIA-METHOD-001",
+        "PIA-SOURCE-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.selection.unknown-no-fallback",
+      "family": "method-downgrade-negative",
+      "operation": "verification-method-select",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "input": {
+        "requestedVerificationMethod": "https://example.invalid/unknown-verification-method",
+        "fallbackVerificationMethod": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest",
+        "requestedSignatureAlgorithm": "https://example.invalid/unknown-signature-algorithm",
+        "fallbackSignatureAlgorithm": "https://belgi.dev/ids/algorithm/signature/ed25519"
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "unsupported-no-fallback"
+      },
+      "requirementIds": [
+        "PIA-METHOD-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.cofactored-only-rejected",
+      "family": "ed25519-acceptance-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "Constructed from the RFC 8032 Section 7.1 Test 1 public key with an order-two R. The tuple satisfies the cofactored equation permitted by RFC 8032 but not the uncofactored equation selected by this companion.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "messageHex": "",
+        "signatureBase64": "7P///////////////////////////////////////39kBz5M8LjjFF1We9Ob9TU5KdFC2uXKp55jLUH6KmHrBw=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "signature-equation-invalid"
+      },
+      "requirementIds": [
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.identity-public-key",
+      "family": "ed25519-public-key-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "The identity public key, base-point R, and scalar S equal to one satisfy the selected equation. The tuple is rejected because the public key does not have exact order L.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "0100000000000000000000000000000000000000000000000000000000000000",
+        "messageHex": "",
+        "signatureBase64": "WGZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmYBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "public-key-order-invalid"
+      },
+      "requirementIds": [
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.order-two-public-key",
+      "family": "ed25519-public-key-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "The order-two public key, identity R, zero S, and one-octet message produce an even challenge scalar and satisfy the selected equation. The tuple is rejected because the public key does not have exact order L.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+        "messageHex": "01",
+        "signatureBase64": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "public-key-order-invalid"
+      },
+      "requirementIds": [
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.mixed-order-public-key",
+      "family": "ed25519-public-key-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "The canonical public key has a non-zero prime-order component and a torsion component. The tuple satisfies the selected equation and passes a small-order-only public-key check, but it is rejected because the public key does not have exact order L.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "9599999999999999999999999999999999999999999999999999999999999999",
+        "messageHex": "0000",
+        "signatureBase64": "WGZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmYjPL7Y/kcMpgUd7qb6HP35VU4/YhxpYF9l2HF3r3mOBA=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "public-key-order-invalid"
+      },
+      "requirementIds": [
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.r-y-out-of-range",
+      "family": "ed25519-encoding-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "R encodes y equal to the field modulus p, outside the canonical RFC 8032 range.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "messageHex": "",
+        "signatureBase64": "7f///////////////////////////////////////38AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "point-encoding-invalid"
+      },
+      "requirementIds": [
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    },
+    {
+      "caseId": "crypto.ed25519.r-negative-zero",
+      "family": "ed25519-encoding-negative",
+      "operation": "ed25519-verify",
+      "sourceIds": [
+        "rfc-8032"
+      ],
+      "derivation": "R uses the identity y-coordinate with the x-sign bit set, the prohibited negative-zero encoding in RFC 8032 point decoding.",
+      "input": {
+        "variant": "Ed25519",
+        "publicKeyHex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+        "messageHex": "",
+        "signatureBase64": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+      },
+      "expected": {
+        "result": "rejected",
+        "reasonCode": "point-encoding-invalid"
+      },
+      "requirementIds": [
+        "PIA-ED25519-001",
+        "PIA-FAIL-001"
+      ]
+    }
+  ]
+}

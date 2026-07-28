@@ -1,0 +1,115 @@
+{
+  "entries": [
+    {
+      "artifactClass": "specification-edition",
+      "familyIdentifier": "https://belgi.dev/ids/companion/agent-admission",
+      "key": "agent-admission-companion",
+      "kind": "companion",
+      "publicationTrack": "spec-0.5",
+      "sha256": "e1e491365cbb7c4c18e937bc8fbe1ded69dbf2584852b0cddfd36f1bef1bbf33",
+      "snapshotPath": "editions/spec-0.5/sha256-e1e491365cbb7c4c18e937bc8fbe1ded69dbf2584852b0cddfd36f1bef1bbf33/BELGI-Companion-Agent-Admission.md",
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-e1e491365cbb7c4c18e937bc8fbe1ded69dbf2584852b0cddfd36f1bef1bbf33/BELGI-Companion-Agent-Admission.md",
+      "versionDesignator": "0.5"
+    },
+    {
+      "artifactClass": "specification-edition",
+      "familyIdentifier": "https://belgi.dev/ids/companion/ci-trust-boundary-vocabulary",
+      "key": "ci-trust-boundary-companion",
+      "kind": "companion",
+      "publicationTrack": "spec-0.5",
+      "sha256": "6cc89f1af460a0a6cc14fe374b8bffddb0047c5447045c55a9eb80cc74850b07",
+      "snapshotPath": "editions/spec-0.5/sha256-6cc89f1af460a0a6cc14fe374b8bffddb0047c5447045c55a9eb80cc74850b07/BELGI-Companion-CI-Trust-Boundary-Vocabulary.md",
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-6cc89f1af460a0a6cc14fe374b8bffddb0047c5447045c55a9eb80cc74850b07/BELGI-Companion-CI-Trust-Boundary-Vocabulary.md",
+      "versionDesignator": "0.5"
+    },
+    {
+      "artifactClass": "specification-edition",
+      "familyIdentifier": "https://belgi.dev/ids/companion/identifier-and-registry-governance",
+      "key": "identifier-and-registry-governance-companion",
+      "kind": "companion",
+      "publicationTrack": "spec-0.5",
+      "sha256": "049933d4eb1b92a6eb3daf81f72349aa0c25499352284c1eca80f79d354872e5",
+      "snapshotPath": "editions/spec-0.5/sha256-049933d4eb1b92a6eb3daf81f72349aa0c25499352284c1eca80f79d354872e5/BELGI-Companion-Identifier-and-Registry-Governance.md",
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-049933d4eb1b92a6eb3daf81f72349aa0c25499352284c1eca80f79d354872e5/BELGI-Companion-Identifier-and-Registry-Governance.md",
+      "versionDesignator": "0.5"
+    },
+    {
+      "artifactClass": "specification-edition",
+      "familyIdentifier": "https://belgi.dev/ids/companion/json-representation",
+      "key": "json-representation-companion",
+      "kind": "companion",
+      "publicationTrack": "spec-0.5",
+      "sha256": "d79f462ebd36561d8da1b5f83616e2eb75e45bfbbdbb4b99f0bae9f0ec6fe568",
+      "snapshotPath": "editions/spec-0.5/sha256-d79f462ebd36561d8da1b5f83616e2eb75e45bfbbdbb4b99f0bae9f0ec6fe568/BELGI-Companion-JSON-Representation.md",
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-d79f462ebd36561d8da1b5f83616e2eb75e45bfbbdbb4b99f0bae9f0ec6fe568/BELGI-Companion-JSON-Representation.md",
+      "versionDesignator": "0.5"
+    },
+    {
+      "artifactClass": "specification-edition",
+      "familyIdentifier": "https://belgi.dev/ids/companion/package-integrity-anchor-verification",
+      "key": "package-integrity-anchor-companion",
+      "kind": "companion",
+      "publicationTrack": "spec-0.5",
+      "sha256": "590781452565bb1de7eb0a33fc6523b7e761f90e94cddfd48cb7a1a997274a12",
+      "snapshotPath": "editions/spec-0.5/sha256-590781452565bb1de7eb0a33fc6523b7e761f90e94cddfd48cb7a1a997274a12/BELGI-Companion-Package-Integrity-Anchor-Verification.md",
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-590781452565bb1de7eb0a33fc6523b7e761f90e94cddfd48cb7a1a997274a12/BELGI-Companion-Package-Integrity-Anchor-Verification.md",
+      "versionDesignator": "0.5"
+    },
+    {
+      "artifactClass": "specification-edition",
+      "familyIdentifier": "https://belgi.dev/ids/specification/part-1",
+      "key": "part-1",
+      "kind": "external",
+      "publicationTrack": "spec-0.5",
+      "sha256": "fac9b167e6ebb94d6153aed9ee2315bde1b3730b92975b722a0d5dfe85da13d0",
+      "snapshotPath": "editions/spec-0.5/sha256-fac9b167e6ebb94d6153aed9ee2315bde1b3730b92975b722a0d5dfe85da13d0/BELGI-Part-1-Core-Semantic-Model.md",
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-fac9b167e6ebb94d6153aed9ee2315bde1b3730b92975b722a0d5dfe85da13d0/BELGI-Part-1-Core-Semantic-Model.md",
+      "versionDesignator": "0.5"
+    },
+    {
+      "artifactClass": "specification-edition",
+      "familyIdentifier": "https://belgi.dev/ids/specification/part-2",
+      "key": "part-2",
+      "kind": "external",
+      "publicationTrack": "spec-0.5",
+      "sha256": "3f67f0476a4908f63f2987d242d581c7c7d43e81018588bcb8bf1501abb5002b",
+      "snapshotPath": "editions/spec-0.5/sha256-3f67f0476a4908f63f2987d242d581c7c7d43e81018588bcb8bf1501abb5002b/BELGI-Part-2-Claim-Carriers-and-Replay-Package.md",
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-3f67f0476a4908f63f2987d242d581c7c7d43e81018588bcb8bf1501abb5002b/BELGI-Part-2-Claim-Carriers-and-Replay-Package.md",
+      "versionDesignator": "0.5"
+    },
+    {
+      "artifactClass": "specification-edition",
+      "familyIdentifier": "https://belgi.dev/ids/specification/part-3",
+      "key": "part-3",
+      "kind": "external",
+      "publicationTrack": "spec-0.5",
+      "sha256": "5535311884a3f1ff864d1f81733a249b2da68985083eb21ccd8bcd73ed10eafa",
+      "snapshotPath": "editions/spec-0.5/sha256-5535311884a3f1ff864d1f81733a249b2da68985083eb21ccd8bcd73ed10eafa/BELGI-Part-3-Profiles-and-Companion-Specifications.md",
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-5535311884a3f1ff864d1f81733a249b2da68985083eb21ccd8bcd73ed10eafa/BELGI-Part-3-Profiles-and-Companion-Specifications.md",
+      "versionDesignator": "0.5"
+    },
+    {
+      "artifactClass": "specification-edition",
+      "familyIdentifier": "https://belgi.dev/ids/companion/python-condition-vocabulary",
+      "key": "python-condition-vocabulary-companion",
+      "kind": "companion",
+      "publicationTrack": "spec-0.5",
+      "sha256": "19d09062a8f669a5b50fc82a2d7c119e1400e0f88f85cccc626719c88eccf4cc",
+      "snapshotPath": "editions/spec-0.5/sha256-19d09062a8f669a5b50fc82a2d7c119e1400e0f88f85cccc626719c88eccf4cc/BELGI-Companion-Python-Condition-Vocabulary.md",
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-19d09062a8f669a5b50fc82a2d7c119e1400e0f88f85cccc626719c88eccf4cc/BELGI-Companion-Python-Condition-Vocabulary.md",
+      "versionDesignator": "0.5"
+    },
+    {
+      "artifactClass": "specification-edition",
+      "familyIdentifier": "https://belgi.dev/ids/profile/software-change-admission",
+      "key": "software-change-admission-profile",
+      "kind": "profile",
+      "publicationTrack": "spec-0.5",
+      "sha256": "89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574",
+      "snapshotPath": "editions/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+      "uri": "https://belgi.dev/specs/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+      "versionDesignator": "0.5"
+    }
+  ],
+  "schemaVersion": "belgi-exact-edition-catalog-v1"
+}

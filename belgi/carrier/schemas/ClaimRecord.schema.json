@@ -1,0 +1,176 @@
+{
+  "$schema": "https://belgi.dev/schemas/carrier/rc.v2/BELGI-JSON-Schema-Dialect.schema.json",
+  "$id": "https://belgi.dev/schemas/carrier/rc.v2/ClaimRecord.schema.json",
+  "title": "BELGI claim record",
+  "description": "Preserved claim record designating the package-level package-integrity manifest, the required package-integrity anchor, the three required carrier roots, the package member inventory, claim-record-integrity-recovery members, replay-relevant dependencies, referenced sources, and an optional cached verdict.",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "const": "claim-record"
+    },
+    "packageIdentifier": {
+      "description": "Package identifier that the anchor must equal after this claim record is integrity-recovered.",
+      "$ref": "Common.schema.json#/$defs/packageIdentifier"
+    },
+    "packageIntegrityManifestMember": {
+      "description": "Designated manifest member that the anchor and the actually authenticated manifest member must equal after claim-record integrity recovery.",
+      "$ref": "Common.schema.json#/$defs/memberName"
+    },
+    "packageIntegrityAnchorMember": {
+      "$ref": "Common.schema.json#/$defs/memberName"
+    },
+    "rootDesignators": {
+      "$ref": "Common.schema.json#/$defs/rootDesignators"
+    },
+    "memberInventory": {
+      "title": "Member inventory",
+      "description": "Authoritative inventory keyed by package-local member name.",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "Common.schema.json#/$defs/memberName"
+      },
+      "additionalProperties": {
+        "$ref": "Common.schema.json#/$defs/memberInventoryEntry"
+      },
+      "minProperties": 6
+    },
+    "dependencyDeclarations": {
+      "title": "Dependency declarations",
+      "description": "Replay-relevant dependency map keyed first by dependent reference and then by dependency reference.",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "Common.schema.json#/$defs/canonicalReference"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "propertyNames": {
+          "$ref": "Common.schema.json#/$defs/canonicalReference"
+        },
+        "additionalProperties": {
+          "$ref": "Common.schema.json#/$defs/dependencyTarget"
+        },
+        "minProperties": 1
+      }
+    },
+    "referencedSources": {
+      "title": "Referenced sources",
+      "description": "Referenced-source bindings keyed by the replay-relevant member reference that preserves the exact edition.",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "Common.schema.json#/$defs/canonicalReference"
+      },
+      "additionalProperties": {
+        "$ref": "Common.schema.json#/$defs/referencedSourceBinding"
+      }
+    },
+    "notes": {
+      "title": "Auxiliary notes",
+      "description": "Optional producer-side notes that remain auxiliary to replay semantics.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "cachedVerdict": {
+      "$ref": "Common.schema.json#/$defs/cachedVerdict"
+    }
+  },
+  "required": [
+    "kind",
+    "packageIdentifier",
+    "packageIntegrityManifestMember",
+    "packageIntegrityAnchorMember",
+    "rootDesignators",
+    "memberInventory",
+    "dependencyDeclarations",
+    "referencedSources"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "kind": "claim-record",
+      "packageIdentifier": "pkg-demo",
+      "packageIntegrityManifestMember": "package-integrity-manifest",
+      "packageIntegrityAnchorMember": "package-integrity-anchor",
+      "rootDesignators": {
+        "judgedObjectCarrier": "pkg:pkg-demo#judged-object-carrier-root",
+        "evidenceStateCarrier": "pkg:pkg-demo#evidence-state-carrier-root",
+        "evaluatorCarrier": "pkg:pkg-demo#evaluator-carrier-root"
+      },
+      "memberInventory": {
+        "claim-record": {
+          "memberRole": "claim-record",
+          "classification": "replay-relevant",
+          "representation": {
+            "mediaType": "application/vnd.belgi.claim-record+json",
+            "schemaDesignator": {
+              "uri": "https://belgi.dev/schemas/carrier/rc.v2/ClaimRecord.schema.json",
+              "digest": {
+                "algorithmId": "sha256",
+                "digestValue": "0000000000000000000000000000000000000000000000000000000000000000"
+              }
+            }
+          },
+          "canonicalReference": "pkg:pkg-demo#claim-record"
+        },
+        "package-integrity-manifest": {
+          "memberRole": "package-integrity-manifest",
+          "classification": "claim-record-integrity-recovery",
+          "representation": {
+            "mediaType": "application/vnd.belgi.package-integrity-manifest+json",
+            "schemaDesignator": {
+              "uri": "https://belgi.dev/schemas/carrier/rc.v2/PackageIntegrityManifest.schema.json",
+              "digest": {
+                "algorithmId": "sha256",
+                "digestValue": "0000000000000000000000000000000000000000000000000000000000000000"
+              }
+            }
+          }
+        },
+        "package-integrity-anchor": {
+          "memberRole": "package-integrity-anchor",
+          "classification": "claim-record-integrity-recovery",
+          "representation": {
+            "mediaType": "application/vnd.belgi.package-integrity-anchor+json",
+            "schemaDesignator": {
+              "uri": "https://belgi.dev/schemas/carrier/rc.v2/PackageIntegrityAnchor.schema.json",
+              "digest": {
+                "algorithmId": "sha256",
+                "digestValue": "0000000000000000000000000000000000000000000000000000000000000000"
+              }
+            }
+          }
+        },
+        "judged-object-carrier-root": {
+          "memberRole": "judged-object-carrier-root",
+          "classification": "replay-relevant",
+          "representation": {
+            "mediaType": "application/vnd.belgi.judged-object-carrier+json"
+          },
+          "canonicalReference": "pkg:pkg-demo#judged-object-carrier-root"
+        },
+        "evidence-state-carrier-root": {
+          "memberRole": "evidence-state-carrier-root",
+          "classification": "replay-relevant",
+          "representation": {
+            "mediaType": "application/vnd.belgi.evidence-state-carrier+json"
+          },
+          "canonicalReference": "pkg:pkg-demo#evidence-state-carrier-root"
+        },
+        "evaluator-carrier-root": {
+          "memberRole": "evaluator-carrier-root",
+          "classification": "replay-relevant",
+          "representation": {
+            "mediaType": "application/vnd.belgi.evaluator-carrier+json"
+          },
+          "canonicalReference": "pkg:pkg-demo#evaluator-carrier-root"
+        }
+      },
+      "dependencyDeclarations": {},
+      "referencedSources": {},
+      "notes": [],
+      "cachedVerdict": 1
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://belgi.dev/schemas/carrier/rc.v2/BELGI-JSON-Schema-Dialect.schema.json",
+  "$id": "https://belgi.dev/schemas/carrier/rc.v2/JudgedObjectCarrier.schema.json",
+  "title": "BELGI judged-object carrier",
+  "description": "Producer-side judged-object carrier preserving exactly one proposal and exactly one baseline.",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "const": "judged-object-carrier"
+    },
+    "proposal": {
+      "$ref": "Common.schema.json#/$defs/contentLocator"
+    },
+    "baseline": {
+      "$ref": "Common.schema.json#/$defs/contentLocator"
+    }
+  },
+  "required": [
+    "kind",
+    "proposal",
+    "baseline"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "kind": "judged-object-carrier",
+      "proposal": {
+        "kind": "inline-json",
+        "mediaType": "application/json",
+        "content": {
+          "proposalSha": "abc123"
+        }
+      },
+      "baseline": {
+        "kind": "package-member",
+        "mediaType": "application/json",
+        "memberReference": "pkg:pkg-demo#baseline-source"
+      }
+    }
+  ]
+}

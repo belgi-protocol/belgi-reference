@@ -1,0 +1,61 @@
+{
+  "$schema": "https://belgi.dev/schemas/carrier/rc.v2/BELGI-JSON-Schema-Dialect.schema.json",
+  "$id": "https://belgi.dev/schemas/carrier/rc.v2/FailureTaxonomy.schema.json",
+  "title": "BELGI replay failure taxonomy",
+  "description": "Stable replay status, outcome-class, problem-type, and warning-type identifiers.",
+  "type": "object",
+  "$defs": {
+    "replayStatus": {
+      "type": "string",
+      "enum": [
+        "replayable",
+        "non-replayable"
+      ]
+    },
+    "outcomeClass": {
+      "type": "string",
+      "enum": [
+        "successful-replay",
+        "malformed-carrier",
+        "unresolved-reference",
+        "integrity-failure",
+        "lift-failure",
+        "ambient-context-required",
+        "non-replayable-claim"
+      ]
+    },
+    "problemType": {
+      "type": "string",
+      "enum": [
+        "malformed-claim-record",
+        "claim-record-integrity-binding-missing",
+        "claim-record-integrity-binding-mismatch",
+        "claim-record-integrity-recovery-failure",
+        "claim-record-integrity-recovery-malformed",
+        "missing-required-root",
+        "duplicate-root-designation",
+        "missing-required-member",
+        "duplicate-canonical-reference",
+        "integrity-binding-missing",
+        "integrity-binding-source-failure",
+        "integrity-binding-mismatch",
+        "out-of-closure-dependency",
+        "unresolved-dependency",
+        "carrier-parse-failure",
+        "carrier-resolve-failure",
+        "induce-failure",
+        "ambient-context-required",
+        "non-deterministic-lift"
+      ]
+    },
+    "warningType": {
+      "type": "string",
+      "enum": [
+        "cached-verdict-mismatch"
+      ]
+    }
+  },
+  "examples": [
+    {}
+  ]
+}

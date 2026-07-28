@@ -1,0 +1,144 @@
+{
+  "$schema": "https://belgi.dev/schemas/carrier/rc.v2/BELGI-JSON-Schema-Dialect.schema.json",
+  "$id": "https://belgi.dev/schemas/carrier/rc.v2/PackageIntegrityAnchor.schema.json",
+  "title": "BELGI package integrity anchor",
+  "description": "Detached-style signature authority for the package-integrity manifest.",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "const": "package-integrity-anchor"
+    },
+    "packageIdentifier": {
+      "description": "Consistency binding that must equal the package identifier in the integrity-recovered claim record; it does not select a package.",
+      "$ref": "Common.schema.json#/$defs/packageIdentifier"
+    },
+    "packageIntegrityManifestMember": {
+      "description": "Consistency binding that must equal both the manifest member in the integrity-recovered claim record and the manifest member actually authenticated; it does not select that member.",
+      "$ref": "Common.schema.json#/$defs/memberName"
+    },
+    "verificationMethodIdentifier": {
+      "description": "Stable package-integrity verification-method identifier, distinct from the exact defining-source designator.",
+      "const": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2"
+    },
+    "verificationMethodDesignator": {
+      "description": "Immutable designator of the exact source edition that defines the selected verification method.",
+      "$ref": "#/$defs/sha256ImmutableDesignator"
+    },
+    "verificationKeyDesignator": {
+      "description": "Immutable designator of the exact UTF-8 verification-key text preserved in this anchor.",
+      "$ref": "#/$defs/sha256ImmutableDesignator"
+    },
+    "verificationKeyText": {
+      "type": "string",
+      "description": "Exactly 32 raw Ed25519 public-key octets encoded as 64 lowercase hexadecimal characters.",
+      "pattern": "^[0-9a-f]{64}(?![\\s\\S])",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "signatureAlgorithmDesignator": {
+      "description": "Immutable designator of the exact source edition that defines pure Ed25519 use by the selected method.",
+      "$ref": "#/$defs/sha256ImmutableDesignator"
+    },
+    "signatureAlgorithmIdentifier": {
+      "description": "Stable signature-algorithm identifier, distinct from the exact defining-source designator.",
+      "const": "https://belgi.dev/ids/algorithm/signature/ed25519"
+    },
+    "signatureBase64": {
+      "type": "string",
+      "description": "Exactly 64 signature octets in canonical RFC 4648 Base64 with required padding; decoding, length, pad-bit, and exact re-encoding checks remain mandatory.",
+      "pattern": "^(?:[A-Za-z0-9+/]{4}){21}[A-Za-z0-9+/][AQgw]==(?![\\s\\S])",
+      "minLength": 88,
+      "maxLength": 88
+    }
+  },
+  "required": [
+    "kind",
+    "packageIdentifier",
+    "packageIntegrityManifestMember",
+    "verificationMethodIdentifier",
+    "verificationMethodDesignator",
+    "verificationKeyDesignator",
+    "verificationKeyText",
+    "signatureAlgorithmIdentifier",
+    "signatureAlgorithmDesignator",
+    "signatureBase64"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "sha256Digest": {
+      "allOf": [
+        {
+          "$ref": "Common.schema.json#/$defs/digest"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "algorithmId": {
+              "const": "sha256"
+            },
+            "digestValue": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}(?![\\s\\S])",
+              "minLength": 64,
+              "maxLength": 64
+            }
+          },
+          "required": [
+            "algorithmId",
+            "digestValue"
+          ]
+        }
+      ]
+    },
+    "sha256ImmutableDesignator": {
+      "allOf": [
+        {
+          "$ref": "Common.schema.json#/$defs/immutableDesignator"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "digest": {
+              "$ref": "#/$defs/sha256Digest"
+            }
+          },
+          "required": [
+            "digest"
+          ]
+        }
+      ]
+    }
+  },
+  "examples": [
+    {
+      "kind": "package-integrity-anchor",
+      "packageIdentifier": "pkg-demo",
+      "packageIntegrityManifestMember": "package-integrity-manifest",
+      "verificationMethodIdentifier": "https://belgi.dev/ids/verification-method/package-integrity/ed25519-detached-manifest-v2",
+      "verificationMethodDesignator": {
+        "uri": "https://belgi.dev/specs/spec-0.4/sha256-490fab5cb1f83dd6ae849b44a2805703e9b5f334ca6dc4dd855b706cd069583f/BELGI-Companion-Package-Integrity-Anchor-Verification.md",
+        "digest": {
+          "algorithmId": "sha256",
+          "digestValue": "490fab5cb1f83dd6ae849b44a2805703e9b5f334ca6dc4dd855b706cd069583f"
+        }
+      },
+      "verificationKeyDesignator": {
+        "uri": "https://belgi.dev/keys/test-vector/example-ed25519.pub",
+        "digest": {
+          "algorithmId": "sha256",
+          "digestValue": "3138bb9bc78df27c473ecfd1410f7bd45ebac1f59cf3ff9cfe4db77aab7aedd3"
+        }
+      },
+      "verificationKeyText": "1111111111111111111111111111111111111111111111111111111111111111",
+      "signatureAlgorithmIdentifier": "https://belgi.dev/ids/algorithm/signature/ed25519",
+      "signatureAlgorithmDesignator": {
+        "uri": "https://belgi.dev/specs/spec-0.3/sha256-e3fc0568fe6fec523e11a916978bca80b4b54b5a19f5a1b125c1093515ab9958/BELGI-Companion-Package-Integrity-Anchor-Verification.md",
+        "digest": {
+          "algorithmId": "sha256",
+          "digestValue": "e3fc0568fe6fec523e11a916978bca80b4b54b5a19f5a1b125c1093515ab9958"
+        }
+      },
+      "signatureBase64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+    }
+  ]
+}

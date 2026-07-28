@@ -1,0 +1,146 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "belgi"
+version = "0.1.0a0"
+description = "Replayable admission records for bounded software-change decisions"
+readme = "PACKAGE_README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "BELGI Maintainers" }]
+keywords = [
+    "admission-control",
+    "conformance",
+    "replay",
+    "software-change",
+    "verification",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Typing :: Typed",
+]
+dependencies = [
+    "cryptography>=41",
+    "jsonschema[format-nongpl]>=4.26,<5",
+    "rfc8785>=0.1.4,<0.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/belgi-protocol/belgi-reference"
+Documentation = "https://github.com/belgi-protocol/belgi-reference#readme"
+Repository = "https://github.com/belgi-protocol/belgi-reference"
+Issues = "https://github.com/belgi-protocol/belgi-reference/issues"
+Specifications = "https://github.com/belgi-protocol/belgi-spec"
+
+[project.scripts]
+belgi = "belgi.cli:main"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "belgi",
+    "belgi.core",
+    "belgi.core.*",
+    "belgi.carrier",
+    "belgi.carrier.*",
+    "belgi.profile",
+    "belgi.profile.companions",
+    "belgi.profile.companions.*",
+    "belgi.profile.reference_profile",
+    "belgi.profile.reference_profile.*",
+    "belgi.profile.vocabulary",
+    "belgi.replay",
+    "belgi.replay.*",
+    "belgi.substrate",
+    "belgi.substrate.git",
+    "belgi.substrate.io",
+    "belgi.substrate.io.bounded_zip",
+    "belgi.substrate.io.json",
+    "belgi.substrate.io.posix",
+    "belgi.substrate.io.rooted_snapshot",
+    "belgi.substrate.io.rooted_snapshot.posix",
+    "belgi.substrate.io.rooted_snapshot.tree",
+    "belgi.substrate.io.rooted_snapshot.windows",
+    "belgi.substrate.io.strict_json",
+    "belgi.substrate.io.windows",
+    "belgi.substrate.schema",
+]
+
+[tool.setuptools.package-data]
+belgi = [
+    "py.typed",
+    "carrier/schema-inventory.json",
+    "carrier/schemas/*.json",
+    "carrier/json_representation/conformance/data/JSONRepresentation.v2.json",
+    "profile/edition_catalog.json",
+    "profile/editions/spec-0.3/sha256-e3fc0568fe6fec523e11a916978bca80b4b54b5a19f5a1b125c1093515ab9958/BELGI-Companion-Package-Integrity-Anchor-Verification.md",
+    "profile/editions/spec-0.4/sha256-490fab5cb1f83dd6ae849b44a2805703e9b5f334ca6dc4dd855b706cd069583f/BELGI-Companion-Package-Integrity-Anchor-Verification.md",
+    "profile/editions/spec-0.5/sha256-049933d4eb1b92a6eb3daf81f72349aa0c25499352284c1eca80f79d354872e5/BELGI-Companion-Identifier-and-Registry-Governance.md",
+    "profile/editions/spec-0.5/sha256-19d09062a8f669a5b50fc82a2d7c119e1400e0f88f85cccc626719c88eccf4cc/BELGI-Companion-Python-Condition-Vocabulary.md",
+    "profile/editions/spec-0.5/sha256-3f67f0476a4908f63f2987d242d581c7c7d43e81018588bcb8bf1501abb5002b/BELGI-Part-2-Claim-Carriers-and-Replay-Package.md",
+    "profile/editions/spec-0.5/sha256-5535311884a3f1ff864d1f81733a249b2da68985083eb21ccd8bcd73ed10eafa/BELGI-Part-3-Profiles-and-Companion-Specifications.md",
+    "profile/editions/spec-0.5/sha256-590781452565bb1de7eb0a33fc6523b7e761f90e94cddfd48cb7a1a997274a12/BELGI-Companion-Package-Integrity-Anchor-Verification.md",
+    "profile/editions/spec-0.5/sha256-6cc89f1af460a0a6cc14fe374b8bffddb0047c5447045c55a9eb80cc74850b07/BELGI-Companion-CI-Trust-Boundary-Vocabulary.md",
+    "profile/editions/spec-0.5/sha256-89727ba59e10f493a130ab5a6ff32916860c20f9d4ea6617b6d2722dcf34b574/BELGI-Part-4-Software-Change-Admission-Profile.md",
+    "profile/editions/spec-0.5/sha256-d79f462ebd36561d8da1b5f83616e2eb75e45bfbbdbb4b99f0bae9f0ec6fe568/BELGI-Companion-JSON-Representation.md",
+    "profile/editions/spec-0.5/sha256-e1e491365cbb7c4c18e937bc8fbe1ded69dbf2584852b0cddfd36f1bef1bbf33/BELGI-Companion-Agent-Admission.md",
+    "profile/editions/spec-0.5/sha256-fac9b167e6ebb94d6153aed9ee2315bde1b3730b92975b722a0d5dfe85da13d0/BELGI-Part-1-Core-Semantic-Model.md",
+    "profile/companions/package_integrity_anchor/conformance/data/PackageIntegrityCrypto.v2.json",
+    "replay/package_representation/conformance/data/ReplayPackageRepresentation.v3.json",
+    "replay/reference_profile/finite_evaluator/conformance/data/SoftwareChangeFiniteEvaluator.v1.json",
+]
+
+[tool.setuptools.exclude-package-data]
+belgi = ["**/__pycache__/*", "**/*.pyc"]
+
+[tool.setuptools.data-files]
+"share/belgi/examples/finite-review-record" = [
+    "examples/finite-review-record/*",
+]
+"share/belgi/examples/finite-review-record-tampered" = [
+    "examples/finite-review-record-tampered/*",
+]
+"share/belgi/examples/finite-review-record-support" = [
+    "examples/finite-review-record-support/*",
+]
+
+[tool.ruff]
+required-version = "==0.15.17"
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I", "B", "C4", "UP", "RUF"]
+# Ruff format owns line layout; E501 remains noisy for long literals and
+# signatures that the formatter intentionally leaves intact.
+ignore = [
+    "E501",
+    # These string-enum classes own serialized values. A StrEnum migration is
+    # a separate compatibility change, not part of the interpreter floor.
+    "UP042",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Keep the established timezone.utc spelling in timestamp/evidence seams; the
+# Python 3.11 floor does not require a representation-only rewrite.
+"belgi/substrate/time.py" = ["UP017"]
+
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "basic"
+include = ["belgi"]
+exclude = ["**/__pycache__"]
+extraPaths = [".github/scripts"]

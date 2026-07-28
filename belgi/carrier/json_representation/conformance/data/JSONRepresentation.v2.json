@@ -1,0 +1,1258 @@
+{
+  "schemaVersion": "belgi-json-representation-conformance-v2",
+  "corpusRole": "json-representation",
+  "companion": {
+    "familyIdentifier": "https://belgi.dev/ids/companion/json-representation",
+    "versionDesignator": "0.5",
+    "publicationTrack": "spec-0.5",
+    "status": "working-draft"
+  },
+  "predecessorCorpus": {
+    "role": "json-representation",
+    "sourcePath": "conformance/JSONRepresentation.v1.json",
+    "immutableDesignator": {
+      "uri": "https://belgi.dev/specs/spec-0.4/sha256-3fd7f69d035f2ad2eb2680ca2d5554e57647715f72fc3f9f8ab8d08e45c3e9cc/JSONRepresentation.v1.json",
+      "digest": {
+        "algorithmId": "sha256",
+        "digestValue": "3fd7f69d035f2ad2eb2680ca2d5554e57647715f72fc3f9f8ab8d08e45c3e9cc"
+      }
+    }
+  },
+  "cases": [
+    {
+      "caseId": "utf8.empty-object",
+      "operation": "representation-validate",
+      "inputHex": "7b7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-UTF8-001",
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "utf8.invalid-continuation",
+      "operation": "representation-validate",
+      "inputHex": "80",
+      "expected": {
+        "accepted": false,
+        "stage": "utf8",
+        "resultCode": "invalid-utf8"
+      },
+      "requirementIds": [
+        "JR-UTF8-001"
+      ]
+    },
+    {
+      "caseId": "utf8.leading-bom",
+      "operation": "representation-validate",
+      "inputHex": "efbbbf7b7d",
+      "expected": {
+        "accepted": false,
+        "stage": "utf8",
+        "resultCode": "byte-order-mark"
+      },
+      "requirementIds": [
+        "JR-UTF8-001"
+      ]
+    },
+    {
+      "caseId": "syntax.comment",
+      "operation": "representation-validate",
+      "inputHex": "2f2a782a2f7b7d",
+      "expected": {
+        "accepted": false,
+        "stage": "json-syntax",
+        "resultCode": "invalid-json-syntax"
+      },
+      "requirementIds": [
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "syntax.trailing-comma",
+      "operation": "representation-validate",
+      "inputHex": "7b2261223a312c7d",
+      "expected": {
+        "accepted": false,
+        "stage": "json-syntax",
+        "resultCode": "invalid-json-syntax"
+      },
+      "requirementIds": [
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "syntax.incomplete",
+      "operation": "representation-validate",
+      "inputHex": "7b2261223a",
+      "expected": {
+        "accepted": false,
+        "stage": "json-syntax",
+        "resultCode": "incomplete-json-text"
+      },
+      "requirementIds": [
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "syntax.trailing-content",
+      "operation": "representation-validate",
+      "inputHex": "7b7d7b7d",
+      "expected": {
+        "accepted": false,
+        "stage": "json-syntax",
+        "resultCode": "trailing-content"
+      },
+      "requirementIds": [
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "syntax.single-quoted-string",
+      "operation": "representation-validate",
+      "inputHex": "7b2761273a317d",
+      "expected": {
+        "accepted": false,
+        "stage": "json-syntax",
+        "resultCode": "invalid-json-syntax"
+      },
+      "requirementIds": [
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "syntax.leading-plus",
+      "operation": "representation-validate",
+      "inputHex": "2b31",
+      "expected": {
+        "accepted": false,
+        "stage": "json-syntax",
+        "resultCode": "invalid-number-grammar"
+      },
+      "requirementIds": [
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "syntax.leading-zero",
+      "operation": "representation-validate",
+      "inputHex": "3031",
+      "expected": {
+        "accepted": false,
+        "stage": "json-syntax",
+        "resultCode": "invalid-number-grammar"
+      },
+      "requirementIds": [
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "syntax.nan",
+      "operation": "representation-validate",
+      "inputHex": "4e614e",
+      "expected": {
+        "accepted": false,
+        "stage": "json-syntax",
+        "resultCode": "invalid-number-grammar"
+      },
+      "requirementIds": [
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "syntax.infinity",
+      "operation": "representation-validate",
+      "inputHex": "496e66696e697479",
+      "expected": {
+        "accepted": false,
+        "stage": "json-syntax",
+        "resultCode": "invalid-number-grammar"
+      },
+      "requirementIds": [
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "name.duplicate-literal-root",
+      "operation": "representation-validate",
+      "inputHex": "7b2261223a312c2261223a327d",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "duplicate-object-name"
+      },
+      "requirementIds": [
+        "JR-NAME-001"
+      ]
+    },
+    {
+      "caseId": "name.duplicate-escaped-root",
+      "operation": "representation-validate",
+      "inputHex": "7b2261223a312c225c7530303631223a327d",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "duplicate-object-name"
+      },
+      "requirementIds": [
+        "JR-NAME-001"
+      ]
+    },
+    {
+      "caseId": "name.duplicate-nested",
+      "operation": "representation-validate",
+      "inputHex": "7b2278223a7b2261223a312c2261223a327d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "duplicate-object-name"
+      },
+      "requirementIds": [
+        "JR-NAME-001"
+      ]
+    },
+    {
+      "caseId": "unicode.lone-high-surrogate",
+      "operation": "representation-validate",
+      "inputHex": "225c756438303022",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "invalid-unicode-scalar"
+      },
+      "requirementIds": [
+        "JR-UNICODE-001"
+      ]
+    },
+    {
+      "caseId": "unicode.surrogate-pair",
+      "operation": "representation-validate",
+      "inputHex": "225c75643833645c756465303022",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-UNICODE-001"
+      ]
+    },
+    {
+      "caseId": "unicode.noncharacter",
+      "operation": "representation-validate",
+      "inputHex": "22efbfbe22",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "unicode-noncharacter"
+      },
+      "requirementIds": [
+        "JR-UNICODE-001"
+      ]
+    },
+    {
+      "caseId": "unicode.nfc-distinct-value",
+      "operation": "representation-validate",
+      "inputHex": "22c3a922",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-NORMALIZATION-001"
+      ]
+    },
+    {
+      "caseId": "unicode.nfd-distinct-value",
+      "operation": "representation-validate",
+      "inputHex": "2265cc8122",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-NORMALIZATION-001"
+      ]
+    },
+    {
+      "caseId": "number.zero",
+      "operation": "representation-validate",
+      "inputHex": "30",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.negative-zero-integer",
+      "operation": "representation-validate",
+      "inputHex": "2d30",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "negative-zero"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.negative-zero-fraction",
+      "operation": "representation-validate",
+      "inputHex": "2d302e30",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "negative-zero"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.negative-zero-exponent",
+      "operation": "representation-validate",
+      "inputHex": "2d306530",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "negative-zero"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.value-preserving-fraction",
+      "operation": "representation-validate",
+      "inputHex": "312e32333030",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.value-preserving-exponent",
+      "operation": "representation-validate",
+      "inputHex": "31652b31",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.safe-integer-maximum",
+      "operation": "representation-validate",
+      "inputHex": "39303037313939323534373430393931",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.safe-integer-minimum",
+      "operation": "representation-validate",
+      "inputHex": "2d39303037313939323534373430393931",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.unsafe-integer-positive",
+      "operation": "representation-validate",
+      "inputHex": "39303037313939323534373430393932",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "unsafe-integral-value"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.unsafe-integer-negative",
+      "operation": "representation-validate",
+      "inputHex": "2d39303037313939323534373430393932",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "unsafe-integral-value"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.precision-collapse",
+      "operation": "representation-validate",
+      "inputHex": "312e30303030303030303030303030303030303030303030303030303031",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "number-precision-loss"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.overflow",
+      "operation": "representation-validate",
+      "inputHex": "3165343030",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "number-overflow"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "number.nonzero-underflow",
+      "operation": "representation-validate",
+      "inputHex": "31652d34303030",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "number-underflow"
+      },
+      "requirementIds": [
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "canonical.object-order",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a7b2262223a312c2261223a327d7d2c22706172616d6574657273223a5b5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a7b2261223a322c2262223a317d2c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001"
+      ]
+    },
+    {
+      "caseId": "canonical.utf16-key-order",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a7b22ee8080223a312c22f09f9880223a327d7d2c22706172616d6574657273223a5b5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a7b22f09f9880223a322c22ee8080223a317d2c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001"
+      ]
+    },
+    {
+      "caseId": "canonical.string-escapes",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a225c75303036315c2f62227d2c22706172616d6574657273223a5b5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a22612f62222c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001"
+      ]
+    },
+    {
+      "caseId": "canonical.number-spelling",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a312e323330307d2c22706172616d6574657273223a5b5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a312e32332c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001",
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "canonical.number-fixed-threshold",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a31652d367d2c22706172616d6574657273223a5b5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a302e3030303030312c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001",
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "canonical.number-exponent-threshold",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a31652d377d2c22706172616d6574657273223a5b5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a31652d372c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001",
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "canonical.number-minimum-subnormal",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a35652d3332347d2c22706172616d6574657273223a5b5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a35652d3332342c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001",
+        "JR-NUMBER-001"
+      ]
+    },
+    {
+      "caseId": "canonical.array-order",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a5b332c322c315d7d2c22706172616d6574657273223a5b5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a5b332c322c315d2c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001"
+      ]
+    },
+    {
+      "caseId": "canonical.no-trailing-line-feed",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a7b2261223a317d7d2c22706172616d6574657273223a5b5d7d7d7d0a",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a7b2261223a317d2c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001"
+      ]
+    },
+    {
+      "caseId": "canonical.normalization-nfd-string",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a2265cc81227d2c22706172616d6574657273223a5b5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a2265cc81222c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001",
+        "JR-NORMALIZATION-001"
+      ]
+    },
+    {
+      "caseId": "canonical.normalization-distinct-names",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a7b22c3a9223a226e6663222c2265cc81223a226e6664227d7d2c22706172616d6574657273223a5b5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted",
+        "canonicalHex": "7b2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22706172616d6574657273223a5b5d2c22736f75726365223a7b22636f6e74656e74223a7b2265cc81223a226e6664222c22c3a9223a226e6663227d2c226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d7d2c226b696e64223a2265766964656e63652d73746174652d63617272696572227d"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001",
+        "JR-NORMALIZATION-001"
+      ]
+    },
+    {
+      "caseId": "precedence.schema-invalid-utf8",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "80",
+      "expected": {
+        "accepted": false,
+        "stage": "utf8",
+        "resultCode": "invalid-utf8"
+      },
+      "requirementIds": [
+        "JR-PRECEDENCE-001",
+        "JR-UTF8-001"
+      ]
+    },
+    {
+      "caseId": "precedence.schema-invalid-syntax",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a",
+      "expected": {
+        "accepted": false,
+        "stage": "json-syntax",
+        "resultCode": "incomplete-json-text"
+      },
+      "requirementIds": [
+        "JR-PRECEDENCE-001",
+        "JR-SYNTAX-001"
+      ]
+    },
+    {
+      "caseId": "precedence.schema-duplicate-name",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "json-domain",
+        "resultCode": "duplicate-object-name"
+      },
+      "requirementIds": [
+        "JR-NAME-001",
+        "JR-PRECEDENCE-001"
+      ]
+    },
+    {
+      "caseId": "precedence.canonicalize-schema-rejection",
+      "operation": "canonicalize",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572227d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "missing-required-property"
+      },
+      "requirementIds": [
+        "JR-CANONICAL-001",
+        "JR-PRECEDENCE-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.valid.claim-record",
+      "operation": "schema-validate",
+      "trustedRole": "claim-record",
+      "inputHex": "7b226b696e64223a22636c61696d2d7265636f7264222c227061636b6167654964656e746966696572223a2270222c227061636b616765496e746567726974794d616e69666573744d656d626572223a226d222c227061636b616765496e74656772697479416e63686f724d656d626572223a2261222c22726f6f7444657369676e61746f7273223a7b226a75646765644f626a65637443617272696572223a226a222c2265766964656e6365537461746543617272696572223a2265222c226576616c7561746f7243617272696572223a2266227d2c226d656d626572496e76656e746f7279223a7b2263223a7b226d656d626572526f6c65223a22636c61696d2d7265636f7264222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2263227d2c226d223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d6d616e6966657374222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c2261223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d616e63686f72222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c226a223a7b226d656d626572526f6c65223a226a75646765642d6f626a6563742d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a226a227d2c2265223a7b226d656d626572526f6c65223a2265766964656e63652d73746174652d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2265227d2c2266223a7b226d656d626572526f6c65223a226576616c7561746f722d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2266227d7d2c22646570656e64656e63794465636c61726174696f6e73223a7b7d2c227265666572656e636564536f7572636573223a7b7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-PIA-TARGET-001",
+        "JR-ROLE-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.valid.judged-object",
+      "operation": "schema-validate",
+      "trustedRole": "judged-object",
+      "inputHex": "7b226b696e64223a226a75646765642d6f626a6563742d63617272696572222c2270726f706f73616c223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a7b7d7d2c22626173656c696e65223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a7b7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001",
+        "JR-ROLE-001"
+      ]
+    },
+    {
+      "caseId": "schema.valid.evidence-state",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001",
+        "JR-ROLE-001"
+      ]
+    },
+    {
+      "caseId": "schema.valid.evaluator",
+      "operation": "schema-validate",
+      "trustedRole": "evaluator",
+      "inputHex": "7b226b696e64223a226576616c7561746f722d63617272696572222c226465636c61726564436f6e646974696f6e73223a7b7d2c227472757374426f756e646172696573223a7b7d2c22676f7665726e696e6753706563696669636174696f6e44657369676e61746f7273223a5b5d2c22657861637445646974696f6e44657369676e61746f7273223a5b5d2c2265766964656e6365436f6e646974696f6e42696e64696e6773223a7b7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001",
+        "JR-ROLE-001"
+      ]
+    },
+    {
+      "caseId": "schema.valid.package-integrity-manifest",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d4964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f616c676f726974686d2f6469676573742f7368612d323536222c22616c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d2c22626f756e644f626a656374223a2265786163742d7072657365727665642d6f6374657473222c22626f756e6456616c7565486578223a223030227d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001",
+        "JR-ROLE-001"
+      ]
+    },
+    {
+      "caseId": "schema.valid.package-integrity-anchor",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-anchor",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d616e63686f72222c227061636b6167654964656e746966696572223a22706b672d64656d6f222c227061636b616765496e746567726974794d616e69666573744d656d626572223a227061636b6167652d696e746567726974792d6d616e6966657374222c22766572696669636174696f6e4d6574686f644964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f766572696669636174696f6e2d6d6574686f642f7061636b6167652d696e746567726974792f656432353531392d64657461636865642d6d616e69666573742d7632222c22766572696669636174696f6e4d6574686f6444657369676e61746f72223a7b22757269223a2268747470733a2f2f62656c67692e6465762f73706563732f737065632d302e342f7368613235362d343930666162356362316638336464366165383439623434613238303537303365396235663333346361366463346464383535623730366364303639353833662f42454c47492d436f6d70616e696f6e2d5061636b6167652d496e746567726974792d416e63686f722d566572696669636174696f6e2e6d64222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2234393066616235636231663833646436616538343962343461323830353730336539623566333334636136646334646438353562373036636430363935383366227d7d2c22766572696669636174696f6e4b657944657369676e61746f72223a7b22757269223a2268747470733a2f2f62656c67692e6465762f6b6579732f746573742d766563746f722f6578616d706c652d656432353531392e707562222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2233313338626239626337386466323763343733656366643134313066376264343565626163316635396366336666396366653464623737616162376165646433227d7d2c22766572696669636174696f6e4b657954657874223a2231313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131222c227369676e6174757265416c676f726974686d4964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f616c676f726974686d2f7369676e61747572652f65643235353139222c227369676e6174757265416c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f62656c67692e6465762f73706563732f737065632d302e332f7368613235362d653366633035363866653666656335323365313161393136393738626361383062346235346235613139663561316231323563313039333531356162393935382f42454c47492d436f6d70616e696f6e2d5061636b6167652d496e746567726974792d416e63686f722d566572696669636174696f6e2e6d64222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2265336663303536386665366665633532336531316139313639373862636138306234623534623561313966356131623132356331303933353135616239393538227d7d2c227369676e6174757265426173653634223a2241414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141413d3d227d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-PIA-TARGET-001",
+        "JR-ROLE-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.valid.replay-report",
+      "operation": "schema-validate",
+      "trustedRole": "replay-report",
+      "inputHex": "7b22737461747573223a227265706c617961626c65222c226f7574636f6d65436c617373223a227375636365737366756c2d7265706c6179222c227061636b6167654964656e746966696572223a2270222c226465726976656456657264696374223a312c2270726f626c656d73223a5b5d2c227761726e696e6773223a5b5d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001",
+        "JR-ROLE-001"
+      ]
+    },
+    {
+      "caseId": "schema.unknown-top-level",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d2c22756e6578706563746564223a317d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "additional-property"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.unknown-nested",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a7b7d7d2c22706172616d6574657273223a5b5d2c22756e6578706563746564223a317d7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "additional-property"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.missing-required",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572227d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "missing-required-property"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.wrong-type",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a5b5d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "wrong-json-type"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.explicit-null",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a6e756c6c7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "wrong-json-type"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.boolean-not-number",
+      "operation": "schema-validate",
+      "trustedRole": "replay-report",
+      "inputHex": "7b22737461747573223a227265706c617961626c65222c226f7574636f6d65436c617373223a227375636365737366756c2d7265706c6179222c227061636b6167654964656e746966696572223a2270222c226465726976656456657264696374223a747275652c2270726f626c656d73223a5b5d2c227761726e696e6773223a5b5d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "wrong-json-type"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.invalid-absolute-uri-format",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-anchor",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d616e63686f72222c227061636b6167654964656e746966696572223a22706b672d64656d6f222c227061636b616765496e746567726974794d616e69666573744d656d626572223a227061636b6167652d696e746567726974792d6d616e6966657374222c22766572696669636174696f6e4d6574686f644964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f766572696669636174696f6e2d6d6574686f642f7061636b6167652d696e746567726974792f656432353531392d64657461636865642d6d616e69666573742d7632222c22766572696669636174696f6e4d6574686f6444657369676e61746f72223a7b22757269223a2272656c61746976652f70617468222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2234393066616235636231663833646436616538343962343461323830353730336539623566333334636136646334646438353562373036636430363935383366227d7d2c22766572696669636174696f6e4b657944657369676e61746f72223a7b22757269223a2268747470733a2f2f62656c67692e6465762f6b6579732f746573742d766563746f722f6578616d706c652d656432353531392e707562222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2233313338626239626337386466323763343733656366643134313066376264343565626163316635396366336666396366653464623737616162376165646433227d7d2c22766572696669636174696f6e4b657954657874223a2231313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131222c227369676e6174757265416c676f726974686d4964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f616c676f726974686d2f7369676e61747572652f65643235353139222c227369676e6174757265416c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f62656c67692e6465762f73706563732f737065632d302e332f7368613235362d653366633035363866653666656335323365313161393136393738626361383062346235346235613139663561316231323563313039333531356162393935382f42454c47492d436f6d70616e696f6e2d5061636b6167652d496e746567726974792d416e63686f722d566572696669636174696f6e2e6d64222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2265336663303536386665366665633532336531316139313639373862636138306234623534623561313966356131623132356331303933353135616239393538227d7d2c227369676e6174757265426173653634223a2241414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141413d3d227d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "format-assertion"
+      },
+      "requirementIds": [
+        "JR-SCHEMA-001",
+        "JR-SCOPE-001"
+      ]
+    },
+    {
+      "caseId": "schema.opaque-extension-values",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a7b22657874656e73696f6e223a7b226e6573746564223a5b312c747275652c6e756c6c5d7d7d7d2c22706172616d6574657273223a5b7b22706172616d657465724964656e746966696572223a2270222c2276616c7565223a7b22617262697472617279223a6e756c6c7d7d5d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-SCOPE-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.closed-parameter-envelope",
+      "operation": "schema-validate",
+      "trustedRole": "evidence-state",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b2278223a7b2265766964656e63654b696e644964656e746966696572223a226b222c22736f75726365223a7b226b696e64223a22696e6c696e652d6a736f6e222c226d6564696154797065223a226170706c69636174696f6e2f6a736f6e222c22636f6e74656e74223a7b22657874656e73696f6e223a7b226e6573746564223a5b312c747275652c6e756c6c5d7d7d7d2c22706172616d6574657273223a5b7b22706172616d657465724964656e746966696572223a2270222c2276616c7565223a7b22617262697472617279223a6e756c6c7d2c22756e6578706563746564223a317d5d7d7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "additional-property"
+      },
+      "requirementIds": [
+        "JR-SCOPE-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.trusted-role-substitution",
+      "operation": "schema-validate",
+      "trustedRole": "judged-object",
+      "inputHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "trusted-role-schema-mismatch"
+      },
+      "requirementIds": [
+        "JR-ROLE-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.unresolved-local-dependency",
+      "operation": "schema-validate",
+      "trustedRole": "replay-report",
+      "unavailableDependencies": [
+        "FailureTaxonomy.schema.json"
+      ],
+      "inputHex": "7b22737461747573223a227265706c617961626c65222c226f7574636f6d65436c617373223a227375636365737366756c2d7265706c6179222c227061636b6167654964656e746966696572223a2270222c226465726976656456657264696374223a312c2270726f626c656d73223a5b5d2c227761726e696e6773223a5b5d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "unresolved-schema-dependency"
+      },
+      "requirementIds": [
+        "JR-ROLE-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.manifest-exact-valid",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d4964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f616c676f726974686d2f6469676573742f7368612d323536222c22616c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d2c22626f756e644f626a656374223a2265786163742d7072657365727665642d6f6374657473222c22626f756e6456616c7565486578223a223030227d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.algorithm-identifier-missing",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d2c22626f756e644f626a656374223a2265786163742d7072657365727665642d6f6374657473222c22626f756e6456616c7565486578223a223030227d7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "missing-required-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.algorithm-identifier-wrong-type",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d4964656e746966696572223a312c22616c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d2c22626f756e644f626a656374223a2265786163742d7072657365727665642d6f6374657473222c22626f756e6456616c7565486578223a223030227d7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "wrong-json-type"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.algorithm-identifier-relative-uri",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d4964656e746966696572223a22736861323536222c22616c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d2c22626f756e644f626a656374223a2265786163742d7072657365727665642d6f6374657473222c22626f756e6456616c7565486578223a223030227d7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "format-assertion"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.canonical-projection-valid",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d4964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f616c676f726974686d2f6469676573742f7368612d323536222c22616c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d2c22626f756e644f626a656374223a2263616e6f6e6963616c2d70726f6a656374696f6e222c22626f756e6456616c7565486578223a223030222c2263616e6f6e6963616c697a6174696f6e52756c654964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f70726f6365647572652f63616e6f6e6963616c697a6174696f6e2f7266632d383738352d6a6373222c2263616e6f6e6963616c697a6174696f6e52756c6544657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d7d7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.canonicalization-identifier-missing",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d4964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f616c676f726974686d2f6469676573742f7368612d323536222c22616c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d2c22626f756e644f626a656374223a2263616e6f6e6963616c2d70726f6a656374696f6e222c22626f756e6456616c7565486578223a223030222c2263616e6f6e6963616c697a6174696f6e52756c6544657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d7d7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "missing-required-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.canonicalization-designator-missing",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d4964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f616c676f726974686d2f6469676573742f7368612d323536222c22616c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d2c22626f756e644f626a656374223a2263616e6f6e6963616c2d70726f6a656374696f6e222c22626f756e6456616c7565486578223a223030222c2263616e6f6e6963616c697a6174696f6e52756c654964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f70726f6365647572652f63616e6f6e6963616c697a6174696f6e2f7266632d383738352d6a6373227d7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "missing-required-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.exact-octets-canonicalization-identifier",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d4964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f616c676f726974686d2f6469676573742f7368612d323536222c22616c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d2c22626f756e644f626a656374223a2265786163742d7072657365727665642d6f6374657473222c22626f756e6456616c7565486578223a223030222c2263616e6f6e6963616c697a6174696f6e52756c654964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f70726f6365647572652f63616e6f6e6963616c697a6174696f6e2f7266632d383738352d6a6373227d7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "prohibited-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.exact-octets-canonicalization-designator",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d4964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f616c676f726974686d2f6469676573742f7368612d323536222c22616c676f726974686d44657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d2c22626f756e644f626a656374223a2265786163742d7072657365727665642d6f6374657473222c22626f756e6456616c7565486578223a223030222c2263616e6f6e6963616c697a6174696f6e52756c6544657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d7d7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "prohibited-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.projection-valid",
+      "operation": "schema-validate",
+      "trustedRole": "claim-record",
+      "inputHex": "7b226b696e64223a22636c61696d2d7265636f7264222c227061636b6167654964656e746966696572223a2270222c227061636b616765496e746567726974794d616e69666573744d656d626572223a226d222c227061636b616765496e74656772697479416e63686f724d656d626572223a2261222c22726f6f7444657369676e61746f7273223a7b226a75646765644f626a65637443617272696572223a226a222c2265766964656e6365537461746543617272696572223a2265222c226576616c7561746f7243617272696572223a2266227d2c226d656d626572496e76656e746f7279223a7b2263223a7b226d656d626572526f6c65223a22636c61696d2d7265636f7264222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2263227d2c226d223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d6d616e6966657374222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c2261223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d616e63686f72222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c226a223a7b226d656d626572526f6c65223a226a75646765642d6f626a6563742d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a226a227d2c2265223a7b226d656d626572526f6c65223a2265766964656e63652d73746174652d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2265227d2c2266223a7b226d656d626572526f6c65223a226576616c7561746f722d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2266227d2c2264223a7b226d656d626572526f6c65223a227265706c61792d646570656e64656e6379222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2264222c2270726f6a656374696f6e52756c654964656e746966696572223a2268747470733a2f2f6578616d706c652e696e76616c69642f6964732f70726f6a656374696f6e2f64656d6f2d7631222c2270726f6a656374696f6e52756c6544657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d7d7d2c22646570656e64656e63794465636c61726174696f6e73223a7b7d2c227265666572656e636564536f7572636573223a7b7d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.projection-identifier-missing",
+      "operation": "schema-validate",
+      "trustedRole": "claim-record",
+      "inputHex": "7b226b696e64223a22636c61696d2d7265636f7264222c227061636b6167654964656e746966696572223a2270222c227061636b616765496e746567726974794d616e69666573744d656d626572223a226d222c227061636b616765496e74656772697479416e63686f724d656d626572223a2261222c22726f6f7444657369676e61746f7273223a7b226a75646765644f626a65637443617272696572223a226a222c2265766964656e6365537461746543617272696572223a2265222c226576616c7561746f7243617272696572223a2266227d2c226d656d626572496e76656e746f7279223a7b2263223a7b226d656d626572526f6c65223a22636c61696d2d7265636f7264222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2263227d2c226d223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d6d616e6966657374222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c2261223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d616e63686f72222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c226a223a7b226d656d626572526f6c65223a226a75646765642d6f626a6563742d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a226a227d2c2265223a7b226d656d626572526f6c65223a2265766964656e63652d73746174652d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2265227d2c2266223a7b226d656d626572526f6c65223a226576616c7561746f722d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2266227d2c2264223a7b226d656d626572526f6c65223a227265706c61792d646570656e64656e6379222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2264222c2270726f6a656374696f6e52756c6544657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d7d7d2c22646570656e64656e63794465636c61726174696f6e73223a7b7d2c227265666572656e636564536f7572636573223a7b7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "missing-required-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.projection-designator-missing",
+      "operation": "schema-validate",
+      "trustedRole": "claim-record",
+      "inputHex": "7b226b696e64223a22636c61696d2d7265636f7264222c227061636b6167654964656e746966696572223a2270222c227061636b616765496e746567726974794d616e69666573744d656d626572223a226d222c227061636b616765496e74656772697479416e63686f724d656d626572223a2261222c22726f6f7444657369676e61746f7273223a7b226a75646765644f626a65637443617272696572223a226a222c2265766964656e6365537461746543617272696572223a2265222c226576616c7561746f7243617272696572223a2266227d2c226d656d626572496e76656e746f7279223a7b2263223a7b226d656d626572526f6c65223a22636c61696d2d7265636f7264222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2263227d2c226d223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d6d616e6966657374222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c2261223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d616e63686f72222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c226a223a7b226d656d626572526f6c65223a226a75646765642d6f626a6563742d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a226a227d2c2265223a7b226d656d626572526f6c65223a2265766964656e63652d73746174652d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2265227d2c2266223a7b226d656d626572526f6c65223a226576616c7561746f722d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2266227d2c2264223a7b226d656d626572526f6c65223a227265706c61792d646570656e64656e6379222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2264222c2270726f6a656374696f6e52756c654964656e746966696572223a2268747470733a2f2f6578616d706c652e696e76616c69642f6964732f70726f6a656374696f6e2f64656d6f2d7631227d7d2c22646570656e64656e63794465636c61726174696f6e73223a7b7d2c227265666572656e636564536f7572636573223a7b7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "missing-required-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.projection-on-recovery-member",
+      "operation": "schema-validate",
+      "trustedRole": "claim-record",
+      "inputHex": "7b226b696e64223a22636c61696d2d7265636f7264222c227061636b6167654964656e746966696572223a2270222c227061636b616765496e746567726974794d616e69666573744d656d626572223a226d222c227061636b616765496e74656772697479416e63686f724d656d626572223a2261222c22726f6f7444657369676e61746f7273223a7b226a75646765644f626a65637443617272696572223a226a222c2265766964656e6365537461746543617272696572223a2265222c226576616c7561746f7243617272696572223a2266227d2c226d656d626572496e76656e746f7279223a7b2263223a7b226d656d626572526f6c65223a22636c61696d2d7265636f7264222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2263227d2c226d223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d6d616e6966657374222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c2261223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d616e63686f72222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2270726f6a656374696f6e52756c654964656e746966696572223a2268747470733a2f2f6578616d706c652e696e76616c69642f6964732f70726f6a656374696f6e2f64656d6f2d7631222c2270726f6a656374696f6e52756c6544657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d7d2c226a223a7b226d656d626572526f6c65223a226a75646765642d6f626a6563742d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a226a227d2c2265223a7b226d656d626572526f6c65223a2265766964656e63652d73746174652d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2265227d2c2266223a7b226d656d626572526f6c65223a226576616c7561746f722d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2266227d7d2c22646570656e64656e63794465636c61726174696f6e73223a7b7d2c227265666572656e636564536f7572636573223a7b7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "prohibited-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.projection-on-required-root",
+      "operation": "schema-validate",
+      "trustedRole": "claim-record",
+      "inputHex": "7b226b696e64223a22636c61696d2d7265636f7264222c227061636b6167654964656e746966696572223a2270222c227061636b616765496e746567726974794d616e69666573744d656d626572223a226d222c227061636b616765496e74656772697479416e63686f724d656d626572223a2261222c22726f6f7444657369676e61746f7273223a7b226a75646765644f626a65637443617272696572223a226a222c2265766964656e6365537461746543617272696572223a2265222c226576616c7561746f7243617272696572223a2266227d2c226d656d626572496e76656e746f7279223a7b2263223a7b226d656d626572526f6c65223a22636c61696d2d7265636f7264222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2263227d2c226d223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d6d616e6966657374222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c2261223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d616e63686f72222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c226a223a7b226d656d626572526f6c65223a226a75646765642d6f626a6563742d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a226a222c2270726f6a656374696f6e52756c654964656e746966696572223a2268747470733a2f2f6578616d706c652e696e76616c69642f6964732f70726f6a656374696f6e2f64656d6f2d7631222c2270726f6a656374696f6e52756c6544657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d7d2c2265223a7b226d656d626572526f6c65223a2265766964656e63652d73746174652d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2265227d2c2266223a7b226d656d626572526f6c65223a226576616c7561746f722d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2266227d7d2c22646570656e64656e63794465636c61726174696f6e73223a7b7d2c227265666572656e636564536f7572636573223a7b7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "prohibited-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.projection-on-auxiliary-member",
+      "operation": "schema-validate",
+      "trustedRole": "claim-record",
+      "inputHex": "7b226b696e64223a22636c61696d2d7265636f7264222c227061636b6167654964656e746966696572223a2270222c227061636b616765496e746567726974794d616e69666573744d656d626572223a226d222c227061636b616765496e74656772697479416e63686f724d656d626572223a2261222c22726f6f7444657369676e61746f7273223a7b226a75646765644f626a65637443617272696572223a226a222c2265766964656e6365537461746543617272696572223a2265222c226576616c7561746f7243617272696572223a2266227d2c226d656d626572496e76656e746f7279223a7b2263223a7b226d656d626572526f6c65223a22636c61696d2d7265636f7264222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2263227d2c226d223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d6d616e6966657374222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c2261223a7b226d656d626572526f6c65223a227061636b6167652d696e746567726974792d616e63686f72222c22636c617373696669636174696f6e223a22636c61696d2d7265636f72642d696e746567726974792d7265636f76657279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d7d2c226a223a7b226d656d626572526f6c65223a226a75646765642d6f626a6563742d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a226a227d2c2265223a7b226d656d626572526f6c65223a2265766964656e63652d73746174652d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2265227d2c2266223a7b226d656d626572526f6c65223a226576616c7561746f722d636172726965722d726f6f74222c22636c617373696669636174696f6e223a227265706c61792d72656c6576616e74222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2263616e6f6e6963616c5265666572656e6365223a2266227d2c2264223a7b226d656d626572526f6c65223a227265706c61792d646570656e64656e6379222c22636c617373696669636174696f6e223a22617578696c69617279222c22726570726573656e746174696f6e223a7b226d6564696154797065223a226170706c69636174696f6e2f6a736f6e227d2c2270726f6a656374696f6e52756c654964656e746966696572223a2268747470733a2f2f6578616d706c652e696e76616c69642f6964732f70726f6a656374696f6e2f64656d6f2d7631222c2270726f6a656374696f6e52756c6544657369676e61746f72223a7b22757269223a2268747470733a2f2f6578616d706c652e696e76616c69642f73706563732f72756c65732d7631222c22646967657374223a7b22616c676f726974686d4964223a22736861323536222c2264696765737456616c7565223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d7d7d7d2c22646570656e64656e63794465636c61726174696f6e73223a7b7d2c227265666572656e636564536f7572636573223a7b7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "prohibited-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.rule-pair.algorithm-designator-missing",
+      "operation": "schema-validate",
+      "trustedRole": "package-integrity-manifest",
+      "inputHex": "7b226b696e64223a227061636b6167652d696e746567726974792d6d616e6966657374222c2262696e64696e6773223a7b2272223a7b22616c676f726974686d4964656e746966696572223a2268747470733a2f2f62656c67692e6465762f6964732f616c676f726974686d2f6469676573742f7368612d323536222c22626f756e644f626a656374223a2265786163742d7072657365727665642d6f6374657473222c22626f756e6456616c7565486578223a223030227d7d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "missing-required-property"
+      },
+      "requirementIds": [
+        "JR-RULE-BINDING-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.replay-report.step-1-unavailable-null",
+      "operation": "schema-validate",
+      "trustedRole": "replay-report",
+      "inputHex": "7b22737461747573223a226e6f6e2d7265706c617961626c65222c226f7574636f6d65436c617373223a226d616c666f726d65642d63617272696572222c227061636b6167654964656e746966696572223a6e756c6c2c2270726f626c656d73223a5b7b2274797065223a226d616c666f726d65642d636c61696d2d7265636f7264222c227469746c65223a2274222c2264657461696c223a2264227d5d2c227761726e696e6773223a5b5d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-REPORT-IDENTITY-001",
+        "JR-ROLE-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.replay-report.replayable-null",
+      "operation": "schema-validate",
+      "trustedRole": "replay-report",
+      "inputHex": "7b22737461747573223a227265706c617961626c65222c226f7574636f6d65436c617373223a227375636365737366756c2d7265706c6179222c227061636b6167654964656e746966696572223a6e756c6c2c226465726976656456657264696374223a312c2270726f626c656d73223a5b5d2c227761726e696e6773223a5b5d7d",
+      "expected": {
+        "accepted": false,
+        "stage": "schema",
+        "resultCode": "wrong-json-type"
+      },
+      "requirementIds": [
+        "JR-REPORT-IDENTITY-001",
+        "JR-ROLE-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.replay-report.replayable-string",
+      "operation": "schema-validate",
+      "trustedRole": "replay-report",
+      "inputHex": "7b22737461747573223a227265706c617961626c65222c226f7574636f6d65436c617373223a227375636365737366756c2d7265706c6179222c227061636b6167654964656e746966696572223a22706b673a636c61696d222c226465726976656456657264696374223a312c2270726f626c656d73223a5b5d2c227761726e696e6773223a5b5d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-REPORT-IDENTITY-001",
+        "JR-ROLE-001",
+        "JR-SCHEMA-001"
+      ]
+    },
+    {
+      "caseId": "schema.replay-report.non-replayable-string",
+      "operation": "schema-validate",
+      "trustedRole": "replay-report",
+      "inputHex": "7b22737461747573223a226e6f6e2d7265706c617961626c65222c226f7574636f6d65436c617373223a22696e746567726974792d6661696c757265222c227061636b6167654964656e746966696572223a22706b673a636c61696d222c2270726f626c656d73223a5b7b2274797065223a22636c61696d2d7265636f72642d696e746567726974792d62696e64696e672d6d69736d61746368222c227469746c65223a2274222c2264657461696c223a2264227d5d2c227761726e696e6773223a5b5d7d",
+      "expected": {
+        "accepted": true,
+        "stage": "complete",
+        "resultCode": "accepted"
+      },
+      "requirementIds": [
+        "JR-REPORT-IDENTITY-001",
+        "JR-ROLE-001",
+        "JR-SCHEMA-001"
+      ]
+    }
+  ]
+}

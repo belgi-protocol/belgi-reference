@@ -1,0 +1,140 @@
+{
+  "$schema": "https://belgi.dev/schemas/carrier/rc.v2/BELGI-JSON-Schema-Dialect.schema.json",
+  "$id": "https://belgi.dev/schemas/carrier/rc.v2/ReplayReport.schema.json",
+  "title": "BELGI replay report",
+  "description": "Structured result of one replay attempt, including replay status, outcome class, the exact Step 1 package identifier or null when unavailable, replay problems, warnings, and the derived verdict when replay succeeded.",
+  "type": "object",
+  "properties": {
+    "status": {
+      "$ref": "FailureTaxonomy.schema.json#/$defs/replayStatus"
+    },
+    "outcomeClass": {
+      "$ref": "FailureTaxonomy.schema.json#/$defs/outcomeClass"
+    },
+    "packageIdentifier": {
+      "oneOf": [
+        {
+          "$ref": "Common.schema.json#/$defs/packageIdentifier"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "derivedVerdict": {
+      "$ref": "Common.schema.json#/$defs/cachedVerdict"
+    },
+    "problems": {
+      "type": "array",
+      "items": {
+        "$ref": "Common.schema.json#/$defs/replayProblem"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "$ref": "Common.schema.json#/$defs/replayWarning"
+      }
+    }
+  },
+  "required": [
+    "status",
+    "outcomeClass",
+    "packageIdentifier",
+    "problems",
+    "warnings"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "replayable"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "outcomeClass": {
+            "const": "successful-replay"
+          },
+          "packageIdentifier": {
+            "$ref": "Common.schema.json#/$defs/packageIdentifier"
+          }
+        },
+        "required": [
+          "derivedVerdict"
+        ]
+      },
+      "else": {
+        "allOf": [
+          {
+            "not": {
+              "required": [
+                "derivedVerdict"
+              ]
+            }
+          },
+          {
+            "properties": {
+              "outcomeClass": {
+                "not": {
+                  "const": "successful-replay"
+                }
+              }
+            },
+            "required": [
+              "outcomeClass"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "packageIdentifier": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "packageIdentifier"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "non-replayable"
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "status": "replayable",
+      "outcomeClass": "successful-replay",
+      "packageIdentifier": "pkg-demo",
+      "derivedVerdict": 1,
+      "problems": [],
+      "warnings": []
+    },
+    {
+      "status": "non-replayable",
+      "outcomeClass": "malformed-carrier",
+      "packageIdentifier": null,
+      "problems": [
+        {
+          "type": "malformed-claim-record",
+          "title": "Claim record unavailable",
+          "detail": "Step 1 did not produce a complete bounded bootstrap view."
+        }
+      ],
+      "warnings": []
+    }
+  ]
+}

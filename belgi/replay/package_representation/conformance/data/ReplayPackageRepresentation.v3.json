@@ -1,0 +1,5334 @@
+{
+  "schemaVersion": "belgi-replay-package-representation-conformance-v3",
+  "corpusRole": "replay-package-representation",
+  "companion": {
+    "familyIdentifier": "https://belgi.dev/ids/companion/json-representation",
+    "versionDesignator": "0.5",
+    "publicationTrack": "spec-0.5",
+    "status": "working-draft"
+  },
+  "predecessorCorpus": {
+    "role": "replay-package-representation",
+    "sourcePath": "conformance/ReplayPackageRepresentation.v2.json",
+    "immutableDesignator": {
+      "uri": "https://belgi.dev/specs/spec-0.4/sha256-857aded742de9e2ef81653084cf432f065a4b34514934d10e8a80e0d3b584948/ReplayPackageRepresentation.v2.json",
+      "digest": {
+        "algorithmId": "sha256",
+        "digestValue": "857aded742de9e2ef81653084cf432f065a4b34514934d10e8a80e0d3b584948"
+      }
+    }
+  },
+  "resourceLimits": [
+    {
+      "resource": "outerZipBytes",
+      "maximum": 536870912,
+      "stage": 1,
+      "exceededResultCode": "outer-size-exceeded"
+    },
+    {
+      "resource": "directoryEntryCount",
+      "maximum": 131072,
+      "stage": 3,
+      "exceededResultCode": "entry-count-exceeded"
+    },
+    {
+      "resource": "memberCount",
+      "maximum": 4096,
+      "stage": 3,
+      "exceededResultCode": "entry-count-exceeded"
+    },
+    {
+      "resource": "memberBytes",
+      "maximum": 67108864,
+      "stage": 5,
+      "exceededResultCode": "member-size-exceeded"
+    },
+    {
+      "resource": "claimRecordBytes",
+      "maximum": 8388608,
+      "stage": 6,
+      "exceededResultCode": "claim-record-size-exceeded"
+    },
+    {
+      "resource": "totalMemberBytes",
+      "maximum": 268435456,
+      "stage": 5,
+      "exceededResultCode": "total-size-exceeded"
+    },
+    {
+      "resource": "pathSegments",
+      "maximum": 32,
+      "stage": 4,
+      "exceededResultCode": "invalid-entry-name"
+    },
+    {
+      "resource": "pathSegmentBytes",
+      "maximum": 255,
+      "stage": 4,
+      "exceededResultCode": "invalid-entry-name"
+    },
+    {
+      "resource": "pathBytes",
+      "maximum": 1024,
+      "stage": 4,
+      "exceededResultCode": "invalid-entry-name"
+    },
+    {
+      "resource": "claimRecordJsonNestingDepth",
+      "maximum": 128,
+      "stage": 6,
+      "exceededResultCode": "invalid-claim-record-representation"
+    }
+  ],
+  "priorityOrder": [
+    {
+      "stage": 1,
+      "resultCodes": [
+        "outer-size-exceeded"
+      ]
+    },
+    {
+      "stage": 2,
+      "resultCodes": [
+        "malformed-container",
+        "unsupported-container-feature"
+      ]
+    },
+    {
+      "stage": 3,
+      "resultCodes": [
+        "entry-count-exceeded"
+      ]
+    },
+    {
+      "stage": 4,
+      "resultCodes": [
+        "invalid-entry-name",
+        "unsupported-entry-type",
+        "duplicate-entry",
+        "path-prefix-collision"
+      ]
+    },
+    {
+      "stage": 5,
+      "resultCodes": [
+        "member-size-exceeded",
+        "total-size-exceeded",
+        "member-stream-mismatch",
+        "package-mutated-during-read"
+      ]
+    },
+    {
+      "stage": 6,
+      "resultCodes": [
+        "missing-claim-record",
+        "claim-record-size-exceeded",
+        "invalid-claim-record-representation"
+      ]
+    },
+    {
+      "stage": 7,
+      "resultCodes": [
+        "physical-inventory-mismatch",
+        "fixed-role-binding-mismatch"
+      ]
+    },
+    {
+      "stage": 8,
+      "resultCodes": [
+        "complete"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "directory.block-device",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "block-device"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "directory.character-device",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "character-device"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "directory.duplicate-entry",
+      "family": "directory-collision",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b7d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          },
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b7d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "duplicate-entry"
+      },
+      "requirementIds": [
+        "JR-ENTRY-001",
+        "JR-COLLISION-001"
+      ]
+    },
+    {
+      "caseId": "directory.explicit-directory",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "unused",
+            "nodeType": "directory"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "directory.fifo",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "fifo"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "directory.hardlink",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 2,
+            "contentHex": "7b7d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001"
+      ]
+    },
+    {
+      "caseId": "directory.mutation-ancestry",
+      "family": "directory-mutation",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": false,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b7d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "package-mutated-during-read"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "directory.mutation-identity",
+      "family": "directory-mutation",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b7d",
+            "identityStable": false,
+            "typeStable": true,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "package-mutated-during-read"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "directory.mutation-size",
+      "family": "directory-mutation",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b7d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": false
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "package-mutated-during-read"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "directory.mutation-type",
+      "family": "directory-mutation",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b7d",
+            "identityStable": true,
+            "typeStable": false,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "package-mutated-during-read"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "directory.path-prefix-collision",
+      "family": "directory-collision",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "a",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "61",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          },
+          {
+            "path": "a/b",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "62",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "path-prefix-collision"
+      },
+      "requirementIds": [
+        "JR-COLLISION-001"
+      ]
+    },
+    {
+      "caseId": "directory.reparse-point",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "reparse-point",
+            "reparseTag": "mount-point"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "directory.root-reparse-point",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "reparse-point",
+          "reparseTag": "mount-point"
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b7d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001"
+      ]
+    },
+    {
+      "caseId": "directory.root-symlink",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "symbolic-link",
+          "target": "/elsewhere"
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b7d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001"
+      ]
+    },
+    {
+      "caseId": "directory.socket",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "socket"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "directory.symlink",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "symbolic-link",
+            "target": "outside"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "directory.valid-regular-file",
+      "family": "directory-nodes",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/corpus/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b7d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "snapshot-established",
+        "logicalMap": [
+          {
+            "logicalPath": "claim-record",
+            "octetsHex": "7b7d"
+          }
+        ]
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-PROJECTION-001"
+      ]
+    },
+    {
+      "caseId": "path.backslash",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a\\\\b"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.colon",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a:b"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.complete-bytes-above",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/a"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.complete-bytes-at",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/a"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.complete-bytes-below",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.control",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a\u001fb"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.dot-dot-segment",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a/../b"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.dot-segment",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a/./b"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.empty-segment",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a//b"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.leading-dot",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": ".a"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.leading-slash",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "/a"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.leading-space",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": " a"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.non-ascii",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "é"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.nul",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a\u0000b"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.reserved-aux",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "aux"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.reserved-com1",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "com1"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.reserved-com9-extension",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "com9.x"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.reserved-con",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "con"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.reserved-lpt1",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "lpt1"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.reserved-lpt9-extension",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "lpt9.x"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.reserved-nul",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "nul"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.reserved-prn-extension",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "prn.json"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.segment-above",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.segment-maximum",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.segment-minimum",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.segments-above",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.segments-maximum",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.trailing-dot",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a."
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.trailing-slash",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a/"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.trailing-space",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a "
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.uppercase",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "A"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "path.valid-single-segment",
+      "family": "portable-path",
+      "operation": "portable-path-validate",
+      "input": {
+        "logicalPath": "a"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete"
+      },
+      "requirementIds": [
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-1-before-stage-4.isolated-1",
+      "family": "priority.stage-1-before-stage-4",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 1,
+            "resultCode": "outer-size-exceeded"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 1,
+        "resultCode": "outer-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-1-before-stage-4.isolated-2",
+      "family": "priority.stage-1-before-stage-4",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 4,
+            "resultCode": "invalid-entry-name"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-1-before-stage-4.simultaneous",
+      "family": "priority.stage-1-before-stage-4",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 1,
+            "resultCode": "outer-size-exceeded"
+          },
+          {
+            "stage": 4,
+            "resultCode": "invalid-entry-name"
+          }
+        ],
+        "isolatedCaseIds": [
+          "priority.stage-1-before-stage-4.isolated-1",
+          "priority.stage-1-before-stage-4.isolated-2"
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 1,
+        "resultCode": "outer-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-2-code-order.isolated-1",
+      "family": "priority.stage-2-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 2,
+            "resultCode": "malformed-container"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "malformed-container"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-2-code-order.isolated-2",
+      "family": "priority.stage-2-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 2,
+            "resultCode": "unsupported-container-feature"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-2-code-order.simultaneous",
+      "family": "priority.stage-2-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 2,
+            "resultCode": "malformed-container"
+          },
+          {
+            "stage": 2,
+            "resultCode": "unsupported-container-feature"
+          }
+        ],
+        "isolatedCaseIds": [
+          "priority.stage-2-code-order.isolated-1",
+          "priority.stage-2-code-order.isolated-2"
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "malformed-container"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-3-before-stage-4.isolated-1",
+      "family": "priority.stage-3-before-stage-4",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 3,
+            "resultCode": "entry-count-exceeded"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 3,
+        "resultCode": "entry-count-exceeded"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-3-before-stage-4.isolated-2",
+      "family": "priority.stage-3-before-stage-4",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 4,
+            "resultCode": "duplicate-entry"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "duplicate-entry"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-3-before-stage-4.simultaneous",
+      "family": "priority.stage-3-before-stage-4",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 3,
+            "resultCode": "entry-count-exceeded"
+          },
+          {
+            "stage": 4,
+            "resultCode": "duplicate-entry"
+          }
+        ],
+        "isolatedCaseIds": [
+          "priority.stage-3-before-stage-4.isolated-1",
+          "priority.stage-3-before-stage-4.isolated-2"
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 3,
+        "resultCode": "entry-count-exceeded"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-4-code-order.isolated-1",
+      "family": "priority.stage-4-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 4,
+            "resultCode": "invalid-entry-name"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-4-code-order.isolated-2",
+      "family": "priority.stage-4-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 4,
+            "resultCode": "path-prefix-collision"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "path-prefix-collision"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-4-code-order.simultaneous",
+      "family": "priority.stage-4-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 4,
+            "resultCode": "invalid-entry-name"
+          },
+          {
+            "stage": 4,
+            "resultCode": "path-prefix-collision"
+          }
+        ],
+        "isolatedCaseIds": [
+          "priority.stage-4-code-order.isolated-1",
+          "priority.stage-4-code-order.isolated-2"
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-5-code-order.isolated-1",
+      "family": "priority.stage-5-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 5,
+            "resultCode": "member-size-exceeded"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-5-code-order.isolated-2",
+      "family": "priority.stage-5-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 5,
+            "resultCode": "package-mutated-during-read"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "package-mutated-during-read"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-5-code-order.simultaneous",
+      "family": "priority.stage-5-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 5,
+            "resultCode": "member-size-exceeded"
+          },
+          {
+            "stage": 5,
+            "resultCode": "package-mutated-during-read"
+          }
+        ],
+        "isolatedCaseIds": [
+          "priority.stage-5-code-order.isolated-1",
+          "priority.stage-5-code-order.isolated-2"
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-5-stream-before-mutation.isolated-1",
+      "family": "priority.stage-5-stream-before-mutation",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 5,
+            "resultCode": "member-stream-mismatch"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-stream-mismatch"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-5-stream-before-mutation.isolated-2",
+      "family": "priority.stage-5-stream-before-mutation",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 5,
+            "resultCode": "package-mutated-during-read"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "package-mutated-during-read"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-5-stream-before-mutation.simultaneous",
+      "family": "priority.stage-5-stream-before-mutation",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 5,
+            "resultCode": "member-stream-mismatch"
+          },
+          {
+            "stage": 5,
+            "resultCode": "package-mutated-during-read"
+          }
+        ],
+        "isolatedCaseIds": [
+          "priority.stage-5-stream-before-mutation.isolated-1",
+          "priority.stage-5-stream-before-mutation.isolated-2"
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-stream-mismatch"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-6-code-order.isolated-1",
+      "family": "priority.stage-6-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 6,
+            "resultCode": "missing-claim-record"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 6,
+        "resultCode": "missing-claim-record"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-6-code-order.isolated-2",
+      "family": "priority.stage-6-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 6,
+            "resultCode": "invalid-claim-record-representation"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 6,
+        "resultCode": "invalid-claim-record-representation"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-6-code-order.simultaneous",
+      "family": "priority.stage-6-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 6,
+            "resultCode": "missing-claim-record"
+          },
+          {
+            "stage": 6,
+            "resultCode": "invalid-claim-record-representation"
+          }
+        ],
+        "isolatedCaseIds": [
+          "priority.stage-6-code-order.isolated-1",
+          "priority.stage-6-code-order.isolated-2"
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 6,
+        "resultCode": "missing-claim-record"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-7-code-order.isolated-1",
+      "family": "priority.stage-7-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 7,
+            "resultCode": "physical-inventory-mismatch"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "physical-inventory-mismatch"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-7-code-order.isolated-2",
+      "family": "priority.stage-7-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 7,
+            "resultCode": "fixed-role-binding-mismatch"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "fixed-role-binding-mismatch"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.stage-7-code-order.simultaneous",
+      "family": "priority.stage-7-code-order",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 7,
+            "resultCode": "physical-inventory-mismatch"
+          },
+          {
+            "stage": 7,
+            "resultCode": "fixed-role-binding-mismatch"
+          }
+        ],
+        "isolatedCaseIds": [
+          "priority.stage-7-code-order.isolated-1",
+          "priority.stage-7-code-order.isolated-2"
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "physical-inventory-mismatch"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "projection.claim-record",
+      "family": "fixed-projection",
+      "operation": "logical-to-physical-map",
+      "input": {
+        "logicalPath": "claim-record"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete",
+        "physicalPath": "claim-record.json"
+      },
+      "requirementIds": [
+        "JR-PROJECTION-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "projection.evaluator-carrier-root",
+      "family": "fixed-projection",
+      "operation": "logical-to-physical-map",
+      "input": {
+        "logicalPath": "evaluator-carrier-root"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete",
+        "physicalPath": "evaluator-carrier-root"
+      },
+      "requirementIds": [
+        "JR-PROJECTION-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "projection.evidence-state-carrier-root",
+      "family": "fixed-projection",
+      "operation": "logical-to-physical-map",
+      "input": {
+        "logicalPath": "evidence-state-carrier-root"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete",
+        "physicalPath": "evidence-state-carrier-root"
+      },
+      "requirementIds": [
+        "JR-PROJECTION-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "projection.judged-object-carrier-root",
+      "family": "fixed-projection",
+      "operation": "logical-to-physical-map",
+      "input": {
+        "logicalPath": "judged-object-carrier-root"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete",
+        "physicalPath": "judged-object-carrier-root"
+      },
+      "requirementIds": [
+        "JR-PROJECTION-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "projection.package-integrity-anchor",
+      "family": "fixed-projection",
+      "operation": "logical-to-physical-map",
+      "input": {
+        "logicalPath": "package-integrity-anchor"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete",
+        "physicalPath": "package-integrity-anchor"
+      },
+      "requirementIds": [
+        "JR-PROJECTION-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "projection.package-integrity-manifest",
+      "family": "fixed-projection",
+      "operation": "logical-to-physical-map",
+      "input": {
+        "logicalPath": "package-integrity-manifest"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete",
+        "physicalPath": "package-integrity-manifest"
+      },
+      "requirementIds": [
+        "JR-PROJECTION-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "projection.reserved-logical-claim-record-json",
+      "family": "fixed-projection",
+      "operation": "logical-to-physical-map",
+      "input": {
+        "logicalPath": "claim-record.json"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PROJECTION-001"
+      ]
+    },
+    {
+      "caseId": "recovery.fixed-binding-mismatch-claim-record",
+      "family": "recovery-bindings",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "integrity-recovered",
+        "physicalPaths": [
+          "claim-record.json",
+          "evaluator-carrier-root",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "wrong-memberRole",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-anchor"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "judged-object"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "evidence-state-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "fixed-role-binding-mismatch"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "recovery.fixed-binding-mismatch-evaluator-carrier-root",
+      "family": "recovery-bindings",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "integrity-recovered",
+        "physicalPaths": [
+          "claim-record.json",
+          "evaluator-carrier-root",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "claim-record",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-anchor"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "judged-object"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "evidence-state-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "wrong-classification",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "fixed-role-binding-mismatch"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "recovery.fixed-binding-mismatch-evidence-state-carrier-root",
+      "family": "recovery-bindings",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "integrity-recovered",
+        "physicalPaths": [
+          "claim-record.json",
+          "evaluator-carrier-root",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "claim-record",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-anchor"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "judged-object"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "wrong-memberRole",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "fixed-role-binding-mismatch"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "recovery.fixed-binding-mismatch-judged-object-carrier-root",
+      "family": "recovery-bindings",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "integrity-recovered",
+        "physicalPaths": [
+          "claim-record.json",
+          "evaluator-carrier-root",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "claim-record",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-anchor"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "wrong-trustedJsonRole"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "evidence-state-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "fixed-role-binding-mismatch"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "recovery.fixed-binding-mismatch-package-integrity-anchor",
+      "family": "recovery-bindings",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "integrity-recovered",
+        "physicalPaths": [
+          "claim-record.json",
+          "evaluator-carrier-root",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "claim-record",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "wrong-trustedJsonRole"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "judged-object"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "evidence-state-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "fixed-role-binding-mismatch"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "recovery.fixed-binding-mismatch-package-integrity-manifest",
+      "family": "recovery-bindings",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "integrity-recovered",
+        "physicalPaths": [
+          "claim-record.json",
+          "evaluator-carrier-root",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "claim-record",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "wrong-classification",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-anchor"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "judged-object"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "evidence-state-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "fixed-role-binding-mismatch"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "recovery.invalid-claim-record-representation",
+      "family": "recovery-claim-record",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "invalid-representation",
+        "physicalPaths": [
+          "claim-record.json",
+          "evaluator-carrier-root",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "claim-record",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-anchor"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "judged-object"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "evidence-state-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 6,
+        "resultCode": "invalid-claim-record-representation"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001",
+        "JR-PRECEDENCE-001"
+      ]
+    },
+    {
+      "caseId": "recovery.missing-claim-record",
+      "family": "recovery-claim-record",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "missing",
+        "physicalPaths": [
+          "evaluator-carrier-root",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "claim-record",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-anchor"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "judged-object"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "evidence-state-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 6,
+        "resultCode": "missing-claim-record"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001",
+        "JR-PROJECTION-001"
+      ]
+    },
+    {
+      "caseId": "recovery.physical-inventory-extra",
+      "family": "recovery-inventory",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "integrity-recovered",
+        "physicalPaths": [
+          "claim-record.json",
+          "evaluator-carrier-root",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest",
+          "unlisted"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "claim-record",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-anchor"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "judged-object"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "evidence-state-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "physical-inventory-mismatch"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "recovery.physical-inventory-missing",
+      "family": "recovery-inventory",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "integrity-recovered",
+        "physicalPaths": [
+          "claim-record.json",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "claim-record",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-anchor"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "judged-object"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "evidence-state-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 7,
+        "resultCode": "physical-inventory-mismatch"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001"
+      ]
+    },
+    {
+      "caseId": "recovery.valid-fixed-bindings",
+      "family": "recovery-bindings",
+      "operation": "recovery-binding-check",
+      "input": {
+        "claimRecordState": "integrity-recovered",
+        "physicalPaths": [
+          "claim-record.json",
+          "evaluator-carrier-root",
+          "evidence-state-carrier-root",
+          "judged-object-carrier-root",
+          "package-integrity-anchor",
+          "package-integrity-manifest"
+        ],
+        "authenticatedInventory": [
+          {
+            "logicalName": "claim-record",
+            "physicalPath": "claim-record.json",
+            "memberRole": "claim-record",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "claim-record"
+          },
+          {
+            "logicalName": "package-integrity-manifest",
+            "physicalPath": "package-integrity-manifest",
+            "memberRole": "package-integrity-manifest",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-manifest"
+          },
+          {
+            "logicalName": "package-integrity-anchor",
+            "physicalPath": "package-integrity-anchor",
+            "memberRole": "package-integrity-anchor",
+            "classification": "claim-record-integrity-recovery",
+            "trustedJsonRole": "package-integrity-anchor"
+          },
+          {
+            "logicalName": "judged-object-carrier-root",
+            "physicalPath": "judged-object-carrier-root",
+            "memberRole": "judged-object-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "judged-object"
+          },
+          {
+            "logicalName": "evidence-state-carrier-root",
+            "physicalPath": "evidence-state-carrier-root",
+            "memberRole": "evidence-state-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evidence-state"
+          },
+          {
+            "logicalName": "evaluator-carrier-root",
+            "physicalPath": "evaluator-carrier-root",
+            "memberRole": "evaluator-carrier-root",
+            "classification": "replay-relevant",
+            "trustedJsonRole": "evaluator"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 8,
+        "resultCode": "complete"
+      },
+      "requirementIds": [
+        "JR-RECOVERY-001",
+        "JR-PROJECTION-001",
+        "JR-ROLE-002"
+      ]
+    },
+    {
+      "caseId": "relocation.directory-root-a",
+      "family": "relocation-directory",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/alpha/package",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b226b696e64223a22636c61696d2d7265636f7264227d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          },
+          {
+            "path": "evidence-state-carrier-root",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "snapshot-established",
+        "logicalMap": [
+          {
+            "logicalPath": "claim-record",
+            "octetsHex": "7b226b696e64223a22636c61696d2d7265636f7264227d"
+          },
+          {
+            "logicalPath": "evidence-state-carrier-root",
+            "octetsHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d"
+          }
+        ]
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-RELOCATION-001"
+      ]
+    },
+    {
+      "caseId": "relocation.directory-root-b",
+      "family": "relocation-directory",
+      "operation": "directory-project",
+      "input": {
+        "root": {
+          "path": "/beta/moved",
+          "nodeType": "directory",
+          "identityStable": true
+        },
+        "ancestorsStable": true,
+        "entries": [
+          {
+            "path": "claim-record.json",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b226b696e64223a22636c61696d2d7265636f7264227d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          },
+          {
+            "path": "evidence-state-carrier-root",
+            "nodeType": "regular-file",
+            "linkCount": 1,
+            "contentHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d",
+            "identityStable": true,
+            "typeStable": true,
+            "sizeStable": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "snapshot-established",
+        "logicalMap": [
+          {
+            "logicalPath": "claim-record",
+            "octetsHex": "7b226b696e64223a22636c61696d2d7265636f7264227d"
+          },
+          {
+            "logicalPath": "evidence-state-carrier-root",
+            "octetsHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d"
+          }
+        ]
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-001",
+        "JR-RELOCATION-001"
+      ]
+    },
+    {
+      "caseId": "relocation.zip-order-a",
+      "family": "relocation-zip",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210098aadd8c170000001700000011000000636c61696d2d7265636f72642e6a736f6e7b226b696e64223a22636c61696d2d7265636f7264227d504b03041400000000000000210007ae26ac34000000340000001b00000065766964656e63652d73746174652d636172726965722d726f6f747b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d504b010214031400000000000000210098aadd8c1700000017000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b010214031400000000000000210007ae26ac34000000340000001b0000000000000000000000a4814600000065766964656e63652d73746174652d636172726965722d726f6f74504b0506000000000200020088000000b30000000000"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "snapshot-established",
+        "logicalMap": [
+          {
+            "logicalPath": "claim-record",
+            "octetsHex": "7b226b696e64223a22636c61696d2d7265636f7264227d"
+          },
+          {
+            "logicalPath": "evidence-state-carrier-root",
+            "octetsHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d"
+          }
+        ]
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-RELOCATION-001"
+      ]
+    },
+    {
+      "caseId": "relocation.zip-order-b",
+      "family": "relocation-zip",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000003333444407ae26ac34000000340000001b00000065766964656e63652d73746174652d636172726965722d726f6f747b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d504b03041400000000001111222298aadd8c170000001700000011000000636c61696d2d7265636f72642e6a736f6e7b226b696e64223a22636c61696d2d7265636f7264227d504b010214031400000000003333444407ae26ac34000000340000001b0000000000000000000000a4810000000065766964656e63652d73746174652d636172726965722d726f6f74504b010214031400000000001111222298aadd8c1700000017000000110000000000000000000000a4816d000000636c61696d2d7265636f72642e6a736f6e504b0506000000000200020088000000b30000000000"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "snapshot-established",
+        "logicalMap": [
+          {
+            "logicalPath": "claim-record",
+            "octetsHex": "7b226b696e64223a22636c61696d2d7265636f7264227d"
+          },
+          {
+            "logicalPath": "evidence-state-carrier-root",
+            "octetsHex": "7b226b696e64223a2265766964656e63652d73746174652d63617272696572222c2265766964656e63654974656d73223a7b7d7d"
+          }
+        ]
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-RELOCATION-001"
+      ]
+    },
+    {
+      "caseId": "resource.claimRecordBytes.above",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "claimRecordBytes",
+        "observed": 8388609
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 6,
+        "resultCode": "claim-record-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.claimRecordBytes.at",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "claimRecordBytes",
+        "observed": 8388608
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 6,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.claimRecordBytes.below",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "claimRecordBytes",
+        "observed": 8388607
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 6,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.claimRecordJsonNestingDepth.above",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "claimRecordJsonNestingDepth",
+        "observed": 129
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 6,
+        "resultCode": "invalid-claim-record-representation"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.claimRecordJsonNestingDepth.at",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "claimRecordJsonNestingDepth",
+        "observed": 128
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 6,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.claimRecordJsonNestingDepth.below",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "claimRecordJsonNestingDepth",
+        "observed": 127
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 6,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.memberBytes.above",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "memberBytes",
+        "observed": 67108865
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.memberBytes.at",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "memberBytes",
+        "observed": 67108864
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.memberBytes.below",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "memberBytes",
+        "observed": 67108863
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.memberCount.above",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "memberCount",
+        "observed": 4097
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 3,
+        "resultCode": "entry-count-exceeded"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.memberCount.at",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "memberCount",
+        "observed": 4096
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 3,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.memberCount.below",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "memberCount",
+        "observed": 4095
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 3,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.outerZipBytes.above",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "outerZipBytes",
+        "observed": 536870913
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 1,
+        "resultCode": "outer-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.outerZipBytes.at",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "outerZipBytes",
+        "observed": 536870912
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 1,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.outerZipBytes.below",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "outerZipBytes",
+        "observed": 536870911
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 1,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.pathBytes.above",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "pathBytes",
+        "observed": 1025
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.pathBytes.at",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "pathBytes",
+        "observed": 1024
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 4,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.pathBytes.below",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "pathBytes",
+        "observed": 1023
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 4,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.pathSegmentBytes.above",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "pathSegmentBytes",
+        "observed": 256
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.pathSegmentBytes.at",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "pathSegmentBytes",
+        "observed": 255
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 4,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.pathSegmentBytes.below",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "pathSegmentBytes",
+        "observed": 254
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 4,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.pathSegments.above",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "pathSegments",
+        "observed": 33
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.pathSegments.at",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "pathSegments",
+        "observed": 32
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 4,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.pathSegments.below",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "pathSegments",
+        "observed": 31
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 4,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.totalMemberBytes.above",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "totalMemberBytes",
+        "observed": 268435457
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "total-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.totalMemberBytes.at",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "totalMemberBytes",
+        "observed": 268435456
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.totalMemberBytes.below",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "totalMemberBytes",
+        "observed": 268435455
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "zip.archive-comment",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f00000031000000010043"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.central-directory-offset-mismatch",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000320000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "malformed-container"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.central-directory-size-mismatch",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b0506000000000100010040000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "malformed-container"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.crc-mismatch",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210044bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210044bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-stream-mismatch"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.data-descriptor",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400080000000000210000000000000000000000000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b070843bfa6a30200000002000000504b010214031400080000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000410000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.duplicate-name",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48131000000636c61696d2d7265636f72642e6a736f6e504b050600000000020002007e000000620000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "duplicate-entry"
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-ENTRY-001",
+        "JR-COLLISION-001"
+      ]
+    },
+    {
+      "caseId": "zip.encrypted-flag",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400010000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400010000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.entry-comment",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000100000000000000a48100000000636c61696d2d7265636f72642e6a736f6e43504b0506000000000100010040000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.explicit-directory",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210000000000000000000000000002000000612f504b0102140314000000000000002100000000000000000000000000020000000000000000001000ed4100000000612f504b0506000000000100010030000000200000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "zip.extra-field",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000200636c61696d2d7265636f72642e6a736f6e41427b7d504b010214031400000000000000210043bfa6a30200000002000000110002000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e4142504b0506000000000100010041000000330000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.fat-directory-attributes",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214001400000000000000210043bfa6a30200000002000000110000000000000000001000000000000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "zip.local-central-method-mismatch",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000008000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "malformed-container"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.local-central-name-mismatch",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72782e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "malformed-container"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.local-header-offset-mismatch",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48101000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "malformed-container"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.malformed-eocd",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f0000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "malformed-container"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.non-ascii-name",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000ff6c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000ff6c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-PATH-001"
+      ]
+    },
+    {
+      "caseId": "zip.path-prefix-collision",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043beb7e80100000001000000010000006161504b030414000000000000002100f9efbe71010000000100000003000000612f6262504b010214031400000000000000210043beb7e80100000001000000010000000000000000000000a4810000000061504b0102140314000000000000002100f9efbe710100000001000000030000000000000000000000a48120000000612f62504b0506000000000200020060000000420000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "path-prefix-collision"
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-ENTRY-001",
+        "JR-COLLISION-001"
+      ]
+    },
+    {
+      "caseId": "zip.prefix-bytes",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504658504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48103000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000340000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "malformed-container"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.split-disk",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000010000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050601000100010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.symlink-attributes",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b030414000000000000002100fc2f6f46060000000600000011000000636c61696d2d7265636f72642e6a736f6e746172676574504b0102140314000000000000002100fc2f6f460600000006000000110000000000000000000000ffa100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000350000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-ENTRY-001",
+        "JR-COLLISION-001"
+      ]
+    },
+    {
+      "caseId": "zip.trailing-bytes",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f00000031000000000054524c"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "malformed-container"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.uncompressed-size-mismatch",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000008000000210043bfa6a3040000000300000011000000636c61696d2d7265636f72642e6a736f6eabae0500504b010214031400000008000000210043bfa6a30400000003000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000330000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-stream-mismatch"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.unknown-creator-system",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214631400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "unsupported-entry-type"
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-ENTRY-001"
+      ]
+    },
+    {
+      "caseId": "zip.unsupported-method",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b0304140000000c000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b01021403140000000c000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.valid-deflate",
+      "family": "zip-valid",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000008000000210043bfa6a3040000000200000011000000636c61696d2d7265636f72642e6a736f6eabae0500504b010214031400000008000000210043bfa6a30400000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000330000000000"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "snapshot-established",
+        "logicalMap": [
+          {
+            "logicalPath": "claim-record",
+            "octetsHex": "7b7d"
+          }
+        ]
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-PROJECTION-001"
+      ]
+    },
+    {
+      "caseId": "zip.valid-store",
+      "family": "zip-valid",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "snapshot-established",
+        "logicalMap": [
+          {
+            "logicalPath": "claim-record",
+            "octetsHex": "7b7d"
+          }
+        ]
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-PROJECTION-001"
+      ]
+    },
+    {
+      "caseId": "zip.version-needed-unsupported",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03040a00000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214030a00000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.zip64-record",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3020000000200000011000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a30200000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b06062c00000000000000140014000000000000000000010000000000000001000000000000003f000000000000003100000000000000504b060700000000700000000000000001000000504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "zip.zip64-sentinel",
+      "family": "zip-hostile",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000000000000210043bfa6a3ffffffffffffffff11000000636c61696d2d7265636f72642e6a736f6e7b7d504b010214031400000000000000210043bfa6a3ffffffffffffffff110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 2,
+        "resultCode": "unsupported-container-feature"
+      },
+      "requirementIds": [
+        "JR-ZIP-001"
+      ]
+    },
+    {
+      "caseId": "stage5.deflate.compressed-suffix",
+      "family": "stage5-deflate-boundary",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000008000000000043bfa6a3050000000200000011000000636c61696d2d7265636f72642e6a736f6eabae050000504b010214031400000008000000000043bfa6a30500000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000340000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-stream-mismatch"
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-STAGE5-001"
+      ]
+    },
+    {
+      "caseId": "stage5.deflate.concatenated-data-set",
+      "family": "stage5-deflate-boundary",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000008000000000043bfa6a3070000000200000011000000636c61696d2d7265636f72642e6a736f6eabae05008b0000504b010214031400000008000000000043bfa6a30700000002000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000360000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-stream-mismatch"
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-STAGE5-001"
+      ]
+    },
+    {
+      "caseId": "stage5.deflate.empty-data-set",
+      "family": "stage5-deflate-boundary",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000008000000000000000000020000000000000011000000636c61696d2d7265636f72642e6a736f6e0300504b0102140314000000080000000000000000000200000000000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f000000310000000000"
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "snapshot-established",
+        "logicalMap": [
+          {
+            "logicalPath": "claim-record",
+            "octetsHex": ""
+          }
+        ]
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-STAGE5-001"
+      ]
+    },
+    {
+      "caseId": "stage5.deflate.zero-byte-interval",
+      "family": "stage5-deflate-boundary",
+      "operation": "zip-project",
+      "input": {
+        "archiveHex": "504b03041400000008000000000000000000000000000000000011000000636c61696d2d7265636f72642e6a736f6e504b0102140314000000080000000000000000000000000000000000110000000000000000000000a48100000000636c61696d2d7265636f72642e6a736f6e504b050600000000010001003f0000002f0000000000"
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-stream-mismatch"
+      },
+      "requirementIds": [
+        "JR-ZIP-001",
+        "JR-STAGE5-001"
+      ]
+    },
+    {
+      "caseId": "stage5.priority.reversed.isolated-member",
+      "family": "stage5-priority-reversed",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 5,
+            "resultCode": "member-size-exceeded"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.priority.reversed.isolated-total",
+      "family": "stage5-priority-reversed",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 5,
+            "resultCode": "total-size-exceeded"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "total-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.priority.reversed.simultaneous",
+      "family": "stage5-priority-reversed",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 5,
+            "resultCode": "total-size-exceeded"
+          },
+          {
+            "stage": 5,
+            "resultCode": "member-size-exceeded"
+          }
+        ],
+        "isolatedCaseIds": [
+          "stage5.priority.reversed.isolated-total",
+          "stage5.priority.reversed.isolated-member"
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-size-exceeded"
+      },
+      "requirementIds": [
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.aggregate-terminal-before-latent-member",
+      "family": "stage5-aggregate-terminal",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "a",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 67108864,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "b",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 67108864,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "c",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 67108864,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "d",
+            "method": "STORE",
+            "declaredUncompressedOctets": 1,
+            "producedOctets": 1,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "e",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 1,
+            "producedOctets": 67108864,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "z",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 0,
+            "producedOctets": 67108865,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "total-size-exceeded",
+        "processingOrder": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "z"
+        ],
+        "visitedPaths": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e"
+        ],
+        "terminalCounters": {
+          "memberOctets": 67108863,
+          "totalOctets": 268435456
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.exact-member-maximum-completes",
+      "family": "stage5-inclusive-maximum",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "claim-record.json",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 67108864,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 5,
+        "resultCode": "stage-5-complete",
+        "processingOrder": [
+          "claim-record.json"
+        ],
+        "visitedPaths": [
+          "claim-record.json"
+        ],
+        "terminalCounters": {
+          "memberOctets": 67108864,
+          "totalOctets": 67108864
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.member-aggregate-equal-threshold",
+      "family": "stage5-equal-threshold",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "a",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 67108864,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "b",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 67108864,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "c",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 67108864,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "d",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 0,
+            "producedOctets": 67108865,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-size-exceeded",
+        "processingOrder": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ],
+        "visitedPaths": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ],
+        "terminalCounters": {
+          "memberOctets": 67108864,
+          "totalOctets": 268435456
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.method-neutral-deflate-threshold",
+      "family": "stage5-method-neutral",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "claim-record.json",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 0,
+            "producedOctets": 67108865,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-size-exceeded",
+        "processingOrder": [
+          "claim-record.json"
+        ],
+        "visitedPaths": [
+          "claim-record.json"
+        ],
+        "terminalCounters": {
+          "memberOctets": 67108864,
+          "totalOctets": 67108864
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.method-neutral-store-threshold",
+      "family": "stage5-method-neutral",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "claim-record.json",
+            "method": "STORE",
+            "declaredUncompressedOctets": 0,
+            "producedOctets": 67108865,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-size-exceeded",
+        "processingOrder": [
+          "claim-record.json"
+        ],
+        "visitedPaths": [
+          "claim-record.json"
+        ],
+        "terminalCounters": {
+          "memberOctets": 67108864,
+          "totalOctets": 67108864
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.overflow-sensitive-aggregate-preflight",
+      "family": "stage5-preflight",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "m00",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m01",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m02",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m03",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m04",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m05",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m06",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m07",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m08",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m09",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m10",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m11",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m12",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m13",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m14",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m15",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m16",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m17",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m18",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m19",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m20",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m21",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m22",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m23",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m24",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m25",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m26",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m27",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m28",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m29",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m30",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m31",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m32",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m33",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m34",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m35",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m36",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m37",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m38",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m39",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m40",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m41",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m42",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m43",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m44",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m45",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m46",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m47",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m48",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m49",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m50",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m51",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m52",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m53",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m54",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m55",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m56",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m57",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m58",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m59",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m60",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m61",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m62",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "m63",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 67108864,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "total-size-exceeded",
+        "processingOrder": [
+          "m00",
+          "m01",
+          "m02",
+          "m03",
+          "m04",
+          "m05",
+          "m06",
+          "m07",
+          "m08",
+          "m09",
+          "m10",
+          "m11",
+          "m12",
+          "m13",
+          "m14",
+          "m15",
+          "m16",
+          "m17",
+          "m18",
+          "m19",
+          "m20",
+          "m21",
+          "m22",
+          "m23",
+          "m24",
+          "m25",
+          "m26",
+          "m27",
+          "m28",
+          "m29",
+          "m30",
+          "m31",
+          "m32",
+          "m33",
+          "m34",
+          "m35",
+          "m36",
+          "m37",
+          "m38",
+          "m39",
+          "m40",
+          "m41",
+          "m42",
+          "m43",
+          "m44",
+          "m45",
+          "m46",
+          "m47",
+          "m48",
+          "m49",
+          "m50",
+          "m51",
+          "m52",
+          "m53",
+          "m54",
+          "m55",
+          "m56",
+          "m57",
+          "m58",
+          "m59",
+          "m60",
+          "m61",
+          "m62",
+          "m63"
+        ],
+        "visitedPaths": [],
+        "terminalCounters": {
+          "memberOctets": 0,
+          "totalOctets": 0
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.permutation-order-a",
+      "family": "stage5-canonical-permutation",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "claim-record.json",
+            "method": "STORE",
+            "declaredUncompressedOctets": 0,
+            "producedOctets": 67108865,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          },
+          {
+            "physicalPath": "claim-record-z",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 0,
+            "producedOctets": 0,
+            "streamComplete": false,
+            "crcMatches": false,
+            "compressedBoundaryExact": false
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-stream-mismatch",
+        "processingOrder": [
+          "claim-record-z",
+          "claim-record.json"
+        ],
+        "visitedPaths": [
+          "claim-record-z"
+        ],
+        "terminalCounters": {
+          "memberOctets": 0,
+          "totalOctets": 0
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.permutation-order-b",
+      "family": "stage5-canonical-permutation",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "claim-record-z",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 0,
+            "producedOctets": 0,
+            "streamComplete": false,
+            "crcMatches": false,
+            "compressedBoundaryExact": false
+          },
+          {
+            "physicalPath": "claim-record.json",
+            "method": "STORE",
+            "declaredUncompressedOctets": 0,
+            "producedOctets": 67108865,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-stream-mismatch",
+        "processingOrder": [
+          "claim-record-z",
+          "claim-record.json"
+        ],
+        "visitedPaths": [
+          "claim-record-z"
+        ],
+        "terminalCounters": {
+          "memberOctets": 0,
+          "totalOctets": 0
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.preflight-later-member-excess",
+      "family": "stage5-preflight",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "a",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 0,
+            "producedOctets": 0,
+            "streamComplete": false,
+            "crcMatches": false,
+            "compressedBoundaryExact": false
+          },
+          {
+            "physicalPath": "z",
+            "method": "STORE",
+            "declaredUncompressedOctets": 67108865,
+            "producedOctets": 0,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-size-exceeded",
+        "processingOrder": [
+          "a",
+          "z"
+        ],
+        "visitedPaths": [],
+        "terminalCounters": {
+          "memberOctets": 0,
+          "totalOctets": 0
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.underdeclared-completes",
+      "family": "stage5-underdeclared",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "claim-record.json",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 1,
+            "producedOctets": 2,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-stream-mismatch",
+        "processingOrder": [
+          "claim-record.json"
+        ],
+        "visitedPaths": [
+          "claim-record.json"
+        ],
+        "terminalCounters": {
+          "memberOctets": 2,
+          "totalOctets": 2
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "stage5.trace.underdeclared-member-threshold",
+      "family": "stage5-underdeclared",
+      "operation": "stage-5-trace",
+      "input": {
+        "memberMaximum": 67108864,
+        "totalMaximum": 268435456,
+        "entries": [
+          {
+            "physicalPath": "claim-record.json",
+            "method": "DEFLATE",
+            "declaredUncompressedOctets": 1,
+            "producedOctets": 67108865,
+            "streamComplete": true,
+            "crcMatches": true,
+            "compressedBoundaryExact": true
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 5,
+        "resultCode": "member-size-exceeded",
+        "processingOrder": [
+          "claim-record.json"
+        ],
+        "visitedPaths": [
+          "claim-record.json"
+        ],
+        "terminalCounters": {
+          "memberOctets": 67108864,
+          "totalOctets": 67108864
+        }
+      },
+      "requirementIds": [
+        "JR-RESOURCE-001",
+        "JR-STAGE5-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "resource.directoryEntryCount.above",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "directoryEntryCount",
+        "observed": 131073
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 3,
+        "resultCode": "entry-count-exceeded"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-BOUND-001",
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.directoryEntryCount.at",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "directoryEntryCount",
+        "observed": 131072
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 3,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-BOUND-001",
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "resource.directoryEntryCount.below",
+      "family": "resource-boundaries",
+      "operation": "resource-limit-check",
+      "input": {
+        "resource": "directoryEntryCount",
+        "observed": 131071
+      },
+      "expected": {
+        "accepted": true,
+        "stage": 3,
+        "resultCode": "within-limit"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-BOUND-001",
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "priority.directory-entry-count-before-invalid-name.isolated-1",
+      "family": "priority.directory-entry-count-before-invalid-name",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 3,
+            "resultCode": "entry-count-exceeded"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 3,
+        "resultCode": "entry-count-exceeded"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-BOUND-001",
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001",
+        "JR-RESOURCE-001"
+      ]
+    },
+    {
+      "caseId": "priority.directory-entry-count-before-invalid-name.isolated-2",
+      "family": "priority.directory-entry-count-before-invalid-name",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 4,
+            "resultCode": "invalid-entry-name"
+          }
+        ],
+        "isolatedCaseIds": []
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 4,
+        "resultCode": "invalid-entry-name"
+      },
+      "requirementIds": [
+        "JR-PATH-001",
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001"
+      ]
+    },
+    {
+      "caseId": "priority.directory-entry-count-before-invalid-name.simultaneous",
+      "family": "priority.directory-entry-count-before-invalid-name",
+      "operation": "priority-select",
+      "input": {
+        "detectedDefects": [
+          {
+            "stage": 3,
+            "resultCode": "entry-count-exceeded"
+          },
+          {
+            "stage": 4,
+            "resultCode": "invalid-entry-name"
+          }
+        ],
+        "isolatedCaseIds": [
+          "priority.directory-entry-count-before-invalid-name.isolated-1",
+          "priority.directory-entry-count-before-invalid-name.isolated-2"
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "stage": 3,
+        "resultCode": "entry-count-exceeded"
+      },
+      "requirementIds": [
+        "JR-DIRECTORY-BOUND-001",
+        "JR-PATH-001",
+        "JR-PROBLEM-001",
+        "JR-PRIORITY-001",
+        "JR-RESOURCE-001"
+      ]
+    }
+  ],
+  "equivalenceFamilies": [
+    {
+      "familyId": "directory-root-relocation",
+      "caseIds": [
+        "relocation.directory-root-a",
+        "relocation.directory-root-b"
+      ],
+      "preservedInvariants": [
+        "logical-member-map",
+        "package-identifiers",
+        "canonical-references",
+        "integrity-input-octets",
+        "semantic-tuple",
+        "derived-verdict",
+        "replay-status",
+        "replay-outcome",
+        "ordered-part-2-problem-identifiers"
+      ],
+      "requirementIds": [
+        "JR-RELOCATION-001"
+      ]
+    },
+    {
+      "familyId": "directory-to-zip",
+      "caseIds": [
+        "relocation.directory-root-a",
+        "relocation.zip-order-a"
+      ],
+      "preservedInvariants": [
+        "logical-member-map",
+        "package-identifiers",
+        "canonical-references",
+        "integrity-input-octets",
+        "semantic-tuple",
+        "derived-verdict",
+        "replay-status",
+        "replay-outcome",
+        "ordered-part-2-problem-identifiers"
+      ],
+      "requirementIds": [
+        "JR-RELOCATION-001"
+      ]
+    },
+    {
+      "familyId": "zip-order-and-timestamp",
+      "caseIds": [
+        "relocation.zip-order-a",
+        "relocation.zip-order-b"
+      ],
+      "preservedInvariants": [
+        "logical-member-map",
+        "package-identifiers",
+        "canonical-references",
+        "integrity-input-octets",
+        "semantic-tuple",
+        "derived-verdict",
+        "replay-status",
+        "replay-outcome",
+        "ordered-part-2-problem-identifiers"
+      ],
+      "requirementIds": [
+        "JR-RELOCATION-001"
+      ]
+    }
+  ]
+}

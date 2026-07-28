@@ -1,0 +1,73 @@
+{
+  "$schema": "https://belgi.dev/schemas/carrier/rc.v2/BELGI-JSON-Schema-Dialect.schema.json",
+  "$id": "https://belgi.dev/schemas/carrier/rc.v2/EvidenceStateCarrier.schema.json",
+  "title": "BELGI evidence-state carrier",
+  "description": "Producer-side evidence-state carrier preserving the evidence inputs made available to the evaluator.",
+  "type": "object",
+  "$defs": {
+    "evidenceItem": {
+      "title": "Evidence item",
+      "description": "Evidence item value keyed by its evidence identifier.",
+      "type": "object",
+      "properties": {
+        "evidenceKindIdentifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "$ref": "Common.schema.json#/$defs/contentLocator"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "Common.schema.json#/$defs/declarationParameter"
+          }
+        }
+      },
+      "required": [
+        "evidenceKindIdentifier",
+        "source",
+        "parameters"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "kind": {
+      "const": "evidence-state-carrier"
+    },
+    "evidenceItems": {
+      "title": "Evidence items",
+      "description": "Authoritative evidence-item map keyed by evidence identifier.",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "$ref": "EvidenceStateCarrier.schema.json#/$defs/evidenceItem"
+      }
+    }
+  },
+  "required": [
+    "kind",
+    "evidenceItems"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "kind": "evidence-state-carrier",
+      "evidenceItems": {
+        "test-report": {
+          "evidenceKindIdentifier": "test-results",
+          "source": {
+            "kind": "package-member",
+            "mediaType": "application/json",
+            "memberReference": "pkg:pkg-demo#test-report"
+          },
+          "parameters": []
+        }
+      }
+    }
+  ]
+}

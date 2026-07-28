@@ -1,0 +1,199 @@
+{
+  "$schema": "https://belgi.dev/schemas/carrier/rc.v2/BELGI-JSON-Schema-Dialect.schema.json",
+  "$id": "https://belgi.dev/schemas/carrier/rc.v2/EvaluatorCarrier.schema.json",
+  "title": "BELGI evaluator carrier",
+  "description": "Producer-side evaluator carrier preserving declared conditions, trust boundaries, governing specifications, exact-edition dependencies, and evidence-condition bindings.",
+  "type": "object",
+  "$defs": {
+    "declaredCondition": {
+      "title": "Declared condition",
+      "description": "Declared go condition value keyed by condition identifier.",
+      "type": "object",
+      "properties": {
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "Common.schema.json#/$defs/declarationParameter"
+          }
+        },
+        "determiningSourceDesignator": {
+          "$ref": "Common.schema.json#/$defs/immutableDesignator"
+        }
+      },
+      "required": [
+        "parameters"
+      ],
+      "additionalProperties": false
+    },
+    "trustBoundary": {
+      "title": "Trust boundary",
+      "description": "Trust-boundary declaration value keyed by boundary identifier.",
+      "type": "object",
+      "properties": {
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "Common.schema.json#/$defs/declarationParameter"
+          }
+        }
+      },
+      "required": [
+        "parameters"
+      ],
+      "additionalProperties": false
+    },
+    "evidenceConditionBinding": {
+      "title": "Evidence-condition binding",
+      "description": "Evidence-condition binding value grouped under one condition identifier.",
+      "type": "object",
+      "properties": {
+        "bindingKindIdentifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidenceIdentifiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "Common.schema.json#/$defs/declarationParameter"
+          }
+        }
+      },
+      "required": [
+        "bindingKindIdentifier",
+        "evidenceIdentifiers",
+        "parameters"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "kind": {
+      "const": "evaluator-carrier"
+    },
+    "declaredConditions": {
+      "title": "Declared conditions",
+      "description": "Authoritative map of declared go conditions keyed by condition identifier.",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "$ref": "EvaluatorCarrier.schema.json#/$defs/declaredCondition"
+      }
+    },
+    "trustBoundaries": {
+      "title": "Trust boundaries",
+      "description": "Authoritative map of trust boundaries keyed by boundary identifier.",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "$ref": "EvaluatorCarrier.schema.json#/$defs/trustBoundary"
+      }
+    },
+    "replayPolicy": {
+      "title": "Replay policy",
+      "description": "Profile-defined replay-policy identifier preserved for evaluator induction when the selected profile requires one.",
+      "type": "string",
+      "minLength": 1
+    },
+    "governingSpecificationDesignators": {
+      "title": "Governing specification designators",
+      "description": "Immutable designators of governing specifications preserved for evaluator induction.",
+      "type": "array",
+      "items": {
+        "$ref": "Common.schema.json#/$defs/immutableDesignator"
+      },
+      "uniqueItems": true
+    },
+    "exactEditionDesignators": {
+      "title": "Exact edition designators",
+      "description": "Immutable designators of exact-edition dependencies preserved as evaluator-declaration material.",
+      "type": "array",
+      "items": {
+        "$ref": "Common.schema.json#/$defs/immutableDesignator"
+      },
+      "uniqueItems": true
+    },
+    "evidenceConditionBindings": {
+      "title": "Evidence-condition bindings",
+      "description": "Condition-keyed map of evidence-condition binding lists.",
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "EvaluatorCarrier.schema.json#/$defs/evidenceConditionBinding"
+        },
+        "minItems": 1
+      }
+    }
+  },
+  "required": [
+    "kind",
+    "declaredConditions",
+    "trustBoundaries",
+    "governingSpecificationDesignators",
+    "exactEditionDesignators",
+    "evidenceConditionBindings"
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "kind": "evaluator-carrier",
+      "replayPolicy": "belgi.software-change.replay.record-check",
+      "declaredConditions": {
+        "tests-pass": {
+          "parameters": [],
+          "determiningSourceDesignator": {
+            "uri": "https://belgi.dev/profile/reference/tests-pass",
+            "digest": {
+              "algorithmId": "sha256",
+              "digestValue": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          }
+        }
+      },
+      "trustBoundaries": {
+        "trusted-ci": {
+          "parameters": []
+        }
+      },
+      "governingSpecificationDesignators": [],
+      "exactEditionDesignators": [
+        {
+          "uri": "https://belgi.dev/companions/ci-trust-vocabulary",
+          "digest": {
+            "algorithmId": "sha256",
+            "digestValue": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      ],
+      "evidenceConditionBindings": {
+        "tests-pass": [
+          {
+            "bindingKindIdentifier": "supports-condition",
+            "evidenceIdentifiers": [
+              "test-report"
+            ],
+            "parameters": []
+          }
+        ]
+      }
+    }
+  ]
+}
