@@ -10,12 +10,19 @@ admission controller.
 
 ## Install and inspect
 
-Python 3.11 or newer is required.
+Python 3.11 or newer is required. Install the exact alpha release from
+[PyPI](https://pypi.org/project/belgi/0.1.0a0/):
+
+```bash
+python -m pip install "belgi==0.1.0a0"
+python -c "import belgi; print(belgi.__version__)"
+belgi --help
+```
+
+From a source checkout, install the checked-out tree with:
 
 ```bash
 python -m pip install .
-python -c "import belgi; print(belgi.__version__)"
-belgi --help
 ```
 
 To inspect exact candidate bytes, install the local wheel by its full path:
@@ -23,16 +30,6 @@ To inspect exact candidate bytes, install the local wheel by its full path:
 ```bash
 python -m pip install ./dist/belgi-0.1.0a0-py3-none-any.whl
 ```
-
-Package-index availability is established by the exact version page and the
-release readback, not by this README. If version `0.1.0a0` is present on PyPI
-and its published bytes have passed that readback, install it with:
-
-```bash
-python -m pip install "belgi==0.1.0a0"
-```
-
-Otherwise, use the source or admitted local-wheel commands above.
 
 The only promised Python import is `belgi.__version__`. All other Python
 modules are implementation detail.

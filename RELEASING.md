@@ -54,8 +54,7 @@ version.
 
 ## Documentation successor
 
-The byte-identical `README.md` and `PACKAGE_README.md` projection describes the
-exact-version index command conditionally, so the same metadata remains true
-before and after publication. Only after the PyPI readback job succeeds may a
-successor documentation change replace that condition with a direct
-package-index availability statement.
+PyPI readback for `0.1.0a0` succeeded before the documentation successor stated
+direct availability. `README.md` and `PACKAGE_README.md` remain byte-identical.
+Updating these source files does not rewrite already-published `0.1.0a0`
+metadata; never reuse an index version or move its tag to update prose.
